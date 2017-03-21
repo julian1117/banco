@@ -1,0 +1,78 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui" template="/templates/template.xhtml">
+
+	<ui:define name="cuerpo">
+		<h:form prependId="false">
+			<p:panel id="datosPanel" header="Datos Cliente">
+				<h:panelGrid columns="3">
+
+					<h:outputLabel for="tfCedula" id="lblcedula" value="#{msj['clientes.cedula']}:"/>						
+					
+					<h:inputText id="tfCedula" value="#{clienteController.cedula}"
+						class="form-control" />
+					<p:message for="tfCedula" />
+
+					<h:outputLabel for="tfTipoDoc" id="lblTipoDocumento" value="#{msj['clientes.tipoDocumento']}:"/>					
+
+					<h:selectOneMenu id="tipoDocumento"
+						value="#{clienteController.tipoDocumento}" class="form-control">
+						<f:selectItem itemValue="Cedula" itemLabel="Cedula" />
+						<f:selectItem itemValue="Tarjeta identidad"
+							itemLabel="Tarjeta identidad" />
+						<f:selectItem itemValue="Pasaporte" itemLabel="Pasaporte" />
+					</h:selectOneMenu>
+					<br></br>
+
+					<h:outputLabel for="tfNombre" id="lblnombre" value="#{msj['clientes.nombre']}:"/>						
+					<h:inputText id="tfNombre" value="#{clienteController.nombre}"
+						class="form-control" />
+					<p:message for="tfCedula" />
+					
+					<h:outputLabel for="tfNombre" id="lblApellido" value="#{msj['clientes.apellido']}:"/>
+					<h:inputText id="tfApellido" value="#{clienteController.apellido}"
+						class="form-control" />
+					<p:message for="tfApellido" />
+				</h:panelGrid>
+			</p:panel>
+			<br></br>
+
+			<h:panelGrid id="botonesPanel" columns="3">
+				<p:commandButton id="btnBuscar" value="#{msj['clientes.buscar']}"
+					action="#{clienteController.buscarCliente}"
+					process="@this tfCedula tipoDocumento" update="datosPanel"
+					 />
+				<p:commandButton id="btnCrear" value="#{msj['clientes.guardar']}"
+					process="@this,datosPanel" update="datosPanel,tablaCliente"
+					actionl="#{clienteController.creCliente}" class="ui-button-info"
+					 />
+			</h:panelGrid>
+
+			<br></br>
+			<p:panel header="#{msj['clientes.listaCliente']}" id="panelTabla">
+
+				<p:dataTable value="#{clienteController.clientes}" var="doc"
+					border="1" class="table table-striped" id="tablaCliente">
+					<p:column headerText="#{msj['clientes.nombre']}">
+						<h:outputLabel value="#{doc.name}" />
+					</p:column>
+					<p:column headerText="#{msj['clientes.apellido']}">
+						<h:outputLabel value="#{doc.lastName}" />
+					</p:column>
+					<p:column headerText="#{msj['clientes.cedula']}">
+						<h:outputLabel value="#{doc.numeroIndentificacion}" />
+					</p:column>
+					<p:column headerText="#{msj['clientes.tipoDocumento']}">
+						<h:outputLabel value="#{doc.tipoIdentificacion}" />
+					</p:column>
+
+				</p:dataTable>
+			</p:panel>
+		</h:form>
+
+
+
+	</ui:define>
+</ui:composition>

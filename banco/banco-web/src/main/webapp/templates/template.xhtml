@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+<h:head>
+	<meta charset="UTF-8" />
+	<title>BANCO ARMENIA</title>
+	<meta
+		content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no'
+		name='viewport' />
+
+	<link href="#{request.contextPath}/css/bootstrap.min.css"
+		rel="stylesheet" />
+	<link href="#{request.contextPath}/css/style.css" rel="stylesheet" />
+
+	<link
+		href="#{request.contextPath}/font-awesome-4.1.0/css/font-awesome.min.css"
+		rel="stylesheet" type="text/css" />
+</h:head>
+
+<h:body>
+
+	<div class="nav">
+		<div class='logo'></div>
+		<ul class="menu">
+
+			<li class="btMenu"><a href="javascript:void(0)">MENU</a></li>
+			<li class="menuItem"><a
+				href="#{request.contextPath}/templates/template.xhtml">Inicio</a></li>
+
+			<li class="dropdown"><a class="dropdown-toggle"
+				data-toggle="dropdown" role="button" aria-haspopup="true"
+				aria-expanded="false">Usuarios <span class="caret"></span></a>
+				<ul class="dropdown-menu">
+					<li><a href="#{request.contextPath}/paginas/seguro/clientes.xhtml">Clientes</a></li>
+					<li><a
+						href="#{request.contextPath}/paginas/seguro/pagoTarjetaClientes.xhtml">Pagos
+							tarjeta de credito</a></li>
+				</ul></li>
+			<li class="menuItem"><a href="#">Features</a></li>
+			<li class="menuItem"><a href="#">Why Us</a></li>
+			<li class="menuItem"><a href="#">Download</a></li>
+
+			<li class="dropdown"><a class="dropdown-toggle"
+				data-toggle="dropdown" role="button" aria-haspopup="true"
+				aria-expanded="false">Idiomas<span class="caret"></span></a>
+				<ul class="dropdown-menu">
+					<h:form>
+						<li><h:commandLink
+								action="#{internacionalizacionCont.cambiarIngles}"
+								value="Ingles" /></li>
+						<li><h:commandLink
+								action="#{internacionalizacionCont.cambiarEspanol}"
+								value="Español" /></li>
+					</h:form>
+				</ul></li>
+			<li><h:form>
+					<h:commandLink action="#{sessionController.cerrarSession()}"
+						value="Cerrar Sesion" rendered="#{sessionController.isSeccion()}" />
+				</h:form></li>
+
+		</ul>
+	</div>
+
+
+	<!-- WRAPPER STARTS HERE-->
+	<div class='wrapper'>
+
+		<header>
+			<!-- HEADER STARTS HERE-->
+
+			<div class="container titles yomer-text-center">
+				<h1
+					data-scroll-reveal="wait 0.25s, then enter top and move 40px over 1s">Bienvenido
+					a su Banco Armenia</h1>
+				<div class='subhead'>
+					<p>Tenemos una gran catalogo de servicios y productos pensado
+						en usted.</p>
+					<div class='buttons'>
+						<form method="POST" action="#">
+							<button class="form-submit googleplus" type="submit"
+								title="Continue with Google+"></button>
+
+						</form>
+						<form method="POST" action="#www.facebook.com">
+							<button class="form-submit facebook" type="submit"
+								title="Continue with Facebook"></button>
+
+						</form>
+						<form method="GET" action="#">
+							<button class="form-submit email" type="submit"
+								title="Continue with Email"></button>
+						</form>
+					</div>
+				</div>
+			</div>
+
+			<a class="godown animate" href="#first">Down</a>
+
+		</header>
+
+		<!-- /DIV PRINCIPAL PARA TRABAJAR-->
+		<section class='aboutus center' id='portafolio'>
+			<div class='container' align="center">
+				<div class="box">
+					<p:messages id="facesMessage" autoUpdate="true" globalOnly="true"
+						closable="true" />
+					<ui:insert name="cuerpo" />
+				</div>
+
+			</div>
+
+		</section>
+
+
+
+
+		<!-- SOCIAL STARTS HERE-->
+		<section class="social " id='social'>
+			<div class="container">
+				<div class="row">
+					<div class="col-md-12 ">
+						<div class="social_icons">
+							<ul>
+								<li class="facebook"><a href="#."
+									data-scroll-reveal="wait 0.25s, then enter top and move 40px over 1s"><i
+										class="fa fa-facebook"></i> </a></li>
+								<li class="twitter"><a href="#."
+									data-scroll-reveal="wait 0.25s, then enter top and move 40px over 1s"><i
+										class="fa fa-twitter"></i> </a></li>
+								<li class="dribbble"><a href="#."
+									data-scroll-reveal="wait 0.25s, then enter top and move 40px over 1s"><i
+										class="fa fa-dribbble"></i> </a></li>
+								<li class="googleplus"><a href="#."
+									data-scroll-reveal="wait 0.25s, then enter top and move 40px over 1s"><i
+										class="fa fa-google"></i> </a></li>
+								<li class="linkedin "><a href="#."
+									data-scroll-reveal="wait 0.25s, then enter top and move 40px over 1s"><i
+										class="fa fa-linkedin"></i> </a></li>
+								<li class="pinterest"><a href="#."
+									data-scroll-reveal="wait 0.25s, then enter top and move 40px over 1s"><i
+										class="fa fa-pinterest"></i> </a></li>
+							</ul>
+						</div>
+					</div>
+				</div>
+			</div>
+		</section>
+
+		<!--/ SOCIAL ENDS HERE-->
+
+	</div>
+	<!-- /WRAPPER ENDS HERE DESIGNED BY VIJAYAN PP-->
+	<script type='text/javascript'
+		src='#{request.contextPath}/js/jquery.js'></script>
+	<script type='text/javascript'
+		src='#{request.contextPath}/js/bootstrap.min.js'></script>
+	<script type='text/javascript'
+		src='#{request.contextPath}/js/scrollReveal.js'></script>
+	<script type='text/javascript' src="#{request.contextPath}/js/otro.js"></script>
+
+
+</h:body>
+</html>

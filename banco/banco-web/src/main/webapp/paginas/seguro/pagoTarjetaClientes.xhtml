@@ -1,0 +1,112 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui" template="/templates/template.xhtml">
+
+
+	<ui:define name="cuerpo">
+		<h:form prependId="false">
+			<p align="left">
+				<p:panel id="datosPanel"
+					header="Productos de: #{pagoController.nombreUs} ">
+					<h:panelGrid columns="3">
+						<h:outputLabel for="cbnumTarjeta" id="lbnumTarjeta">
+							<h5>Numero de tarjeta</h5>
+						</h:outputLabel>
+						<h:selectOneMenu id="cbnumTarjeta"
+							value="#{pagoController.tarjeta}" converter="tarjConverter"
+							class="form-control">
+							<p align="right">
+
+								<f:selectItems value="#{pagoController.listnumTarjeta}"
+									var="tar" itemValue="#{tar}" itemLabel="#{tar.numero}" />
+
+								<f:ajax event="change" execute="@this"
+									render="panelTablas datosPanel tfSaldo"
+									listener="#{pagoController.ConsultarCuota}" />
+
+							</p>
+						</h:selectOneMenu>
+
+						<br />
+
+
+						<h:outputLabel for="cbnumCuenta" id="lbnumCuenta">
+							<h5>Numero de Cuenta Ahorros</h5>
+						</h:outputLabel>
+
+						<h:selectOneMenu id="cbnumCuenta"
+							value="#{pagoController.cuentaAhorros}"
+							converter="cuentConverter" class="form-control">
+
+							<f:selectItems value="#{pagoController.listCuentaAhorros}"
+								var="cuen" itemValue="#{cuen}" itemLabel="#{cuen.numero}" />
+
+							<f:ajax event="change" execute="@this"
+								listener="#{pagoController.buscarCuentaA}" />
+
+						</h:selectOneMenu>
+
+						<br />
+
+						<h:outputLabel for="tfSaldo" id="lblSaldo">
+							<h5>Saldo</h5>
+						</h:outputLabel>
+
+						<h:inputText id="tfSaldo" value="#{pagoController.pago}"
+							class="form-control" />
+						<p:message for="tfSaldo" />
+
+					</h:panelGrid>
+				</p:panel>
+				<br />
+
+
+
+				<p:dataTable id="panelTablas" value="#{pagoController.listaConsumo}"
+					var="doc" border="1" class="table table-striped">
+					<p:column headerText="Comprovante">
+						<h:outputLabel value="#{doc.id}" />
+					</p:column>
+					<p:column headerText="Saldo Original">
+						<h:outputLabel value="#{doc.ammount}" />
+					</p:column>
+					<p:column headerText="Fecha Consumo">
+						<h:outputLabel value="#{doc.date_consume}" />
+					</p:column>
+					<p:column headerText="Plazo original">
+						<h:outputLabel value="#{doc.number_shares}" />
+					</p:column>
+					<p:column headerText="Cuotas Pendientes">
+						<h:outputLabel value="#{doc.cuotaRestante}" />
+					</p:column>
+					<p:column headerText="Capital Pendiente">
+						<h:outputLabel value="#{doc.remaining_ammount}" />
+					</p:column>
+					<p:column headerText="Opciones">
+						<p:commandButton action="#{pagoController.pagarConsumo(doc)}"
+							styleClass="ui-priority-primary" process="@this"
+							value="Pagar consumo" update="panelTablas" />
+					</p:column>
+				</p:dataTable>
+
+				<br />
+
+			</p>
+			<h:panelGrid id="botonesPanel" columns="4">
+
+
+
+				<p:commandButton id="btnPagar" value="Pagar"
+					action="#{pagoController.realizarPago}" process="@this  "
+					update="datosPanel panelTablas" />
+
+
+			</h:panelGrid>
+		</h:form>
+
+
+
+	</ui:define>
+</ui:composition>
