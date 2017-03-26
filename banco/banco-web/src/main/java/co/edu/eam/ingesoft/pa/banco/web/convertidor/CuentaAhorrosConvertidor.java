@@ -20,8 +20,7 @@ public class CuentaAhorrosConvertidor implements Converter{
 		if(value == null || value.trim().length()==0 || value.equals("Seleccion...")){
 			return null;
 		}
-		return cuentaAho.buscarCuentaAhorro(value);
-		
+		return cuentaAho.buscarCuentaAhorro(value);		
 	}
 
 	public String getAsString(FacesContext context, UIComponent component, Object value) {
