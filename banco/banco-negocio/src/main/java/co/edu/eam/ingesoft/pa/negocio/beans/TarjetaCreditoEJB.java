@@ -207,8 +207,8 @@ public class TarjetaCreditoEJB {
 		
 		for(int i =0;i<listTa.size();i++){
 			
-			double saldoInteres = listTa.get(i).getSaldoConsumido()+(listTa.get(i).getSaldoConsumido()*0.036);
-			listTa.get(i).setSaldoConsumido(saldoInteres);
+//			double saldoInteres = listTa.get(i).getSaldoConsumido()+(listTa.get(i).getSaldoConsumido()*0.036);
+//			listTa.get(i).setSaldoConsumido(saldoInteres);
 			
 		}
 		

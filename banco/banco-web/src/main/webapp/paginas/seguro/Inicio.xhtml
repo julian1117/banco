@@ -28,10 +28,10 @@
 			
 			<p:panel id="panelTarjeta" header="Tarjetas de credito">
 				<p:dataTable id="datosTarjeta"
-					value="#{inicioController.listaTarjeta}" var="docT" border="1"
-					class="table table-striped">
+					value="#{pagoController.listaConsumo}" var="docT" border="1"
+					class="table table-striped" >
 					<p:column headerText="Numero de tarjeta">
-						<h:outputLabel value="#{docT.numero}" />
+						<h:outputLabel value="#{docT.}" />
 					</p:column>
 					<p:column headerText="Franquicia">
 						<h:outputLabel value="#{docT.franchise.nombre}" />
@@ -43,8 +43,6 @@
 						<h:outputLabel value="#{docT.monto}" />
 					</p:column>
 				</p:dataTable>
-
-
 			</p:panel>
 
 		</h:form>

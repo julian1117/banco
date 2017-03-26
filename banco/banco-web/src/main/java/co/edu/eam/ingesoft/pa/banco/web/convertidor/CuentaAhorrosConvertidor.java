@@ -1,5 +1,6 @@
 package co.edu.eam.ingesoft.pa.banco.web.convertidor;
 
+import javax.ejb.EJB;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
@@ -13,7 +14,7 @@ import co.edu.eam.ingesoft.pa.negocio.beans.CuentaAhorrosEJB;
 @FacesConverter(value="cuentConverter",forClass=SavingAccount.class)
 @Named("cuentConverter")
 public class CuentaAhorrosConvertidor implements Converter{
-	
+	@EJB
 	private CuentaAhorrosEJB cuentaAho;
 
 	public Object getAsObject(FacesContext context, UIComponent component, String value) {

@@ -186,7 +186,7 @@ z-index:0;
 background:url('../img/bg-banner.jpg') no-repeat 50%;
 height:auto;
 background-color:#000 !important;
-min-height:500px;
+min-height:200px;
 background-size:cover;
 }
 header>.container

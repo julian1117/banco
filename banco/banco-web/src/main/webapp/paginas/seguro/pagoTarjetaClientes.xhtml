@@ -7,7 +7,7 @@
 
 	<ui:define name="cuerpo">
 		<h:form prependId="false">
-			<p align="left">
+		
 				<p:panel id="datosPanel"
 					header="Productos de: #{pagoController.nombreUs} ">
 					<h:panelGrid columns="3">
@@ -91,15 +91,11 @@
 					</p:column>
 				</p:dataTable>
 
-				<br />
-
-			</p>
+				<br/>
+		
 			<h:panelGrid id="botonesPanel" columns="4">
-
-
-
-				<p:commandButton id="btnPagar" value="Pagar"
-					action="#{pagoController.realizarPago}" process="@this cbnumTarjeta cbnumCuenta tfSaldo"
+				<p:commandButton id="btnPagar" value="Pagar Cuota"
+					action="#{pagoController.realizarPago}" process="@this datosPanel cbnumTarjeta cbnumCuenta"
 					update="panelTablas" />
 
 

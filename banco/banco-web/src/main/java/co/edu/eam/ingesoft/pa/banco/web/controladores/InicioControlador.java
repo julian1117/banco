@@ -29,10 +29,6 @@ public class InicioControlador implements Serializable{
 	@Inject
 	private SessionController sesionUs;
 	
-	
-	
-	
-	
 	public List<Credicart> getListaTarjeta() {
 		return listaTarjeta;
 	}
@@ -41,16 +37,17 @@ public class InicioControlador implements Serializable{
 		this.listaTarjeta = listaTarjeta;
 	}
 
+	@PostConstruct
+	public void inicializar(){
+		listaTarjeta = tarjetaEJB.listTarjetaCliente(sesionUs.getUse().getCustomer());
+	}
+	
 	public void cargarDatosCliente(){
 		
-		listaTarjeta = tarjetaEJB.listTarjetaCliente(sesionUs.getUse().getCustomer());
 		
 	}
 	
-	@PostConstruct
-	public void inicializar(){
-		cargarDatosCliente();
-	}
+	
 	
 
 }

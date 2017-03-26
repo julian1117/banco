@@ -82,15 +82,16 @@ public class TarjetaCreditoPagoConsumoRemote {
 					tarjetaPagoConsumo.setIdConsume(consumo);
 				} else {
 
-					consumo.setRemaining_ammount(consumo.getRemaining_ammount() - (capital + diferenci));
+					// math
+					consumo.setRemaining_ammount(Math.round(consumo.getRemaining_ammount() - (capital + diferenci)));
 					consumo.setCuotaRestante(consumo.getCuotaRestante() - 1);
 
-					tarjetaPagoConsumo
-							.setCapitalAmmount((consumo.getAmmount() / consumo.getNumber_shares()) + diferenci);
-					tarjetaPagoConsumo.setAmmount(
-							(capital + (consumo.getAmmount() / consumo.getNumber_shares()) * consumo.getInterest())
-									+ diferenci);
-					tarjetaPagoConsumo.setInterestAmmount(
+					tarjetaPagoConsumo.setCapitalAmmount(
+							Math.round((consumo.getAmmount() / consumo.getNumber_shares()) + diferenci));
+					tarjetaPagoConsumo.setAmmount(Math.round(
+							capital + (consumo.getAmmount() / consumo.getNumber_shares()) * consumo.getInterest())
+							+ diferenci);
+					tarjetaPagoConsumo.setInterestAmmount(Math.round
 							(consumo.getAmmount() / consumo.getNumber_shares()) * consumo.getInterest());
 
 					tarjetaPagoConsumo.setPaymentDate(tarjeta.generarFechaActual());
@@ -222,6 +223,7 @@ public class TarjetaCreditoPagoConsumoRemote {
 
 	/**
 	 * Lista de tarjetas de credito de un cliente
+	 * 
 	 * @param cedula
 	 * @param tipoDoc
 	 * @return
@@ -244,9 +246,10 @@ public class TarjetaCreditoPagoConsumoRemote {
 		}
 		return listaCredit;
 	}
-	
+
 	/**
 	 * Lista de cuentas de ahorros de un cliente
+	 * 
 	 * @param cedula
 	 * @param tipoDoc
 	 * @return
@@ -265,34 +268,39 @@ public class TarjetaCreditoPagoConsumoRemote {
 			if (listaC.get(i) instanceof SavingAccount) {
 				SavingAccount cre = (SavingAccount) listaC.get(i);
 				listaCuen.add(cre);
-				
+
 			}
 		}
 		return listaCuen;
 	}
-	
-	public void pagoConsumo(CreditcardConsume consumo){
-		
+
+	/**
+	 * Pago total de un consumo de la tarjeta
+	 * 
+	 * @param consumo
+	 */
+	public void pagoConsumo(CreditcardConsume consumo) {
+
 		Credicart tar = tarjeta.buscarTarjetaCRedito(consumo.getCreditcard_number().getNumero());
 		CreditcardPaymentConsume tarjetaPagoConsumo = new CreditcardPaymentConsume();
 
-		tarjetaPagoConsumo.setAmmount((consumo.getRemaining_ammount()*0.036)+consumo.getRemaining_ammount());
+		tarjetaPagoConsumo.setAmmount((consumo.getRemaining_ammount() * 0.036) + consumo.getRemaining_ammount());
 		tarjetaPagoConsumo.setCapitalAmmount(consumo.getRemaining_ammount());
 		tarjetaPagoConsumo.setIdConsume(consumo);
-		tarjetaPagoConsumo.setInterestAmmount(consumo.getRemaining_ammount()*0.036);
+		tarjetaPagoConsumo.setInterestAmmount(consumo.getRemaining_ammount() * 0.036);
 		tarjetaPagoConsumo.setPaymentDate(tarjeta.generarFechaActual());
 		tarjetaPagoConsumo.setShare(consumo.getCuotaRestante());
-		
-		tar.setSaldoConsumido(tar.getSaldoConsumido()-consumo.getRemaining_ammount());
-		
+
+		tar.setSaldoConsumido(tar.getSaldoConsumido() - consumo.getRemaining_ammount());
+
 		consumo.setRemaining_ammount(0);
 		consumo.setCuotaRestante(0);
 		consumo.setIs_payed(true);
-		
+
 		em.persist(tarjetaPagoConsumo);
 		em.merge(tar);
 		em.merge(consumo);
-		//Falta restar de cuenta de ahorros y ya jajajaja .l.
-		
+		// Falta restar de cuenta de ahorros
+
 	}
 }
