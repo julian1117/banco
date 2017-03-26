@@ -61,7 +61,7 @@ public class SessionController implements Serializable {
 			if (useBuscar.getContrasena().equals(contrasena)) {
 				use=useBuscar;
 				Faces.setSessionAttribute("usuario",use);
-				return "/paginas/seguro/clientes.xhtml?faces-redirect=true";
+				return "/paginas/seguro/Inicio.xhtml?faces-redirect=true";
 			} else {
 				Messages.addGlobalError("Usuario o contrasena incorrecta");
 			}

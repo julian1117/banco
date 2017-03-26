@@ -123,6 +123,11 @@ public class PagoTarjetaControlador implements Serializable {
 	@Inject
 	private SessionController usuarioSesion;
 
+	@PostConstruct
+	public void inicializar() {
+		cargarDatosUsuario();
+	}
+	
 	/**
 	 * Consultar cuota de pago de la tarjeta de credito
 	 */
@@ -141,12 +146,11 @@ public class PagoTarjetaControlador implements Serializable {
 	 */
 	public void realizarPago() {
 		try {
-			if (tarjeta.getNumero() != "" && cuentaAhorros.getNumero() != "" && pago > 0) {
-				String numeT = tarjeta.getNumero();
+			if (pago > 0) {
 				pagoEjb.descontarCuentaAhorros(cuentaAhorros.getNumero(), pago, tarjeta.getNumero());
 				Messages.addFlashGlobalInfo("Pago registrado con exito");
 				pago = 0;
-				listaConsumo = pagoEjb.listaConsumo(numeT);
+				listaConsumo = pagoEjb.listaConsumo(tarjeta.getNumero());
 			} else {
 				Messages.addFlashGlobalError("Por favor verifique los campos");
 			}
@@ -204,9 +208,6 @@ public class PagoTarjetaControlador implements Serializable {
 		nombreUs=cliente.getName()+" "+cliente.getLastName();
 	}
 
-	@PostConstruct
-	public void inicializar() {
-		cargarDatosUsuario();
-	}
+	
 
 }

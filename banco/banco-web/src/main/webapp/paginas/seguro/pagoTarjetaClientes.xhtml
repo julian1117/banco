@@ -99,8 +99,8 @@
 
 
 				<p:commandButton id="btnPagar" value="Pagar"
-					action="#{pagoController.realizarPago}" process="@this  "
-					update="datosPanel panelTablas" />
+					action="#{pagoController.realizarPago}" process="@this cbnumTarjeta cbnumCuenta tfSaldo"
+					update="panelTablas" />
 
 
 			</h:panelGrid>

@@ -1,0 +1,53 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui" template="/templates/template.xhtml">
+
+
+	<ui:define name="cuerpo">
+		<h:form prependId="false">
+
+
+			<p:panel id="datosPanel" header="Cuentas de ahorro">
+				<p:dataTable id="panelTablas"
+					value="#{pagoController.listCuentaAhorros}" var="doc" border="1"
+					class="table table-striped">
+
+					<p:column headerText="Numero">
+						<h:outputLabel value="#{doc.numero}" />
+					</p:column>
+					<p:column headerText="Saldo">
+						<h:outputLabel value="#{doc.ammount}" />
+					</p:column>
+
+				</p:dataTable>
+			</p:panel>
+			
+			<br></br>
+			
+			<p:panel id="panelTarjeta" header="Tarjetas de credito">
+				<p:dataTable id="datosTarjeta"
+					value="#{inicioController.listaTarjeta}" var="docT" border="1"
+					class="table table-striped">
+					<p:column headerText="Numero de tarjeta">
+						<h:outputLabel value="#{docT.numero}" />
+					</p:column>
+					<p:column headerText="Franquicia">
+						<h:outputLabel value="#{docT.franchise.nombre}" />
+					</p:column>
+					<p:column headerText="Deuda a la fecha">
+						<h:outputLabel value="#{docT.saldoConsumido}" />
+					</p:column>
+					<p:column headerText="Saldo disponible">
+						<h:outputLabel value="#{docT.monto}" />
+					</p:column>
+				</p:dataTable>
+
+
+			</p:panel>
+
+		</h:form>
+	</ui:define>
+
+</ui:composition>

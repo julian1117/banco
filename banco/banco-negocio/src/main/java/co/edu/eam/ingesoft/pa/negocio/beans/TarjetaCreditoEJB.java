@@ -153,7 +153,7 @@ public class TarjetaCreditoEJB {
 	}
 
 	/**
-	 * Obtiene la fecha actualual y le suma 4 años
+	 * Obtiene la fecha actualual y le suma 4 aï¿½os
 	 * 
 	 * @param fecha
 	 * @param dias
@@ -193,6 +193,27 @@ public class TarjetaCreditoEJB {
 		List<Franchise> listaFranqui = q.getResultList();
 
 		return listaFranqui;
+	}
+	
+	
+	/**
+	 * Lista de tarjetas de un cliente
+	 * @param cliente
+	 * @return
+	 */
+	public List<Credicart> listTarjetaCliente(Customer cliente) {
+
+		List<Credicart> listTa = listProductoTarjeta(cliente);
+		
+		for(int i =0;i<listTa.size();i++){
+			
+			double saldoInteres = listTa.get(i).getSaldoConsumido()+(listTa.get(i).getSaldoConsumido()*0.036);
+			listTa.get(i).setSaldoConsumido(saldoInteres);
+			
+		}
+		
+		
+		return listTa;
 	}
 
 }
