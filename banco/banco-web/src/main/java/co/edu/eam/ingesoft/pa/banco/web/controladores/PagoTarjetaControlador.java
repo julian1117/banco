@@ -185,7 +185,7 @@ public class PagoTarjetaControlador implements Serializable {
 	 * @param consumo
 	 */
 	public void pagarConsumo(CreditcardConsume consumo) {
-		pagoEjb.pagoConsumo(consumo);
+		pagoEjb.pagoConsumo(consumo,cuentaAhorros.getNumero());
 		Messages.addFlashGlobalInfo("Pago de consumo con exito");
 		listnumTarjeta = pagoEjb.listaTarjetaCredito(cedula, tipoDocumento);
 		listaConsumo = pagoEjb.listaConsumo(listnumTarjeta.get(0).getNumero());

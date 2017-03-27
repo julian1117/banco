@@ -10,6 +10,7 @@ import javax.persistence.Query;
 
 import co.edu.eam.ingesoft.banco.entidades.Credicart;
 import co.edu.eam.ingesoft.banco.entidades.CreditcardConsume;
+import co.edu.eam.ingesoft.banco.entidades.SavingAccount;
 import co.edu.eam.ingesoft.banco.entidades.enumeraciones.TipoConsumo;
 import co.edu.eam.ingesoft.pa.negocio.beans.remote.ITarjetaCreditoConsumoRemote;
 import co.edu.eam.ingesoft.pa.negocio.excepciones.ExcepcionNegocio;
@@ -24,6 +25,9 @@ public class TarjetaCreditoConsumoEJB {
 
 	@EJB
 	private TarjetaCreditoEJB tarjetaEJB;
+	
+	@EJB
+	private CuentaAhorrosEJB cuentaAhorros;
 	
 	@EJB
 	private TarjetaCreditoPagoConsumoRemote tarjetaPago;
@@ -87,4 +91,42 @@ public class TarjetaCreditoConsumoEJB {
 		return em.find(CreditcardConsume.class, consumo);
 	}
 
+	/**
+	 * Realizar avance de una tarjeta de credito a una cuenta de ahorros
+	 * @param numero
+	 * @param cantidad
+	 */
+	public void avanceCuentaAhorro(String numeroT, double cantidad, String numeroCuentaAh) {
+		Credicart tarjeta = tarjetaEJB.buscarTarjetaCRedito(numeroT);
+		SavingAccount cuentaAh =  cuentaAhorros.buscarCuentaAhorro(numeroCuentaAh);
+		
+		double montoMaximo = (tarjeta.getMonto() * 0.3) + tarjeta.getMonto();
+
+		CreditcardConsume consumoTarjeta = new CreditcardConsume();
+		
+		if (cantidad <= montoMaximo) {
+			
+			consumoTarjeta.setNumber_shares(24);			
+			double suma =  tarjeta.getSaldoConsumido()+cantidad;
+			double sumarCuentaAh = cuentaAh.getAmmount()+cantidad;
+			consumoTarjeta.setCreditcard_number(tarjeta);
+			consumoTarjeta.setDate_consume(tarjetaEJB.generarFechaActual());
+			consumoTarjeta.setInterest(0.036);
+			consumoTarjeta.setRemaining_ammount(cantidad);
+			consumoTarjeta.setAmmount(cantidad);
+			consumoTarjeta.setCuotaRestante(consumoTarjeta.getNumber_shares());
+			
+			tarjeta.setSaldoConsumido(suma);
+			
+			cuentaAh.setAmmount(sumarCuentaAh);
+			
+			em.merge(tarjeta);
+			em.persist(consumoTarjeta);
+			em.merge(cuentaAh);
+			
+		} else {
+			throw new ExcepcionNegocio("La cantidad es mayor a lo permitido: su maximo es de: " + montoMaximo);
+		}
+	}
+	
 }

@@ -41,6 +41,9 @@ public class TarjetaCreditoPagoConsumoRemote {
 	@EJB
 	private TransaccionEJB transaEjb;
 
+	@EJB
+	private CuentaAhorrosEJB cuentaAhorros;
+
 	public void pagoTarjeta(double saldo, String numTarjeta) {
 		List<CreditcardConsume> listaCons = listaConsumo(numTarjeta);
 
@@ -91,8 +94,8 @@ public class TarjetaCreditoPagoConsumoRemote {
 					tarjetaPagoConsumo.setAmmount(Math.round(
 							capital + (consumo.getAmmount() / consumo.getNumber_shares()) * consumo.getInterest())
 							+ diferenci);
-					tarjetaPagoConsumo.setInterestAmmount(Math.round
-							(consumo.getAmmount() / consumo.getNumber_shares()) * consumo.getInterest());
+					tarjetaPagoConsumo.setInterestAmmount(
+							Math.round(consumo.getAmmount() / consumo.getNumber_shares()) * consumo.getInterest());
 
 					tarjetaPagoConsumo.setPaymentDate(tarjeta.generarFechaActual());
 
@@ -279,28 +282,36 @@ public class TarjetaCreditoPagoConsumoRemote {
 	 * 
 	 * @param consumo
 	 */
-	public void pagoConsumo(CreditcardConsume consumo) {
+	public void pagoConsumo(CreditcardConsume consumo, String numeroAh) {
 
+		SavingAccount cuantaAhoBus = cuentaAhorros.buscarCuentaAhorro(numeroAh);
+		double saldoCuenta = Math.round(cuantaAhoBus.getAmmount()
+				- ((consumo.getRemaining_ammount() * 0.036) + consumo.getRemaining_ammount()));
+		cuantaAhoBus.setAmmount(saldoCuenta);
+		
 		Credicart tar = tarjeta.buscarTarjetaCRedito(consumo.getCreditcard_number().getNumero());
 		CreditcardPaymentConsume tarjetaPagoConsumo = new CreditcardPaymentConsume();
 
-		tarjetaPagoConsumo.setAmmount((consumo.getRemaining_ammount() * 0.036) + consumo.getRemaining_ammount());
-		tarjetaPagoConsumo.setCapitalAmmount(consumo.getRemaining_ammount());
+		tarjetaPagoConsumo
+				.setAmmount(Math.round(consumo.getRemaining_ammount() * 0.036) + consumo.getRemaining_ammount());
+		tarjetaPagoConsumo.setCapitalAmmount(Math.round(consumo.getRemaining_ammount()));
 		tarjetaPagoConsumo.setIdConsume(consumo);
-		tarjetaPagoConsumo.setInterestAmmount(consumo.getRemaining_ammount() * 0.036);
+		tarjetaPagoConsumo.setInterestAmmount(Math.round(consumo.getRemaining_ammount() * 0.036));
 		tarjetaPagoConsumo.setPaymentDate(tarjeta.generarFechaActual());
 		tarjetaPagoConsumo.setShare(consumo.getCuotaRestante());
 
-		tar.setSaldoConsumido(tar.getSaldoConsumido() - consumo.getRemaining_ammount());
+		tar.setSaldoConsumido(Math.round(tar.getSaldoConsumido() - consumo.getRemaining_ammount()));
 
 		consumo.setRemaining_ammount(0);
 		consumo.setCuotaRestante(0);
 		consumo.setIs_payed(true);
 
+		
+
 		em.persist(tarjetaPagoConsumo);
 		em.merge(tar);
 		em.merge(consumo);
-		// Falta restar de cuenta de ahorros
+		em.merge(cuantaAhoBus);
 
 	}
 }

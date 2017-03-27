@@ -68,7 +68,7 @@ public class TarjetaCreditoEJB {
 			} else {
 				throw new ExcepcionNegocio("El cliente ya tiene 5 productos");
 			}
-		}else{
+		} else {
 			throw new ExcepcionNegocio("El cliente no existe");
 		}
 
@@ -194,25 +194,27 @@ public class TarjetaCreditoEJB {
 
 		return listaFranqui;
 	}
+
 	
-	
+
 	/**
 	 * Lista de tarjetas de un cliente
+	 * 
 	 * @param cliente
 	 * @return
 	 */
 	public List<Credicart> listTarjetaCliente(Customer cliente) {
 
 		List<Credicart> listTa = listProductoTarjeta(cliente);
-		
-		for(int i =0;i<listTa.size();i++){
-			
-//			double saldoInteres = listTa.get(i).getSaldoConsumido()+(listTa.get(i).getSaldoConsumido()*0.036);
-//			listTa.get(i).setSaldoConsumido(saldoInteres);
-			
+
+		for (int i = 0; i < listTa.size(); i++) {
+
+			// double saldoInteres =
+			// listTa.get(i).getSaldoConsumido()+(listTa.get(i).getSaldoConsumido()*0.036);
+			// listTa.get(i).setSaldoConsumido(saldoInteres);
+
 		}
-		
-		
+
 		return listTa;
 	}
 

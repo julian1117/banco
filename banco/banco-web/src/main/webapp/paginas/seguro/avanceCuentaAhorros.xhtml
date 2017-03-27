@@ -1,0 +1,67 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui" template="/templates/template.xhtml">
+
+	<ui:define name="cuerpo">
+		<h:form prependId="false">
+			<p:panel id="datosPanel"
+				header="Usuario: #{pagoController.nombreUs} ">
+				<h:panelGrid columns="3">
+
+					<h:outputLabel for="cbnumTarjeta" id="lbnumTarjeta">
+						<h5>Numero de tarjeta</h5>
+					</h:outputLabel>
+					<h:selectOneMenu id="cbnumTarjeta"
+						value="#{controllerAvance.tarjetaCredi}" converter="tarjConverter"
+						class="form-control">
+						<p align="right">
+							<f:selectItems value="#{controllerAvance.listnumTarjeta}"
+								var="tar" itemValue="#{tar}" itemLabel="#{tar.numero}" />
+						</p>
+
+					</h:selectOneMenu>
+
+					<br />
+
+
+					<h:outputLabel for="tfCantidad" id="lblSaldo">
+						<h5>Cantidad</h5>
+					</h:outputLabel>
+					<h:inputText id="tfCantidad" value="#{controllerAvance.cantidad}"
+						class="form-control" />
+					<br />
+
+
+					<h:outputLabel for="cbnumCuenta" id="lbnumCuenta">
+						<h5>Numero de Cuenta Ahorros</h5>
+					</h:outputLabel>
+
+					<h:selectOneMenu id="cbnumCuenta"
+						value="#{controllerAvance.cuentaAh}" converter="cuentConverter"
+						class="form-control">
+
+						<f:selectItems value="#{controllerAvance.listaCuentaAhorro}"
+							var="cuen" itemValue="#{cuen}" itemLabel="#{cuen.numero}" />
+
+					</h:selectOneMenu>
+					<br />
+				</h:panelGrid>
+
+				<h:panelGrid id="botonesPanel" columns="2">
+					<p:commandButton id="btnAceptar" value="#{msj['clientes.aceptar']}"
+						action="#{controllerAvance.avance}"
+						process="@this cbnumTarjeta tfCantidad cbnumCuenta datosPanel" />
+
+					<p:commandButton id="btnCancelar"
+						value="#{msj['clientes.cancelar']}" process="@this "
+						update="datosPanel" actionl="#" />
+				</h:panelGrid>
+
+			</p:panel>
+		</h:form>
+	</ui:define>
+
+
+</ui:composition>
