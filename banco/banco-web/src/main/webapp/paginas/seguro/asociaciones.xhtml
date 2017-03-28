@@ -1,0 +1,102 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui" template="/templates/template.xhtml">
+
+	<ui:define name="cuerpo">
+
+		<h:form prependId="false">
+
+			<p:panel id="paneldatosP" header="Datos Asociacion cuenta">
+				<h:panelGrid id="paneldatos" columns="2">
+
+					<h:outputLabel for="tftNumeroId" id="lblNumeroId"
+						value="#{msj['clientes.numeroId']}:"></h:outputLabel>
+					<h:inputText id="tftNumeroId"
+						value="#{asociacionControler.numeroId}"></h:inputText>
+
+
+					<h:outputLabel for="tfTipoDocumento" id="lblTipoDocumento"
+						value="#{msj['clientes.tipoId']}:" />
+					<h:selectOneMenu id="tfTipoDocumento"
+						value="#{asociacionControler.tipoId}">
+
+						<f:selectItem itemValue="cedula" itemLabel="cedula" />
+						<f:selectItem itemValue="pasaporte" itemLabel="pasaporte" />
+
+					</h:selectOneMenu>
+
+					<h:outputLabel for="tftNombreTitular" id="lblNombreTitular"
+						value="#{msj['clientes.nombreTitular']}:"></h:outputLabel>
+					<h:inputText id="tftNombreTitular"
+						value="#{asociacionControler.nombreTitular}"></h:inputText>
+
+
+					<h:outputLabel for="tftBanco" id="lblbanco"
+						value="#{msj['clientes.banco']}:"></h:outputLabel>
+
+					<h:selectOneMenu id="tftBanco"
+						value="#{asociacionControler.bancoNom}" converter="bancoConver">
+
+						<f:selectItems value="#{asociacionControler.listarBanco}"
+							var="ban" itemValue="#{ban}" itemLabel="#{ban.nombre}"></f:selectItems>
+
+					</h:selectOneMenu>
+
+					<h:outputLabel for="tftNumeroCu" id="lblNumeroCu"
+						value="#{msj['clientes.numero']}:"></h:outputLabel>
+					<h:inputText id="tftNumeroCu" value="#{asociacionControler.numero}"></h:inputText>
+
+					<h:outputLabel for="tftNombre" id="lblNombre"
+						value="#{msj['clientes.nombreAs']}:"></h:outputLabel>
+					<h:inputText id="tftNombre" value="#{asociacionControler.nombreAs}"></h:inputText>
+
+				</h:panelGrid>
+
+				<h:panelGrid id="panelbtns" columns="2">
+
+					<p:commandButton id="btnCrear" value="#{msj['clientes.guardar']}"
+						action="#{asociacionControler.crearAs}" process="@this paneldatos"
+						update="panelLista" />
+
+
+					<p:commandButton id="btnCancelar"
+						value="#{msj['clientes.cancelar']}"
+						action="/paginas/seguro/login.xhtml?faces-redirect=true" />
+					<!--process="@this,tfCedula" update="paneldatos"  -->
+
+				</h:panelGrid>
+			</p:panel>
+
+			<p:dataTable id="panelLista"
+				value="#{asociacionControler.asociacionesLis}" var="lisBan"
+				border="1" class="table table-striped">
+
+				<p:column headerText="Nombre">
+					<h:outputLabel value="#{lisBan.nombreAs}" />
+				</p:column>
+
+				<p:column headerText="Nombre Titular">
+					<h:outputLabel value="#{lisBan.nombreTitular}" />
+				</p:column>
+
+				<p:column headerText="Estado">
+					<!-- 	<h:outputLabel value="#{lisBan.nombreTitular}" /> -->
+				</p:column>
+
+				<p:column headerText="Acciones">
+					<h:outputLabel value="#{lisBan.nombreTitular}" />
+				</p:column>
+				
+				
+
+			</p:dataTable>
+
+
+		</h:form>
+
+	</ui:define>
+
+
+</ui:composition>

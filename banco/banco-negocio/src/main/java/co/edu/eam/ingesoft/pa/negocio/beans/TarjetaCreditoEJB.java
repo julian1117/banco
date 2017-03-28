@@ -205,23 +205,7 @@ public class TarjetaCreditoEJB {
 	 * @param cliente
 	 * @return
 	 */
-	@TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
-	public List<Credicart> listTarjetaCliente(Customer cliente) {
+//	@TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
 
-		List<Credicart> listTa = listProductoTarjeta(cliente);
-
-		for (int i = 0; i < listTa.size(); i++) {
-
-				 double saldoDispo =
-					 listTa.get(i).getMonto()-listTa.get(i).getSaldoConsumido();
-			 
-			
-			 listTa.get(i).setMonto(saldoDispo);
-			
-
-		}
-
-		return listTa;
-	}
 
 }

@@ -10,6 +10,8 @@ import javax.inject.Inject;
 import javax.inject.Named;
 import javax.swing.text.DefaultEditorKit.CutAction;
 
+import org.omnifaces.cdi.ViewScoped;
+
 import co.edu.eam.ingesoft.banco.entidades.Credicart;
 import co.edu.eam.ingesoft.banco.entidades.Product;
 import co.edu.eam.ingesoft.banco.entidades.SavingAccount;
@@ -17,7 +19,7 @@ import co.edu.eam.ingesoft.pa.negocio.beans.CuentaAhorrosEJB;
 import co.edu.eam.ingesoft.pa.negocio.beans.TarjetaCreditoEJB;
 
 @Named("inicioController")
-@SessionScoped
+@ViewScoped
 public class InicioControlador implements Serializable{
 	
 	
@@ -39,15 +41,7 @@ public class InicioControlador implements Serializable{
 
 	@PostConstruct
 	public void inicializar(){
-		listaTarjeta = tarjetaEJB.listTarjetaCliente(sesionUs.getUse().getCustomer());
+		listaTarjeta = tarjetaEJB.listProductoTarjeta(sesionUs.getUse().getCustomer());
 	}
-	
-	public void cargarDatosCliente(){
-		
-		
-	}
-	
-	
-	
 
 }
