@@ -109,4 +109,8 @@ public class ControladorAvances implements Serializable{
 		}
 	}
 
+	public String cancelar(){
+		return "../Inicio.xhtml";
+	}
+	
 }

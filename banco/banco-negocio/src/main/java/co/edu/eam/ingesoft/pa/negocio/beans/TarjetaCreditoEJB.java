@@ -11,6 +11,8 @@ import javax.ejb.EJB;
 import javax.ejb.LocalBean;
 import javax.ejb.Remote;
 import javax.ejb.Stateless;
+import javax.ejb.TransactionAttribute;
+import javax.ejb.TransactionAttributeType;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
@@ -203,15 +205,19 @@ public class TarjetaCreditoEJB {
 	 * @param cliente
 	 * @return
 	 */
+	@TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
 	public List<Credicart> listTarjetaCliente(Customer cliente) {
 
 		List<Credicart> listTa = listProductoTarjeta(cliente);
 
 		for (int i = 0; i < listTa.size(); i++) {
 
-			// double saldoInteres =
-			// listTa.get(i).getSaldoConsumido()+(listTa.get(i).getSaldoConsumido()*0.036);
-			// listTa.get(i).setSaldoConsumido(saldoInteres);
+				 double saldoDispo =
+					 listTa.get(i).getMonto()-listTa.get(i).getSaldoConsumido();
+			 
+			
+			 listTa.get(i).setMonto(saldoDispo);
+			
 
 		}
 

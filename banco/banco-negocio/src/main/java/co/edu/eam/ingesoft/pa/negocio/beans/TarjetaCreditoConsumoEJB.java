@@ -25,40 +25,43 @@ public class TarjetaCreditoConsumoEJB {
 
 	@EJB
 	private TarjetaCreditoEJB tarjetaEJB;
-	
+
 	@EJB
 	private CuentaAhorrosEJB cuentaAhorros;
-	
+
 	@EJB
 	private TarjetaCreditoPagoConsumoRemote tarjetaPago;
 
 	/**
 	 * Registrar compras con la tarjeta de credito
-	 * @param consumoTarjeta que recibe
-	 * @param numTarjeta numero de la tarjeta de credito
+	 * 
+	 * @param consumoTarjeta
+	 *            que recibe
+	 * @param numTarjeta
+	 *            numero de la tarjeta de credito
 	 */
-	public void registrarConsumo(CreditcardConsume consumoTarjeta, String numTarjeta,TipoConsumo tipoConsumo) {
+	public void registrarConsumo(CreditcardConsume consumoTarjeta, String numTarjeta, TipoConsumo tipoConsumo) {
 
 		Credicart tarjeta = tarjetaEJB.buscarTarjetaCRedito(numTarjeta);
 
 		if (tarjeta != null) {
 			if (consumoTarjeta.getNumber_shares() < 25) {
-				if (tarjeta.getMonto()>=consumoTarjeta.getAmmount()) {
-					
-					if(tipoConsumo==TipoConsumo.AVANCE){
-						consumoTarjeta.setNumber_shares(24);						
+				if (tarjeta.getMonto() >= consumoTarjeta.getAmmount()) {
+
+					if (tipoConsumo == TipoConsumo.AVANCE) {
+						consumoTarjeta.setNumber_shares(24);
 					}
-					double suma =  tarjeta.getSaldoConsumido()+consumoTarjeta.getAmmount();
+					double suma = tarjeta.getSaldoConsumido() + consumoTarjeta.getAmmount();
 					consumoTarjeta.setCreditcard_number(tarjeta);
 					consumoTarjeta.setDate_consume(tarjetaEJB.generarFechaActual());
 					consumoTarjeta.setInterest(0.036);
-					consumoTarjeta.setRemaining_ammount(consumoTarjeta.getAmmount());					
+					consumoTarjeta.setRemaining_ammount(consumoTarjeta.getAmmount());
 					consumoTarjeta.setCuotaRestante(consumoTarjeta.getNumber_shares());
-					
+
 					tarjeta.setSaldoConsumido(suma);
 					em.merge(tarjeta);
 					em.persist(consumoTarjeta);
-					
+
 				} else {
 					throw new ExcepcionNegocio("La compra es mayor al saldo disponible");
 				}
@@ -86,47 +89,49 @@ public class TarjetaCreditoConsumoEJB {
 
 		return total;
 	}
-	
-	public CreditcardConsume BuscarConsumo(int consumo){
+
+	public CreditcardConsume BuscarConsumo(int consumo) {
 		return em.find(CreditcardConsume.class, consumo);
 	}
 
 	/**
 	 * Realizar avance de una tarjeta de credito a una cuenta de ahorros
+	 * 
 	 * @param numero
 	 * @param cantidad
 	 */
 	public void avanceCuentaAhorro(String numeroT, double cantidad, String numeroCuentaAh) {
 		Credicart tarjeta = tarjetaEJB.buscarTarjetaCRedito(numeroT);
-		SavingAccount cuentaAh =  cuentaAhorros.buscarCuentaAhorro(numeroCuentaAh);
-		
-		double montoMaximo = (tarjeta.getMonto() * 0.3) + tarjeta.getMonto();
+		SavingAccount cuentaAh = cuentaAhorros.buscarCuentaAhorro(numeroCuentaAh);
+
+		double montoMaximo = tarjeta.getMonto() * 0.3;
+		double disponible = tarjeta.getMonto() - tarjeta.getSaldoConsumido();
 
 		CreditcardConsume consumoTarjeta = new CreditcardConsume();
-		
-		if (cantidad <= montoMaximo) {
-			
-			consumoTarjeta.setNumber_shares(24);			
-			double suma =  tarjeta.getSaldoConsumido()+cantidad;
-			double sumarCuentaAh = cuentaAh.getAmmount()+cantidad;
+
+		if (cantidad <= montoMaximo && cantidad <= disponible) {
+
+			consumoTarjeta.setNumber_shares(24);
+			double suma = tarjeta.getSaldoConsumido() + cantidad;
+			double sumarCuentaAh = cuentaAh.getAmmount() + cantidad;
 			consumoTarjeta.setCreditcard_number(tarjeta);
 			consumoTarjeta.setDate_consume(tarjetaEJB.generarFechaActual());
 			consumoTarjeta.setInterest(0.036);
 			consumoTarjeta.setRemaining_ammount(cantidad);
 			consumoTarjeta.setAmmount(cantidad);
 			consumoTarjeta.setCuotaRestante(consumoTarjeta.getNumber_shares());
-			
+
 			tarjeta.setSaldoConsumido(suma);
-			
+
 			cuentaAh.setAmmount(sumarCuentaAh);
-			
-			em.merge(tarjeta);
-			em.persist(consumoTarjeta);
-			em.merge(cuentaAh);
-			
+
+			 em.merge(tarjeta);
+			 em.persist(consumoTarjeta);
+			 em.merge(cuentaAh);
+
 		} else {
 			throw new ExcepcionNegocio("La cantidad es mayor a lo permitido: su maximo es de: " + montoMaximo);
 		}
 	}
-	
+
 }
