@@ -21,9 +21,21 @@
 							listener="#{pagoController.buscarCuentaA}" />
 					</h:selectOneMenu>
 					
+					<h:outputLabel for="cbCuentaDes" id="lbCuentaDes">
+						<h5>Cuenta destino</h5>
+					</h:outputLabel>
+					<h:selectOneMenu id="cbCuentaDes"
+						value="#{asociacionControler.asociacion}" converter="asociacionConvertidor"
+						class="form-control">
+						<f:selectItems value="#{asociacionControler.asociacionesLis}"
+							var="asoc" itemValue="#{asoc}" itemLabel="#{asoc.nombreAs}" />
+						
+					</h:selectOneMenu>
 					
-					
-					
+					<h:outputLabel for="tfMonto" id="lblMonto" value="#{msj['clientes.monto']}:"/>						
+					<h:inputText id="tfMonto" value="#{interBancariaController.monto}"
+						class="form-control" />
+					<p:message for="tfMonto" />
 					
 					
 				</h:panelGrid>
