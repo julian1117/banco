@@ -73,7 +73,7 @@ public class AsociacionCuentaController implements Serializable{
 					sesionController.getUse().getCustomer().getTipoIdentificacion());
 			if(busCliente!=null){
 				if(bancoNom!=null){
-					AsociacionCuentas asociacionCuenta = new AsociacionCuentas(numeroId, tipoId, nombreTitular, bancoNom, numero, nombreAs,true,busCliente);
+					AsociacionCuentas asociacionCuenta = new AsociacionCuentas(numeroId, tipoId, nombreTitular, bancoNom, numero, nombreAs,false,busCliente);
 					asociacionEJB.crearAsociacion(asociacionCuenta);
 					asociacionesLis = asociacionEJB.listarAsociaciones(busCliente);
 					
