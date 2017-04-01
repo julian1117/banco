@@ -800,6 +800,8 @@ public class VentanaPrincipal extends javax.swing.JFrame {
 			controladorCliente.crearTransaccion(trans, jTFNumCuenta.getText(),jTFCuentaTransferrir.getText());
 			JOptionPane.showMessageDialog(null, "Transaccion registrada con exito");
 
+			
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 			JOptionPane.showMessageDialog(null, e.getMessage());

@@ -1,8 +1,6 @@
-																																																																																																																																																																																						package co.edu.eam.ingesoft.pa.negocio.beans;
+	
+package co.edu.eam.ingesoft.pa.negocio.beans;
 
-import java.io.Serializable;
-
-import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
 import javax.xml.ws.BindingProvider;
 
@@ -10,39 +8,55 @@ import co.edu.eam.pa.clientews.Mail;
 import co.edu.eam.pa.clientews.Notificaciones;
 import co.edu.eam.pa.clientews.NotificacionesService;
 import co.edu.eam.pa.clientews.RespuestaNotificacion;
+import co.edu.eam.pa.clientews.Sms;
 
-@Stateless	
-public class NotificacionesEJB{
-	
+@Stateless
+public class NotificacionesEJB {
+
 	NotificacionesService cliente = new NotificacionesService();
-	Notificaciones servicio = cliente.getNotificacionesPort();
+	Notificaciones servicio=cliente.getNotificacionesPort();
 	
-	public void correoMensajes(String mensaje, String mail, String from,String asunto){
+	/**
+	 * Evio de mensajes por correo electronico
+	 * @param remitente
+	 * @param msj
+	 * @param para
+	 * @param asunto
+	 */
+	public void correoELectronico(String remitente,String msj,String para,String asunto){
+		
 		String endpointURL = "http://104.197.238.134:8080/notificaciones/notificacionesService";
 		BindingProvider bp = (BindingProvider)servicio;
 		bp.getRequestContext().put(BindingProvider.ENDPOINT_ADDRESS_PROPERTY, endpointURL);
 		
 		Mail correo = new Mail();
-		correo.setBody(mensaje);
-		correo.setTo(mail);
-		correo.setFrom(from);
+		correo.setBody(msj);
+		correo.setFrom(remitente);
+		correo.setTo(para);
 		correo.setSubject(asunto);
 		
-		RespuestaNotificacion res = servicio.enviarMail(correo);
-		System.out.println(res.getMensaje());
+		RespuestaNotificacion resp = servicio.enviarMail(correo);
+		System.out.println(resp.getMensaje());
+	
 	}
 	
-	
-	public void mensajeTexto(){
-		
+	/**
+	 * Envio de mensajes de texto
+	 * @param para
+	 * @param text
+	 */
+	public void mensaje(String para,String text){
 		String endpointURL = "http://104.197.238.134:8080/notificaciones/notificacionesService";
 		BindingProvider bp = (BindingProvider)servicio;
 		bp.getRequestContext().put(BindingProvider.ENDPOINT_ADDRESS_PROPERTY, endpointURL);
 		
+		Sms mesj = new Sms();
+		mesj.setTo(para);
+		mesj.setTexto(text);
+		
+		RespuestaNotificacion resp = servicio.enviarSMS(mesj);
+		System.out.println(resp.getMensaje());
 	}
-	
-	
-	
 	
 
 }
