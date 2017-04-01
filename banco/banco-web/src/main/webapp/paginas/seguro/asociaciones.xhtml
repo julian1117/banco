@@ -87,8 +87,15 @@
 				</p:column>
 
 				<p:column headerText="Acciones">
-					<h:outputLabel value="#{lisBan.nombreTitular}" />
+					<p:commandButton action="#{asociacionControler.eliminar(lisBan)}"
+						process="@this" value="Quitar" update="panelLista" />
+						
+						<p:commandButton action="#{lisBan.nombreTitular}"
+						process="@this" value="Verificar" update="panelLista" />
+						
+						
 				</p:column>
+				
 				
 				
 

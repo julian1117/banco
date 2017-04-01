@@ -86,7 +86,10 @@ public class AsociacionCuentaController implements Serializable {
 		}
 	}
 	
-	
+	public void eliminar(AsociacionCuentas asoci){
+		asociacionEJB.eliminarAsociacion(asoci);
+		asociacionesLis = asociacionEJB.listarAsociaciones(sesionController.getUse().getCustomer());
+	}
 	
 	public String getNumeroId() {
 		return numeroId;
