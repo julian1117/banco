@@ -39,6 +39,13 @@ public class Customer implements Serializable{
 	@Column(name="identification_number")
 	private String numeroIndentificacion;
 	
+	@Column(name="numero_telefono")
+	private String numeroTelefono;
+	
+	@Column(name="correo_electronico")
+	private String correoELectronico;
+	
+	
 	@OneToMany(fetch=FetchType.LAZY,cascade={},mappedBy="holder")
 	private List<Product> producto;
 	

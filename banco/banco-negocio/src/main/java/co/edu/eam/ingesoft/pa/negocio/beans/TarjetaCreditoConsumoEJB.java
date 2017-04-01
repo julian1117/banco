@@ -31,6 +31,9 @@ public class TarjetaCreditoConsumoEJB {
 
 	@EJB
 	private TarjetaCreditoPagoConsumoRemote tarjetaPago;
+	
+	@EJB
+	private NotificacionesEJB notificacion;
 
 	/**
 	 * Registrar compras con la tarjeta de credito
@@ -61,6 +64,8 @@ public class TarjetaCreditoConsumoEJB {
 					tarjeta.setSaldoConsumido(suma);
 					em.merge(tarjeta);
 					em.persist(consumoTarjeta);
+					
+				//	notificacion.mensaje(para, text);
 
 				} else {
 					throw new ExcepcionNegocio("La compra es mayor al saldo disponible");
