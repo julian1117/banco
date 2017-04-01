@@ -65,7 +65,7 @@ public class TarjetaCreditoConsumoEJB {
 					em.merge(tarjeta);
 					em.persist(consumoTarjeta);
 					
-				//	notificacion.mensaje(para, text);
+					notificacion.mensaje(tarjeta.getHolder().getNumeroTelefono(),"Se realizo un consumo por: "+consumoTarjeta.getAmmount());
 
 				} else {
 					throw new ExcepcionNegocio("La compra es mayor al saldo disponible");

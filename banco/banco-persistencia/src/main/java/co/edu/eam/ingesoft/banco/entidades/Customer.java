@@ -119,6 +119,30 @@ public class Customer implements Serializable{
 
 
 
+	public String getNumeroTelefono() {
+		return numeroTelefono;
+	}
+
+
+
+	public void setNumeroTelefono(String numeroTelefono) {
+		this.numeroTelefono = numeroTelefono;
+	}
+
+
+
+	public String getCorreoELectronico() {
+		return correoELectronico;
+	}
+
+
+
+	public void setCorreoELectronico(String correoELectronico) {
+		this.correoELectronico = correoELectronico;
+	}
+
+
+
 	public void setProducto(List<Product> producto) {
 		this.producto = producto;
 	}
