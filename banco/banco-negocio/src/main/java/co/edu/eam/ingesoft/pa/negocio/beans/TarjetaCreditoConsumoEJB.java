@@ -31,7 +31,7 @@ public class TarjetaCreditoConsumoEJB {
 
 	@EJB
 	private TarjetaCreditoPagoConsumoRemote tarjetaPago;
-	
+
 	@EJB
 	private NotificacionesEJB notificacion;
 
@@ -64,8 +64,14 @@ public class TarjetaCreditoConsumoEJB {
 					tarjeta.setSaldoConsumido(suma);
 					em.merge(tarjeta);
 					em.persist(consumoTarjeta);
+
+					//notificacion.mensaje(tarjeta.getHolder().getNumeroTelefono(), "Se realizo un consumo por: $"
+					//		+ consumoTarjeta.getAmmount() + ", # tarjeta " + tarjeta.getNumero());
 					
-					notificacion.mensaje(tarjeta.getHolder().getNumeroTelefono(),"Se realizo un consumo por: "+consumoTarjeta.getAmmount());
+					notificacion.correoELectronico("NO REPLY - Banco Amenia",
+							"Se realizo un consumo por: $" + consumoTarjeta.getAmmount() + ", # tarjeta "
+									+ tarjeta.getNumero(),
+							tarjeta.getHolder().getCorreoELectronico(), "Cosumo de tarjeta");
 
 				} else {
 					throw new ExcepcionNegocio("La compra es mayor al saldo disponible");
@@ -130,9 +136,9 @@ public class TarjetaCreditoConsumoEJB {
 
 			cuentaAh.setAmmount(sumarCuentaAh);
 
-			 em.merge(tarjeta);
-			 em.persist(consumoTarjeta);
-			 em.merge(cuentaAh);
+			em.merge(tarjeta);
+			em.persist(consumoTarjeta);
+			em.merge(cuentaAh);
 
 		} else {
 			throw new ExcepcionNegocio("La cantidad es mayor a lo permitido: su maximo es de: " + montoMaximo);

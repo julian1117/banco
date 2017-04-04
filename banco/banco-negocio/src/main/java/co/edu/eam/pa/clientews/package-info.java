@@ -1,2 +1,2 @@
-@javax.xml.bind.annotation.XmlSchema(namespace = "http://www.eam.edu.co/notificaciones")
+@javax.xml.bind.annotation.XmlSchema(namespace = "http://www.eam.edu.co/interbancario")
 package co.edu.eam.pa.clientews;

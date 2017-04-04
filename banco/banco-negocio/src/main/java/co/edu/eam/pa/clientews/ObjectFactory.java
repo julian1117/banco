@@ -24,10 +24,12 @@ import javax.xml.namespace.QName;
 @XmlRegistry
 public class ObjectFactory {
 
-    private final static QName _EnviarSMS_QNAME = new QName("http://www.eam.edu.co/notificaciones", "enviarSMS");
-    private final static QName _EnviarSMSResponse_QNAME = new QName("http://www.eam.edu.co/notificaciones", "enviarSMSResponse");
-    private final static QName _EnviarMail_QNAME = new QName("http://www.eam.edu.co/notificaciones", "enviarMail");
-    private final static QName _EnviarMailResponse_QNAME = new QName("http://www.eam.edu.co/notificaciones", "enviarMailResponse");
+    private final static QName _TransferirMonto_QNAME = new QName("http://www.eam.edu.co/interbancario", "transferirMonto");
+    private final static QName _ListarBancos_QNAME = new QName("http://www.eam.edu.co/interbancario", "listarBancos");
+    private final static QName _RegistrarCuentaAsociadaResponse_QNAME = new QName("http://www.eam.edu.co/interbancario", "registrarCuentaAsociadaResponse");
+    private final static QName _TransferirMontoResponse_QNAME = new QName("http://www.eam.edu.co/interbancario", "transferirMontoResponse");
+    private final static QName _ListarBancosResponse_QNAME = new QName("http://www.eam.edu.co/interbancario", "listarBancosResponse");
+    private final static QName _RegistrarCuentaAsociada_QNAME = new QName("http://www.eam.edu.co/interbancario", "registrarCuentaAsociada");
 
     /**
      * Create a new ObjectFactory that can be used to create new instances of schema derived classes for package: co.edu.eam.pa.clientews
@@ -37,95 +39,121 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link EnviarSMSResponse }
+     * Create an instance of {@link RegistrarCuentaAsociadaResponse }
      * 
      */
-    public EnviarSMSResponse createEnviarSMSResponse() {
-        return new EnviarSMSResponse();
+    public RegistrarCuentaAsociadaResponse createRegistrarCuentaAsociadaResponse() {
+        return new RegistrarCuentaAsociadaResponse();
     }
 
     /**
-     * Create an instance of {@link EnviarSMS }
+     * Create an instance of {@link TransferirMontoResponse }
      * 
      */
-    public EnviarSMS createEnviarSMS() {
-        return new EnviarSMS();
+    public TransferirMontoResponse createTransferirMontoResponse() {
+        return new TransferirMontoResponse();
     }
 
     /**
-     * Create an instance of {@link EnviarMailResponse }
+     * Create an instance of {@link TransferirMonto }
      * 
      */
-    public EnviarMailResponse createEnviarMailResponse() {
-        return new EnviarMailResponse();
+    public TransferirMonto createTransferirMonto() {
+        return new TransferirMonto();
     }
 
     /**
-     * Create an instance of {@link EnviarMail }
+     * Create an instance of {@link ListarBancos }
      * 
      */
-    public EnviarMail createEnviarMail() {
-        return new EnviarMail();
+    public ListarBancos createListarBancos() {
+        return new ListarBancos();
     }
 
     /**
-     * Create an instance of {@link Mail }
+     * Create an instance of {@link ListarBancosResponse }
      * 
      */
-    public Mail createMail() {
-        return new Mail();
+    public ListarBancosResponse createListarBancosResponse() {
+        return new ListarBancosResponse();
     }
 
     /**
-     * Create an instance of {@link Sms }
+     * Create an instance of {@link RegistrarCuentaAsociada }
      * 
      */
-    public Sms createSms() {
-        return new Sms();
+    public RegistrarCuentaAsociada createRegistrarCuentaAsociada() {
+        return new RegistrarCuentaAsociada();
     }
 
     /**
-     * Create an instance of {@link RespuestaNotificacion }
+     * Create an instance of {@link RespuestaServicio }
      * 
      */
-    public RespuestaNotificacion createRespuestaNotificacion() {
-        return new RespuestaNotificacion();
+    public RespuestaServicio createRespuestaServicio() {
+        return new RespuestaServicio();
     }
 
     /**
-     * Create an instance of {@link JAXBElement }{@code <}{@link EnviarSMS }{@code >}}
+     * Create an instance of {@link Banco }
      * 
      */
-    @XmlElementDecl(namespace = "http://www.eam.edu.co/notificaciones", name = "enviarSMS")
-    public JAXBElement<EnviarSMS> createEnviarSMS(EnviarSMS value) {
-        return new JAXBElement<EnviarSMS>(_EnviarSMS_QNAME, EnviarSMS.class, null, value);
+    public Banco createBanco() {
+        return new Banco();
     }
 
     /**
-     * Create an instance of {@link JAXBElement }{@code <}{@link EnviarSMSResponse }{@code >}}
+     * Create an instance of {@link JAXBElement }{@code <}{@link TransferirMonto }{@code >}}
      * 
      */
-    @XmlElementDecl(namespace = "http://www.eam.edu.co/notificaciones", name = "enviarSMSResponse")
-    public JAXBElement<EnviarSMSResponse> createEnviarSMSResponse(EnviarSMSResponse value) {
-        return new JAXBElement<EnviarSMSResponse>(_EnviarSMSResponse_QNAME, EnviarSMSResponse.class, null, value);
+    @XmlElementDecl(namespace = "http://www.eam.edu.co/interbancario", name = "transferirMonto")
+    public JAXBElement<TransferirMonto> createTransferirMonto(TransferirMonto value) {
+        return new JAXBElement<TransferirMonto>(_TransferirMonto_QNAME, TransferirMonto.class, null, value);
     }
 
     /**
-     * Create an instance of {@link JAXBElement }{@code <}{@link EnviarMail }{@code >}}
+     * Create an instance of {@link JAXBElement }{@code <}{@link ListarBancos }{@code >}}
      * 
      */
-    @XmlElementDecl(namespace = "http://www.eam.edu.co/notificaciones", name = "enviarMail")
-    public JAXBElement<EnviarMail> createEnviarMail(EnviarMail value) {
-        return new JAXBElement<EnviarMail>(_EnviarMail_QNAME, EnviarMail.class, null, value);
+    @XmlElementDecl(namespace = "http://www.eam.edu.co/interbancario", name = "listarBancos")
+    public JAXBElement<ListarBancos> createListarBancos(ListarBancos value) {
+        return new JAXBElement<ListarBancos>(_ListarBancos_QNAME, ListarBancos.class, null, value);
     }
 
     /**
-     * Create an instance of {@link JAXBElement }{@code <}{@link EnviarMailResponse }{@code >}}
+     * Create an instance of {@link JAXBElement }{@code <}{@link RegistrarCuentaAsociadaResponse }{@code >}}
      * 
      */
-    @XmlElementDecl(namespace = "http://www.eam.edu.co/notificaciones", name = "enviarMailResponse")
-    public JAXBElement<EnviarMailResponse> createEnviarMailResponse(EnviarMailResponse value) {
-        return new JAXBElement<EnviarMailResponse>(_EnviarMailResponse_QNAME, EnviarMailResponse.class, null, value);
+    @XmlElementDecl(namespace = "http://www.eam.edu.co/interbancario", name = "registrarCuentaAsociadaResponse")
+    public JAXBElement<RegistrarCuentaAsociadaResponse> createRegistrarCuentaAsociadaResponse(RegistrarCuentaAsociadaResponse value) {
+        return new JAXBElement<RegistrarCuentaAsociadaResponse>(_RegistrarCuentaAsociadaResponse_QNAME, RegistrarCuentaAsociadaResponse.class, null, value);
+    }
+
+    /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link TransferirMontoResponse }{@code >}}
+     * 
+     */
+    @XmlElementDecl(namespace = "http://www.eam.edu.co/interbancario", name = "transferirMontoResponse")
+    public JAXBElement<TransferirMontoResponse> createTransferirMontoResponse(TransferirMontoResponse value) {
+        return new JAXBElement<TransferirMontoResponse>(_TransferirMontoResponse_QNAME, TransferirMontoResponse.class, null, value);
+    }
+
+    /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link ListarBancosResponse }{@code >}}
+     * 
+     */
+    @XmlElementDecl(namespace = "http://www.eam.edu.co/interbancario", name = "listarBancosResponse")
+    public JAXBElement<ListarBancosResponse> createListarBancosResponse(ListarBancosResponse value) {
+        return new JAXBElement<ListarBancosResponse>(_ListarBancosResponse_QNAME, ListarBancosResponse.class, null, value);
+    }
+
+    /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link RegistrarCuentaAsociada }{@code >}}
+     * 
+     */
+    @XmlElementDecl(namespace = "http://www.eam.edu.co/interbancario", name = "registrarCuentaAsociada")
+    public JAXBElement<RegistrarCuentaAsociada> createRegistrarCuentaAsociada(RegistrarCuentaAsociada value) {
+        return new JAXBElement<RegistrarCuentaAsociada>(_RegistrarCuentaAsociada_QNAME, RegistrarCuentaAsociada.class, null, value);
     }
 
 }
