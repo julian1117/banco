@@ -1,3 +1,4 @@
+	
 package co.edu.eam.ingesoft.pa.negocio.beans;
 
 import javax.ejb.Stateless;
