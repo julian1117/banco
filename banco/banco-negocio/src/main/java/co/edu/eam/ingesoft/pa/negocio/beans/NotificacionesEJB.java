@@ -23,7 +23,7 @@ public class NotificacionesEJB {
 	 * @param para
 	 * @param asunto
 	 */
-	public void correoELectronico(String remitente,String msj,String para,String asunto){
+	public void correoELectronico(String msj,String para,String asunto){
 		
 		String endpointURL = "http://104.197.238.134:8080/notificaciones/notificacionesService";
 		BindingProvider bp = (BindingProvider)servicio;
@@ -31,7 +31,7 @@ public class NotificacionesEJB {
 		
 		Mail correo = new Mail();
 		correo.setBody(msj);
-		correo.setFrom(remitente);
+		correo.setFrom("noreply@gmail.com");
 		correo.setTo(para);
 		correo.setSubject(asunto);
 		
