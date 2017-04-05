@@ -61,7 +61,7 @@
 				<groupId>org.wildfly.plugins</groupId>
 				<artifactId>wildfly-maven-plugin</artifactId>
 				<configuration>
-					<filename>${project.artifactId}.ear</filename>
+					<filename>banco1.ear</filename>
 					<skip>false</skip>
 					<hostname>localhost</hostname>
 					<port>9992</port>
