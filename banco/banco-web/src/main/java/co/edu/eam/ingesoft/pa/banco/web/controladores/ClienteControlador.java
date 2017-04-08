@@ -80,7 +80,7 @@ public class ClienteControlador implements Serializable {
 	public void creCliente() {
 		try {
 
-			Customer Client = new Customer(nombre, apellido, tipoDocumento, cedula,null,null);
+			Customer Client = new Customer(nombre, apellido, tipoDocumento, cedula);
 			clienteEJB.crearCLiente(Client);
 			nombre = "";
 			apellido = "";

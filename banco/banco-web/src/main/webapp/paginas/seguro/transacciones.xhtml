@@ -7,37 +7,53 @@
 	<ui:define name="cuerpo">
 		<h:form prependId="false">
 			<p:panel id="paneldatosP" header="Transacciones">
-				<h:panelGrid id="paneldatos" columns="2">
+				<h:panelGrid id="paneldatos" columns="3">
 
 					<h:outputLabel for="cbnumCuenta" id="lbnumCuenta">
-						<h5>Numero de Cuenta Ahorros</h5>
+						<h5>Cuen De Ahorros</h5>
 					</h:outputLabel>
 					<h:selectOneMenu id="cbnumCuenta"
-						value="#{pagoController.cuentaAhorros}" converter="cuentConverter"
-						class="form-control">
+						value="#{interBancariaController.cuentaAhorros}"
+						converter="cuentConverter" class="form-control">
 						<f:selectItems value="#{pagoController.listCuentaAhorros}"
 							var="cuen" itemValue="#{cuen}" itemLabel="#{cuen.numero}" />
 						<f:ajax event="change" execute="@this"
 							listener="#{pagoController.buscarCuentaA}" />
 					</h:selectOneMenu>
-					
+					<br></br>
 					<h:outputLabel for="cbCuentaDes" id="lbCuentaDes">
 						<h5>Cuenta destino</h5>
 					</h:outputLabel>
 					<h:selectOneMenu id="cbCuentaDes"
-						value="#{asociacionControler.asociacion}" converter="asociacionConvertidor"
-						class="form-control">
+						value="#{interBancariaController.asociacion}"
+						converter="asociacionConvertidor" class="form-control">
 						<f:selectItems value="#{asociacionControler.asociacionesLis}"
 							var="asoc" itemValue="#{asoc}" itemLabel="#{asoc.nombreAs}" />
-						
+
 					</h:selectOneMenu>
-					
-					<h:outputLabel for="tfMonto" id="lblMonto" value="#{msj['clientes.monto']}:"/>						
+					<br></br>
+					<h:outputLabel for="tfMonto" id="lblMonto"
+						value="#{msj['clientes.monto']}:" />
 					<h:inputText id="tfMonto" value="#{interBancariaController.monto}"
 						class="form-control" />
-					<p:message for="tfMonto" />
+
+					<br></br>
 					
-					
+					<h:outputLabel for="fValidar" id="lblValidar"
+						value="#{msj['clietnes.validar']}:" />
+					<h:inputText id="fValidar" value="#{interBancariaController.monto}"
+						class="form-control" />
+
+					<p:commandButton id="btnClave" value="#{msj['clientes.clave']}"
+						action="#{interBancariaController.validarTranferencia}" process="@this " />
+
+
+					<h:panelGrid id="botonesPanel" columns="2">
+						<p:commandButton id="btnTransferir" value="Transferir" action="#"
+							process="@this" update="paneldatosP" />
+
+					</h:panelGrid>
+
 				</h:panelGrid>
 			</p:panel>
 		</h:form>

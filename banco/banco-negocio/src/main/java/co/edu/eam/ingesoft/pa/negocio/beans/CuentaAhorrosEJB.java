@@ -18,6 +18,8 @@ import co.edu.eam.ingesoft.banco.entidades.Credicart;
 import co.edu.eam.ingesoft.banco.entidades.Customer;
 import co.edu.eam.ingesoft.banco.entidades.Product;
 import co.edu.eam.ingesoft.banco.entidades.SavingAccount;
+import co.edu.eam.ingesoft.banco.entidades.Usuario;
+import co.edu.eam.ingesoft.banco.entidades.Verificacion;
 import co.edu.eam.ingesoft.pa.negocio.beans.remote.ICuentaAhorrosRemote;
 import co.edu.eam.ingesoft.pa.negocio.excepciones.ExcepcionNegocio;
 
@@ -32,6 +34,9 @@ public class CuentaAhorrosEJB {
 	@EJB
 	private ClienteEJB clienteEjb;
 
+	@EJB
+	private NotificacionesEJB notificaiconEjb;
+	
 	/**
 	 * Crea cuenta de ahorros
 	 * 
@@ -141,6 +146,21 @@ public class CuentaAhorrosEJB {
 		} else {
 			return false;
 		}
+	}
+	
+	public void validarTransaaccion(Usuario use){
+		
+		//BUcar usuario
+		
+		long aleatorio = ThreadLocalRandom.current().nextLong((900000L) + 100000L);
+		notificaiconEjb.mensajeValidar(use.getCustomer().getNumeroTelefono(), "Codigo de validacion: " +aleatorio);
+		Verificacion very = new Verificacion();
+		very.setCodigo(aleatorio);
+		very.setFecha(generarFechaActual());
+		very.setUsuario(use);
+		
+		em.persist(very);		
+		
 	}
 	
 }

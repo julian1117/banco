@@ -58,5 +58,26 @@ public class NotificacionesEJB {
 		System.out.println(resp.getMensaje());
 	}
 	
+	/**
+	 * Validar transaccion
+	 * @param para
+	 * @param text
+	 */
+	public void mensajeValidar(String para,String text){
+		String endpointURL = "http://104.197.238.134:8080/notificaciones/notificacionesService";
+		BindingProvider bp = (BindingProvider)servicio;
+		bp.getRequestContext().put(BindingProvider.ENDPOINT_ADDRESS_PROPERTY, endpointURL);
+		
+		Sms mesj = new Sms();
+		mesj.setTo(para);
+		mesj.setTexto(text);
+		
+		RespuestaNotificacion resp = servicio.enviarSMS(mesj);
+		System.out.println(resp.getMensaje());
+	}
+	
+	
+	
+	
 
 }

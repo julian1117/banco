@@ -53,15 +53,13 @@ public class Customer implements Serializable{
 		super();
 	}
 
-	public Customer(String name, String lastName, String tipoIdentificacion, String numeroIndentificacion,
-			String numeroTelefono, String correoELectronico) {
+	public Customer(String name, String lastName, String tipoIdentificacion, String numeroIndentificacion) {
 		super();
 		this.name = name;
 		this.lastName = lastName;
 		this.tipoIdentificacion = tipoIdentificacion;
 		this.numeroIndentificacion = numeroIndentificacion;
-		this.numeroTelefono = numeroTelefono;
-		this.correoELectronico = correoELectronico;
+	
 	}
 
 
