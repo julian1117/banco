@@ -37,6 +37,9 @@ public class CuentaAhorrosEJB {
 	@EJB
 	private NotificacionesEJB notificaiconEjb;
 	
+	@EJB
+	private SeguridadEJB usuarioEjb;
+	
 	/**
 	 * Crea cuenta de ahorros
 	 * 
@@ -151,13 +154,16 @@ public class CuentaAhorrosEJB {
 	public void validarTransaaccion(Usuario use){
 		
 		//BUcar usuario
+		Usuario usuarioBuscado = usuarioEjb.buscarUs(use.getUsuario());
 		
 		long aleatorio = ThreadLocalRandom.current().nextLong((900000L) + 100000L);
-		notificaiconEjb.mensajeValidar(use.getCustomer().getNumeroTelefono(), "Codigo de validacion: " +aleatorio);
+		//notificaiconEjb.mensajeValidar(use.getCustomer().getNumeroTelefono(), "Codigo de validacion: " +aleatorio);
+		notificaiconEjb.correoValidar("Codigo de validacion: " +aleatorio, use.getCustomer().getCorreoELectronico(), "Validacion de transferencia");
+		
 		Verificacion very = new Verificacion();
 		very.setCodigo(aleatorio);
 		very.setFecha(generarFechaActual());
-		very.setUsuario(use);
+		very.setUsuario(usuarioBuscado);
 		
 		em.persist(very);		
 		

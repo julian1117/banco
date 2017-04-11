@@ -27,5 +27,10 @@ public class SeguridadEJB {
 		}
 	}
 	
+	
+	public Usuario buscarUs (String nombreUs){
+		return em.find(Usuario.class, nombreUs);		
+	}
+	
 
 }
