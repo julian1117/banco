@@ -12,6 +12,10 @@ import co.edu.eam.ingesoft.banco.entidades.AsociacionCuentas;
 import co.edu.eam.ingesoft.banco.entidades.Banco;
 import co.edu.eam.ingesoft.banco.entidades.Customer;
 import co.edu.eam.ingesoft.pa.negocio.excepciones.ExcepcionNegocio;
+import co.edu.eam.pa.clientews.InterbancarioWS;
+import co.edu.eam.pa.clientews.InterbancarioWS_Service;
+import co.edu.eam.pa.clientews.RegistrarCuentaAsociada;
+import co.edu.eam.pa.clientews.RegistrarCuentaAsociadaResponse;
 
 @Stateless
 @LocalBean
@@ -19,6 +23,9 @@ public class AsociacionEJB {
 	
 	@PersistenceContext
 	private EntityManager em;
+	
+	InterbancarioWS_Service cliente = new InterbancarioWS_Service();
+	InterbancarioWS  servicios = cliente.getInterbancarioWSPort();
 	
 	public void crearAsociacion(AsociacionCuentas asoci){
 		AsociacionCuentas aso = buscarAsociacion(asoci.getNumero());
