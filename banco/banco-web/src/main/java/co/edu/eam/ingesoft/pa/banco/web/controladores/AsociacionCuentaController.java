@@ -80,9 +80,8 @@ public class AsociacionCuentaController implements Serializable {
 			
 			
 			if (busCliente != null) {
-				if(busCliente.getTipoIdentificacion() == "cedula"){
-					TipoDocumentoEnum cedu = TipoDocumentoEnum.CC;
-					tipoId = cedu.toString();
+				if(busCliente.getTipoIdentificacion().equals("CC")){
+					tipoId = "cedula";
 				
 				if (bancoNom != null) {
 					AsociacionCuentas asociacionCuenta = new AsociacionCuentas(numeroId, tipoId, nombreTitular,
