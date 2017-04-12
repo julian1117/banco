@@ -15,8 +15,12 @@ import org.omnifaces.cdi.ViewScoped;
 import co.edu.eam.ingesoft.banco.entidades.AsociacionCuentas;
 import co.edu.eam.ingesoft.banco.entidades.Banco;
 import co.edu.eam.ingesoft.banco.entidades.Customer;
+import co.edu.eam.ingesoft.banco.entidades.Verificacion;
 import co.edu.eam.ingesoft.pa.negocio.beans.AsociacionEJB;
 import co.edu.eam.ingesoft.pa.negocio.beans.ClienteEJB;
+import co.edu.eam.ingesoft.pa.negocio.beans.VerificarEJB;
+import co.edu.eam.pa.clientews.RespuestaServicio;
+import co.edu.eam.pa.clientews.TipoDocumentoEnum;
 
 @Named("asociacionControler")
 @ViewScoped
@@ -34,7 +38,7 @@ public class AsociacionCuentaController implements Serializable {
 
 	private String nombreAs;
 
-	private boolean verificado;
+	private String verificado;
 
 	private Customer cliente;
 
@@ -43,6 +47,8 @@ public class AsociacionCuentaController implements Serializable {
 	private List<AsociacionCuentas> asociacionesLis;
 
 	private List<Banco> listarBanco;
+	
+	private RespuestaServicio resServicio;
 
 	@Inject
 	private SessionController sesionController;
@@ -52,6 +58,9 @@ public class AsociacionCuentaController implements Serializable {
 
 	@EJB
 	private AsociacionEJB asociacionEJB;
+	
+	@EJB
+	private VerificarEJB verficacionEJB;
 
 	@PostConstruct
 	public void inicializar() {
@@ -65,17 +74,26 @@ public class AsociacionCuentaController implements Serializable {
 			Customer busCliente = clienteEJB.buscarCliente(
 					sesionController.getUse().getCustomer().getNumeroIndentificacion(),
 					sesionController.getUse().getCustomer().getTipoIdentificacion());
+			
+			 
+			
+			
+			
 			if (busCliente != null) {
+				if(busCliente.getTipoIdentificacion() == "cedula"){
+					TipoDocumentoEnum cedu = TipoDocumentoEnum.CC;
+					tipoId = cedu.toString();
+				
 				if (bancoNom != null) {
 					AsociacionCuentas asociacionCuenta = new AsociacionCuentas(numeroId, tipoId, nombreTitular,
-							bancoNom, numero, nombreAs, false, busCliente);
+							bancoNom, numero, nombreAs, "0001", busCliente);
 					asociacionEJB.crearAsociacion(asociacionCuenta);
 					asociacionesLis = asociacionEJB.listarAsociaciones(busCliente);
 
 					FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,
 							"Creado Con Exito!!", "La asociacion fue creada exitosamente!!"));
 				}
-
+				}
 			}
 
 		} catch (Exception e) {
@@ -139,11 +157,13 @@ public class AsociacionCuentaController implements Serializable {
 		this.nombreAs = nombreAs;
 	}
 
-	public boolean isVerificado() {
+	
+
+	public String getVerificado() {
 		return verificado;
 	}
 
-	public void setVerificado(boolean verificado) {
+	public void setVerificado(String verificado) {
 		this.verificado = verificado;
 	}
 

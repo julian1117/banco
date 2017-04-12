@@ -7,6 +7,7 @@ import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+import javax.xml.ws.BindingProvider;
 
 import co.edu.eam.ingesoft.banco.entidades.AsociacionCuentas;
 import co.edu.eam.ingesoft.banco.entidades.Banco;
@@ -24,10 +25,10 @@ public class AsociacionEJB {
 	@PersistenceContext
 	private EntityManager em;
 	
-	InterbancarioWS_Service cliente = new InterbancarioWS_Service();
-	InterbancarioWS  servicios = cliente.getInterbancarioWSPort();
 	
 	public void crearAsociacion(AsociacionCuentas asoci){
+		
+				
 		AsociacionCuentas aso = buscarAsociacion(asoci.getNumero());
 		if(aso == null){
 				em.persist(asoci);
@@ -64,6 +65,14 @@ public class AsociacionEJB {
 	
 	public List<Banco> listarBancos(){
 		return em.createNamedQuery(Banco.LISTAR_BANCO).getResultList();
+		
+	}
+	
+	
+	public void verificar(AsociacionCuentas aso){
+	
+		
+		
 		
 	}
 	
