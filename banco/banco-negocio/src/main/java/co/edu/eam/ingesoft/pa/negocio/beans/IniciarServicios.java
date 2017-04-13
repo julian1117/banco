@@ -18,25 +18,22 @@ import co.edu.eam.pa.clientews.InterbancarioWS_Service;
 @Startup
 @Singleton
 public class IniciarServicios {
-	
+
 	@PersistenceContext
-	private  EntityManager em;
-	
+	private EntityManager em;
+
 	@EJB
 	private AsociacionEJB asociaEJB;
-	
+
 	InterbancarioWS_Service cliente = new InterbancarioWS_Service();
-	InterbancarioWS  servicios = cliente.getInterbancarioWSPort();
-	
-	
+	InterbancarioWS servicios = cliente.getInterbancarioWSPort();
+
 	String endpointURL = "http://104.197.238.134:8080/interbancario/InterbancarioWS";
-	
+
 	@PostConstruct
-	public void inicializar(){
-		BindingProvider bp = (BindingProvider)servicios;
+	public void inicializar() {
+		BindingProvider bp = (BindingProvider) servicios;
 		bp.getRequestContext().put(BindingProvider.ENDPOINT_ADDRESS_PROPERTY, endpointURL);
-		
-		
 
 		List<Banco> bancos = servicios.listarBancos();
 		List<co.edu.eam.ingesoft.banco.entidades.Banco> bancosBD = asociaEJB.listarBancos();
@@ -55,11 +52,7 @@ public class IniciarServicios {
 				System.out.println("Ya Existe el Banco");
 			}
 		}
-		
-		
-		
+
 	}
-	
-	
-	
+
 }

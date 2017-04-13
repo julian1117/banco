@@ -59,8 +59,8 @@ public class AsociacionCuentaController implements Serializable {
 	@EJB
 	private AsociacionEJB asociacionEJB;
 	
-	@EJB
-	private VerificarEJB verficacionEJB;
+//	@EJB
+	//private VerificarEJB verficacionEJB;
 
 	@PostConstruct
 	public void inicializar() {

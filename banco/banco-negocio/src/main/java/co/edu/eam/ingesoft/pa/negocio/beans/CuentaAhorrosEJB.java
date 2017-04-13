@@ -36,14 +36,15 @@ public class CuentaAhorrosEJB {
 
 	@EJB
 	private NotificacionesEJB notificaiconEjb;
-	
+
 	@EJB
 	private SeguridadEJB usuarioEjb;
-	
+
 	/**
 	 * Crea cuenta de ahorros
 	 * 
-	 * @param cuentaAhorro objeto que recibe para crear la cuenta de ahorros
+	 * @param cuentaAhorro
+	 *            objeto que recibe para crear la cuenta de ahorros
 	 */
 	public void crearCuentaAhorro(SavingAccount cuentaAhorro, String numeroId, String tipoId) {
 
@@ -67,7 +68,7 @@ public class CuentaAhorrosEJB {
 			} else {
 				throw new ExcepcionNegocio("El cliente ya tiene 5 productos");
 			}
-		}else{
+		} else {
 			throw new ExcepcionNegocio("El cliente no existe");
 		}
 
@@ -150,23 +151,35 @@ public class CuentaAhorrosEJB {
 			return false;
 		}
 	}
-	
-	public void validarTransaaccion(Usuario use){
-		
-		//BUcar usuario
+
+	public void validarTransaaccion(Usuario use) {
+
 		Usuario usuarioBuscado = usuarioEjb.buscarUs(use.getUsuario());
-		
+
 		long aleatorio = ThreadLocalRandom.current().nextLong((900000L) + 100000L);
-		//notificaiconEjb.mensajeValidar(use.getCustomer().getNumeroTelefono(), "Codigo de validacion: " +aleatorio);
-		notificaiconEjb.correoValidar("Codigo de validacion: " +aleatorio, use.getCustomer().getCorreoELectronico(), "Validacion de transferencia");
+		// notificaiconEjb.mensajeValidar(use.getCustomer().getNumeroTelefono(),
+		// "Codigo de validacion: " +aleatorio);
+		notificaiconEjb.correoValidar("Codigo de validacion: " + aleatorio, use.getCustomer().getCorreoELectronico(),
+				"Validacion de transferencia");
+
+
+		//confirmarTransaccion(use);
 		
 		Verificacion very = new Verificacion();
 		very.setCodigo(aleatorio);
 		very.setFecha(generarFechaActual());
 		very.setUsuario(usuarioBuscado);
-		
-		em.persist(very);		
-		
+
+		em.persist(very);
+
 	}
 	
+	public void confirmarTransaccion(Usuario use){
+		List<Verificacion> listaVery = em.createNamedQuery(Verificacion.LISTA_VERIFICAICON).setParameter(1, use.getUsuario()).getResultList();
+		
+		for(int i=0;i<listaVery.size();i++){
+			System.out.print(listaVery.get(i));
+		}
+	}
+
 }

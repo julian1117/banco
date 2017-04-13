@@ -98,7 +98,7 @@ public class TransInterBancariaControlador implements Serializable {
 		listCuentaAhorros = pagoEjb.listaCuentaAhorros(
 				sesionController.getUse().getCustomer().getNumeroIndentificacion(),
 				sesionController.getUse().getCustomer().getTipoIdentificacion());
-		asociacionesLis = asociacionEJB.listarAsociaciones(sesionController.getUse().getCustomer());
+		asociacionesLis = asociacionEJB.listaAsociada(sesionController.getUse().getCustomer());
 	}
 
 	/**
