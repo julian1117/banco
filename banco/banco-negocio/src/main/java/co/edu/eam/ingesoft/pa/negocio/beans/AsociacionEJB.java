@@ -7,16 +7,12 @@ import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
-import javax.xml.ws.BindingProvider;
 
 import co.edu.eam.ingesoft.banco.entidades.AsociacionCuentas;
 import co.edu.eam.ingesoft.banco.entidades.Banco;
 import co.edu.eam.ingesoft.banco.entidades.Customer;
 import co.edu.eam.ingesoft.pa.negocio.excepciones.ExcepcionNegocio;
-import co.edu.eam.pa.clientews.InterbancarioWS;
-import co.edu.eam.pa.clientews.InterbancarioWS_Service;
-import co.edu.eam.pa.clientews.RegistrarCuentaAsociada;
-import co.edu.eam.pa.clientews.RegistrarCuentaAsociadaResponse;
+
 
 @Stateless
 @LocalBean

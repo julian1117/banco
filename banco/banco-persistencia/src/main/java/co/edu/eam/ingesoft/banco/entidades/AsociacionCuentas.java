@@ -5,8 +5,12 @@ import java.io.Serializable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinColumns;
+import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 @Entity
@@ -30,8 +34,9 @@ public class AsociacionCuentas implements Serializable {
 	@Column(name = "nombre")
 	private String nombreTitular;
 
-	@Column(name = "Banco")
-	private Banco banco;
+	@ManyToOne
+	@JoinColumn(name = "Banco")
+	private  Banco banco;
 
 	@Column(name = "Numero")
 	private String numero;
@@ -42,7 +47,11 @@ public class AsociacionCuentas implements Serializable {
 	@Column(name = "Verrificado")
 	private String verificado;
 
-	@Column(name = "Cliente")
+	@ManyToOne
+	@JoinColumns({
+		@JoinColumn(name="holder_idtype",referencedColumnName="identification_type"),
+		@JoinColumn(name="holder_idnumber",referencedColumnName="identification_number")
+	})
 	private Customer cliente;
 
 	public AsociacionCuentas() {
@@ -126,8 +135,7 @@ public class AsociacionCuentas implements Serializable {
 		this.cliente = cliente;
 	}
 
-	public static String getListraAsociaciones() {
-		return LISTRA_ASOCIACIONES;
-	}
+	
+	
 
 }
