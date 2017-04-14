@@ -7,71 +7,81 @@ import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
-import javax.xml.ws.BindingProvider;
 
 import co.edu.eam.ingesoft.banco.entidades.AsociacionCuentas;
 import co.edu.eam.ingesoft.banco.entidades.Banco;
 import co.edu.eam.ingesoft.banco.entidades.Customer;
 import co.edu.eam.ingesoft.pa.negocio.excepciones.ExcepcionNegocio;
-import co.edu.eam.pa.clientews.InterbancarioWS;
-import co.edu.eam.pa.clientews.InterbancarioWS_Service;
-import co.edu.eam.pa.clientews.RegistrarCuentaAsociada;
-import co.edu.eam.pa.clientews.RegistrarCuentaAsociadaResponse;
+
 
 @Stateless
 @LocalBean
 public class AsociacionEJB {
-	
+
 	@PersistenceContext
 	private EntityManager em;
-	
-	
-	public void crearAsociacion(AsociacionCuentas asoci){
-		
-				
+
+	public void crearAsociacion(AsociacionCuentas asoci) {
+
 		AsociacionCuentas aso = buscarAsociacion(asoci.getNumero());
-		if(aso == null){
-				em.persist(asoci);
-		}else{
+		if (aso == null) {
+			em.persist(asoci);
+		} else {
 			throw new ExcepcionNegocio("La asociacion ya existe");
 		}
 	}
 
-	
-	public AsociacionCuentas buscarAsociacion(String numero){
+	public AsociacionCuentas buscarAsociacion(String numero) {
 		AsociacionCuentas asociacion = em.find(AsociacionCuentas.class, numero);
 		return asociacion;
 	}
-	
-	public void eliminarAsociacion(AsociacionCuentas aso){
+
+	public void eliminarAsociacion(AsociacionCuentas aso) {
 		aso = buscarAsociacion(aso.getNumeroId());
 		em.remove(aso);
 	}
-	
-	public List<AsociacionCuentas> listarAsociaciones(Customer cliente){
-		
+
+	public List<AsociacionCuentas> listarAsociaciones(Customer cliente) {
+
 		Query q = em.createNamedQuery(AsociacionCuentas.LISTRA_ASOCIACIONES);
-		q.setParameter(1,cliente);
+		q.setParameter(1, cliente);
 		List<AsociacionCuentas> lista = q.getResultList();
 		return lista;
-		
-//		return em.createNamedQuery(AsociacionCuentas.LISTRA_ASOCIACIONES).getResultList();
+
+		// return
+		// em.createNamedQuery(AsociacionCuentas.LISTRA_ASOCIACIONES).getResultList();
 	}
-	
-	public Banco buscarBanco(String id){
+
+	public Banco buscarBanco(String id) {
 		Banco buscarBan = em.find(Banco.class, id);
 		return buscarBan;
 	}
-	
-	public List<Banco> listarBancos(){
+
+	public List<Banco> listarBancos() {
 		return em.createNamedQuery(Banco.LISTAR_BANCO).getResultList();
-		
+
 	}
+<<<<<<< HEAD
 	
 	
 	public void verificar(AsociacionCuentas aso){
 			em.merge(aso);
+=======
+
+	public void verificar(AsociacionCuentas aso) {
+
+>>>>>>> refs/remotes/origin/master
 	}
-	
-	
+
+	/**
+	 * Lita de cuentas Asociadas de un cliente
+	 * @param cliente
+	 * @return
+	 */
+	public List<AsociacionCuentas> listaAsociada(Customer cliente) {
+		List<AsociacionCuentas> q = em.createNamedQuery(AsociacionCuentas.LISTA_ASOCIACIONES_COMFIRMADAS)
+				.setParameter(1, cliente).getResultList();
+		return q;
+	}
+
 }

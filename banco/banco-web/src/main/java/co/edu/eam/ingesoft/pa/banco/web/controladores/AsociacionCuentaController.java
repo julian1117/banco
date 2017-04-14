@@ -62,8 +62,13 @@ public class AsociacionCuentaController implements Serializable {
 	@EJB
 	private AsociacionEJB asociacionEJB;
 	
+<<<<<<< HEAD
 	@EJB
 	private VerificarEJB verificarEJB;
+=======
+//	@EJB
+	//private VerificarEJB verficacionEJB;
+>>>>>>> refs/remotes/origin/master
 
 	@PostConstruct
 	public void inicializar() {

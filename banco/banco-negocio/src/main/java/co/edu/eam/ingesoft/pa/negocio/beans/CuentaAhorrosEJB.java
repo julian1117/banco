@@ -3,6 +3,7 @@ package co.edu.eam.ingesoft.pa.negocio.beans;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
@@ -36,14 +37,15 @@ public class CuentaAhorrosEJB {
 
 	@EJB
 	private NotificacionesEJB notificaiconEjb;
-	
+
 	@EJB
 	private SeguridadEJB usuarioEjb;
-	
+
 	/**
 	 * Crea cuenta de ahorros
 	 * 
-	 * @param cuentaAhorro objeto que recibe para crear la cuenta de ahorros
+	 * @param cuentaAhorro
+	 *            objeto que recibe para crear la cuenta de ahorros
 	 */
 	public void crearCuentaAhorro(SavingAccount cuentaAhorro, String numeroId, String tipoId) {
 
@@ -67,7 +69,7 @@ public class CuentaAhorrosEJB {
 			} else {
 				throw new ExcepcionNegocio("El cliente ya tiene 5 productos");
 			}
-		}else{
+		} else {
 			throw new ExcepcionNegocio("El cliente no existe");
 		}
 
@@ -150,23 +152,67 @@ public class CuentaAhorrosEJB {
 			return false;
 		}
 	}
-	
-	public void validarTransaaccion(Usuario use){
-		
-		//BUcar usuario
+
+	public void validarTransaaccion(Usuario use) {
+
 		Usuario usuarioBuscado = usuarioEjb.buscarUs(use.getUsuario());
-		
-		long aleatorio = ThreadLocalRandom.current().nextLong((900000L) + 100000L);
-		//notificaiconEjb.mensajeValidar(use.getCustomer().getNumeroTelefono(), "Codigo de validacion: " +aleatorio);
-		notificaiconEjb.correoValidar("Codigo de validacion: " +aleatorio, use.getCustomer().getCorreoELectronico(), "Validacion de transferencia");
-		
+
+		int aleatorio = ThreadLocalRandom.current().nextInt((int) ((900000L) + 100000L));
+		// notificaiconEjb.mensajeValidar(use.getCustomer().getNumeroTelefono(),
+		// "Codigo de validacion: " +aleatorio);
+		notificaiconEjb.correoValidar("Codigo de validacion: " + aleatorio, use.getCustomer().getCorreoELectronico(),
+				"Validacion de transferencia");
+
+		Calendar c1 = Calendar.getInstance();
+
 		Verificacion very = new Verificacion();
 		very.setCodigo(aleatorio);
-		very.setFecha(generarFechaActual());
+		very.setFecha(c1.getInstance());
 		very.setUsuario(usuarioBuscado);
-		
-		em.persist(very);		
-		
+
+		em.persist(very);
+
 	}
-	
+
+	/**
+	 * realiza transaccion interbancaria y valida con codigo de seguridad
+	 * @param use usuario que realiza la transaccion
+	 * @param codigo de seguridad
+	 * @param numero cuenta ahorros
+	 * @param monto que retira
+	 * @throws Exception si hay error por algo
+	 */
+	public void confirmarTransaccion(String use, int codigo, String numero,double monto)throws Exception {
+		
+		List<Verificacion> verif = em.createNamedQuery(Verificacion.LISTA_VERIFICAICON).setParameter(1, use).getResultList();
+
+		String fechaInicio = verif.get(verif.size() - 1).getFecha().getTime().getHours() + ""
+				+ verif.get(verif.size() - 1).getFecha().getTime().getMinutes() + ""
+				+ verif.get(verif.size() - 1).getFecha().getTime().getSeconds() + "";
+
+		Calendar c1 = Calendar.getInstance();
+
+		String fechaActual = c1.getTime().getHours() + "" + c1.getTime().getMinutes() + "" + c1.getTime().getSeconds();
+
+		int tiempoValidado = Integer.parseInt(fechaActual) - Integer.parseInt(fechaInicio);
+
+		if (tiempoValidado <= 30) {
+			if (verif.get(verif.size() - 1).getCodigo() == codigo) {
+				
+				SavingAccount cuentaBuscada = buscarCuentaAhorro(numero);
+				
+				cuentaBuscada.setAmmount(cuentaBuscada.getAmmount()-monto);
+				
+				em.merge(cuentaBuscada);
+				
+			} else {
+				throw new ExcepcionNegocio("El codigo no coincide");
+			}
+
+		} else {
+			throw new ExcepcionNegocio("El codigo a caducado");
+		}
+
+	}
+
 }

@@ -9,10 +9,12 @@ import javax.inject.Inject;
 import javax.inject.Named;
 
 import org.omnifaces.cdi.ViewScoped;
+import org.omnifaces.util.Messages;
 
 import co.edu.eam.ingesoft.banco.entidades.AsociacionCuentas;
 import co.edu.eam.ingesoft.banco.entidades.Banco;
 import co.edu.eam.ingesoft.banco.entidades.SavingAccount;
+import co.edu.eam.ingesoft.banco.entidades.Verificacion;
 import co.edu.eam.ingesoft.pa.negocio.beans.AsociacionEJB;
 import co.edu.eam.ingesoft.pa.negocio.beans.CuentaAhorrosEJB;
 import co.edu.eam.ingesoft.pa.negocio.beans.TarjetaCreditoPagoConsumoRemote;
@@ -98,7 +100,7 @@ public class TransInterBancariaControlador implements Serializable {
 		listCuentaAhorros = pagoEjb.listaCuentaAhorros(
 				sesionController.getUse().getCustomer().getNumeroIndentificacion(),
 				sesionController.getUse().getCustomer().getTipoIdentificacion());
-		asociacionesLis = asociacionEJB.listarAsociaciones(sesionController.getUse().getCustomer());
+		asociacionesLis = asociacionEJB.listaAsociada(sesionController.getUse().getCustomer());
 	}
 
 	/**
@@ -107,4 +109,19 @@ public class TransInterBancariaControlador implements Serializable {
 	public void validarTranferencia() {
 		cuentaAhEjb.validarTransaaccion(sesionController.getUse());
 	}
+
+	/**
+	 * Realizar transferencia
+	 */
+	public void transferencia() {
+		try {
+			cuentaAhEjb.confirmarTransaccion(sesionController.getUsuario(), validarCod, cuentaAhorros.getNumero(),
+					monto);
+			Messages.addGlobalInfo("Transaccion interbancaria con exito");
+		} catch (Exception e) {
+			Messages.addGlobalError(e.getMessage());
+		}
+
+	}
+
 }
