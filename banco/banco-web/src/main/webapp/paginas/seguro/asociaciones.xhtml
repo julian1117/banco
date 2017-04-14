@@ -90,7 +90,7 @@
 					<p:commandButton action="#{asociacionControler.eliminar(lisBan)}"
 						process="@this" value="Quitar" update="panelLista" />
 						
-						<p:commandButton action="#{lisBan.nombreTitular}"
+						<p:commandButton action="#{asociacionControler.verificarCuenta(lisBan)}"
 						process="@this" value="Verificar" update="panelLista" />
 						
 						

@@ -6,8 +6,10 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinColumns;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.ManyToAny;
@@ -29,8 +31,8 @@ public class AsociacionCuentas  implements Serializable{
 	@Column(name="nombre")
 	private String nombreTitular;
 	
-	
-	@Column(name="banco_i")
+	@ManyToOne
+	@JoinColumn(name="banco_i")
 	private Banco banco;
 	
 	@Column(name="Numero")
@@ -42,8 +44,11 @@ public class AsociacionCuentas  implements Serializable{
 	@Column(name="Verrificado")
 	private String verificado;
 	
-	
-	@Column(name="cliente_i")
+	@OneToOne
+	@JoinColumns({
+		@JoinColumn(name="holder_idtype",referencedColumnName="identification_type"),
+		@JoinColumn(name="holder_idnumber",referencedColumnName="identification_number")
+	})
 	private Customer cliente;
 
 	public AsociacionCuentas() {

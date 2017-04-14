@@ -11,6 +11,7 @@ import javax.inject.Inject;
 import javax.inject.Named;
 
 import org.omnifaces.cdi.ViewScoped;
+import org.omnifaces.util.Messages;
 
 import co.edu.eam.ingesoft.banco.entidades.AsociacionCuentas;
 import co.edu.eam.ingesoft.banco.entidades.Banco;
@@ -33,6 +34,8 @@ public class AsociacionCuentaController implements Serializable {
 	private String nombreTitular;
 
 	private Banco bancoNom;
+	
+	private String bancoId;
 
 	private String numero;
 
@@ -47,7 +50,7 @@ public class AsociacionCuentaController implements Serializable {
 	private List<AsociacionCuentas> asociacionesLis;
 
 	private List<Banco> listarBanco;
-	
+
 	private RespuestaServicio resServicio;
 
 	@Inject
@@ -60,7 +63,7 @@ public class AsociacionCuentaController implements Serializable {
 	private AsociacionEJB asociacionEJB;
 	
 	@EJB
-	private VerificarEJB verficacionEJB;
+	private VerificarEJB verificarEJB;
 
 	@PostConstruct
 	public void inicializar() {
@@ -74,24 +77,26 @@ public class AsociacionCuentaController implements Serializable {
 			Customer busCliente = clienteEJB.buscarCliente(
 					sesionController.getUse().getCustomer().getNumeroIndentificacion(),
 					sesionController.getUse().getCustomer().getTipoIdentificacion());
-			
-			 
-			
-			
-			
-			if (busCliente != null) {
-				if(busCliente.getTipoIdentificacion().equals("CC")){
-					tipoId = "cedula";
-				
-				if (bancoNom != null) {
-					AsociacionCuentas asociacionCuenta = new AsociacionCuentas(numeroId, tipoId, nombreTitular,
-							bancoNom, numero, nombreAs, "0001", busCliente);
-					asociacionEJB.crearAsociacion(asociacionCuenta);
-					asociacionesLis = asociacionEJB.listarAsociaciones(busCliente);
 
-					FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,
-							"Creado Con Exito!!", "La asociacion fue creada exitosamente!!"));
-				}
+			if (busCliente != null) {
+				if (busCliente.getTipoIdentificacion().equals("Cedula")) {
+					TipoDocumentoEnum cedu = TipoDocumentoEnum.CC;
+					tipoId = cedu.toString();
+					String id = tipoId;
+					
+					Banco idBanco = asociacionEJB.buscarBanco(bancoNom.getIdBanco());
+					if (idBanco.getIdBanco() != null) {		
+											
+						
+						AsociacionCuentas asociacionCuenta = new AsociacionCuentas(numeroId, id, nombreTitular,
+								idBanco, numero, nombreAs, "0001", busCliente);
+						Messages.addFlashGlobalInfo(idBanco+"AQUI AQUI AQUI AQUI AUQI AUQI AUAIQIUA UAIAUU ");
+						asociacionEJB.crearAsociacion(asociacionCuenta);
+						asociacionesLis = asociacionEJB.listarAsociaciones(busCliente);
+
+						FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,
+								"Creado Con Exito!!", "La asociacion fue creada exitosamente!!"));
+					}
 				}
 			}
 
@@ -102,12 +107,40 @@ public class AsociacionCuentaController implements Serializable {
 
 		}
 	}
-	
-	public void eliminar(AsociacionCuentas asoci){
+
+	public void eliminar(AsociacionCuentas asoci) {
 		asociacionEJB.eliminarAsociacion(asoci);
 		asociacionesLis = asociacionEJB.listarAsociaciones(sesionController.getUse().getCustomer());
 	}
 	
+	public void verificarCuenta(AsociacionCuentas asociacionVerificar){
+		String numeroVeri = asociacionVerificar.getVerificado();
+		String idcliente = asociacionVerificar.getTipoId();
+		String numeroIdcliente = asociacionVerificar.getNumeroId();
+		String nombreAsoci = asociacionVerificar.getNombreAs();
+		String numeroCuentaAsociacion = asociacionVerificar.getNumero();
+		String banco = asociacionVerificar.getBanco().getNombre();
+		
+		if(numeroVeri.equals("0001")){
+			if(idcliente.equals("CC")){
+				TipoDocumentoEnum tipo = TipoDocumentoEnum.CC;
+				asociacionVerificar.setVerificado("0000");
+				verificarEJB.verificar(asociacionVerificar);
+				asociacionEJB.verificar(asociacionVerificar);
+				Messages.addFlashGlobalInfo(asociacionVerificar.getVerificado()+"");
+				asociacionEJB.verificar(asociacionVerificar);
+								
+				FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,
+						"Creado Con Exito!!", "La asociacion fue verificada exitosamente!!"));
+			
+			}
+		}else{
+			Messages.addFlashGlobalInfo("ERROR! :(");
+		}
+		
+		
+	}
+
 	public String getNumeroId() {
 		return numeroId;
 	}
@@ -155,8 +188,6 @@ public class AsociacionCuentaController implements Serializable {
 	public void setNombreAs(String nombreAs) {
 		this.nombreAs = nombreAs;
 	}
-
-	
 
 	public String getVerificado() {
 		return verificado;

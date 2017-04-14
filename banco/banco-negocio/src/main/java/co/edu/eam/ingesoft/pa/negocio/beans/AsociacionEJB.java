@@ -70,10 +70,7 @@ public class AsociacionEJB {
 	
 	
 	public void verificar(AsociacionCuentas aso){
-	
-		
-		
-		
+			em.merge(aso);
 	}
 	
 	
