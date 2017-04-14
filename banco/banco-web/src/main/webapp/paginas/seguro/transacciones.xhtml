@@ -38,19 +38,21 @@
 						class="form-control" />
 
 					<br></br>
-					
+
 					<h:outputLabel for="fValidar" id="lblValidar"
 						value="#{msj['clietnes.validar']}:" />
-					<h:inputText id="fValidar" value="#{interBancariaController.monto}"
+					<h:inputText id="fValidar" value="#{interBancariaController.validarCod}"
 						class="form-control" />
 
 					<p:commandButton id="btnClave" value="#{msj['clientes.clave']}"
-						action="#{interBancariaController.validarTranferencia}" process="@this " />
+						action="#{interBancariaController.validarTranferencia}"
+						process="@this " />
 
 
 					<h:panelGrid id="botonesPanel" columns="2">
-						<p:commandButton id="btnTransferir" value="Transferir" action="#"
-							process="@this" update="paneldatosP" />
+						<p:commandButton id="btnTransferir" value="Transferir"
+							action="#{interBancariaController.transferencia}" process="@this lblValidar lblMonto paneldatos"
+							/>
 
 					</h:panelGrid>
 

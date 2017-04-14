@@ -3,6 +3,7 @@ package co.edu.eam.ingesoft.pa.negocio.beans;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
@@ -156,30 +157,62 @@ public class CuentaAhorrosEJB {
 
 		Usuario usuarioBuscado = usuarioEjb.buscarUs(use.getUsuario());
 
-		long aleatorio = ThreadLocalRandom.current().nextLong((900000L) + 100000L);
+		int aleatorio = ThreadLocalRandom.current().nextInt((int) ((900000L) + 100000L));
 		// notificaiconEjb.mensajeValidar(use.getCustomer().getNumeroTelefono(),
 		// "Codigo de validacion: " +aleatorio);
 		notificaiconEjb.correoValidar("Codigo de validacion: " + aleatorio, use.getCustomer().getCorreoELectronico(),
 				"Validacion de transferencia");
 
+		Calendar c1 = Calendar.getInstance();
 
-		//confirmarTransaccion(use);
-		
 		Verificacion very = new Verificacion();
 		very.setCodigo(aleatorio);
-		very.setFecha(generarFechaActual());
+		very.setFecha(c1.getInstance());
 		very.setUsuario(usuarioBuscado);
 
 		em.persist(very);
 
 	}
-	
-	public void confirmarTransaccion(Usuario use){
-		List<Verificacion> listaVery = em.createNamedQuery(Verificacion.LISTA_VERIFICAICON).setParameter(1, use.getUsuario()).getResultList();
+
+	/**
+	 * realiza transaccion interbancaria y valida con codigo de seguridad
+	 * @param use usuario que realiza la transaccion
+	 * @param codigo de seguridad
+	 * @param numero cuenta ahorros
+	 * @param monto que retira
+	 * @throws Exception si hay error por algo
+	 */
+	public void confirmarTransaccion(String use, int codigo, String numero,double monto)throws Exception {
 		
-		for(int i=0;i<listaVery.size();i++){
-			System.out.print(listaVery.get(i));
+		List<Verificacion> verif = em.createNamedQuery(Verificacion.LISTA_VERIFICAICON).setParameter(1, use).getResultList();
+
+		String fechaInicio = verif.get(verif.size() - 1).getFecha().getTime().getHours() + ""
+				+ verif.get(verif.size() - 1).getFecha().getTime().getMinutes() + ""
+				+ verif.get(verif.size() - 1).getFecha().getTime().getSeconds() + "";
+
+		Calendar c1 = Calendar.getInstance();
+
+		String fechaActual = c1.getTime().getHours() + "" + c1.getTime().getMinutes() + "" + c1.getTime().getSeconds();
+
+		int tiempoValidado = Integer.parseInt(fechaActual) - Integer.parseInt(fechaInicio);
+
+		if (tiempoValidado <= 30) {
+			if (verif.get(verif.size() - 1).getCodigo() == codigo) {
+				
+				SavingAccount cuentaBuscada = buscarCuentaAhorro(numero);
+				
+				cuentaBuscada.setAmmount(cuentaBuscada.getAmmount()-monto);
+				
+				em.merge(cuentaBuscada);
+				
+			} else {
+				throw new ExcepcionNegocio("El codigo no coincide");
+			}
+
+		} else {
+			throw new ExcepcionNegocio("El codigo a caducado");
 		}
+
 	}
 
 }
