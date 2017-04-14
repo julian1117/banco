@@ -91,7 +91,7 @@ public class AsociacionCuentaController implements Serializable {
 											
 						
 						AsociacionCuentas asociacionCuenta = new AsociacionCuentas(numeroId, id, nombreTitular,
-								idBanco, numero, nombreAs, "0001", busCliente);
+								idBanco, numero, nombreAs,"PENDIENTE" , busCliente);
 						Messages.addFlashGlobalInfo(idBanco+"AQUI AQUI AQUI AQUI AUQI AUQI AUAIQIUA UAIAUU ");
 						asociacionEJB.crearAsociacion(asociacionCuenta);
 						asociacionesLis = asociacionEJB.listarAsociaciones(busCliente);
@@ -116,30 +116,13 @@ public class AsociacionCuentaController implements Serializable {
 	}
 	
 	public void verificarCuenta(AsociacionCuentas asociacionVerificar){
-		String numeroVeri = asociacionVerificar.getVerificado();
-		String idcliente = asociacionVerificar.getTipoId();
-		String numeroIdcliente = asociacionVerificar.getNumeroId();
-		String nombreAsoci = asociacionVerificar.getNombreAs();
-		String numeroCuentaAsociacion = asociacionVerificar.getNumero();
-		String banco = asociacionVerificar.getBanco().getNombre();
-		
-		if(numeroVeri.equals("0001")){
-			if(idcliente.equals("CC")){
-				TipoDocumentoEnum tipo = TipoDocumentoEnum.CC;
-				asociacionVerificar.setVerificado("0000");
+
 				verificarEJB.verificar(asociacionVerificar);
-				asociacionEJB.verificar(asociacionVerificar);
-				Messages.addFlashGlobalInfo(asociacionVerificar.getVerificado()+"");
-				asociacionEJB.verificar(asociacionVerificar);
-								
+			
+				
 				FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,
 						"Creado Con Exito!!", "La asociacion fue verificada exitosamente!!"));
-			
-			}
-		}else{
-			Messages.addFlashGlobalInfo("ERROR! :(");
-		}
-		
+
 		
 	}
 
