@@ -182,7 +182,7 @@ public class CuentaAhorrosEJB {
 	 * @param monto que retira
 	 * @throws Exception si hay error por algo
 	 */
-	public void confirmarTransaccion(String use, int codigo, String numero,double monto)throws Exception {
+	public void confirmarTransaccion(String use, int codigo, String numero,double monto) {
 		
 		List<Verificacion> verif = em.createNamedQuery(Verificacion.LISTA_VERIFICAICON).setParameter(1, use).getResultList();
 

@@ -34,7 +34,7 @@ public class PagoTarjetaControlador implements Serializable {
 	private String tipoDocumento;
 
 	private Credicart tarjeta;
-	
+
 	private String nombreUs;
 
 	private List<Credicart> listnumTarjeta;
@@ -99,8 +99,6 @@ public class PagoTarjetaControlador implements Serializable {
 		this.pago = pago;
 	}
 
-	
-	
 	public String getNombreUs() {
 		return nombreUs;
 	}
@@ -108,8 +106,6 @@ public class PagoTarjetaControlador implements Serializable {
 	public void setNombreUs(String nombreUs) {
 		this.nombreUs = nombreUs;
 	}
-
-
 
 	@EJB
 	private CuentaAhorrosEJB cuentaAhorrosEjb;
@@ -127,7 +123,7 @@ public class PagoTarjetaControlador implements Serializable {
 	public void inicializar() {
 		cargarDatosUsuario();
 	}
-	
+
 	/**
 	 * Consultar cuota de pago de la tarjeta de credito
 	 */
@@ -178,36 +174,37 @@ public class PagoTarjetaControlador implements Serializable {
 		}
 	}
 
-
 	/**
 	 * Pagar un solo consumo que se haya seleccionado de la tabla
 	 * 
 	 * @param consumo
 	 */
 	public void pagarConsumo(CreditcardConsume consumo) {
-		pagoEjb.pagoConsumo(consumo,cuentaAhorros.getNumero());
+		pagoEjb.pagoConsumo(consumo, cuentaAhorros.getNumero());
 		Messages.addFlashGlobalInfo("Pago de consumo con exito");
 		listnumTarjeta = pagoEjb.listaTarjetaCredito(cedula, tipoDocumento);
 		listaConsumo = pagoEjb.listaConsumo(listnumTarjeta.get(0).getNumero());
 	}
 
 	/**
-	 * Cargar los datos del usuario que inicio seccion
-	 * para usarlo a nivel global en la clase
+	 * Cargar los datos del usuario que inicio seccion para usarlo a nivel
+	 * global en la clase
 	 */
 	public void cargarDatosUsuario() {
-		Customer cliente = clientJ.buscarCliente(usuarioSesion.getUse().getCustomer().getNumeroIndentificacion(),
-				usuarioSesion.getUse().getCustomer().getTipoIdentificacion());
+		try {
+			Customer cliente = clientJ.buscarCliente(usuarioSesion.getUse().getCustomer().getNumeroIndentificacion(),
+					usuarioSesion.getUse().getCustomer().getTipoIdentificacion());
 
-		cedula = cliente.getNumeroIndentificacion();
-		tipoDocumento = cliente.getTipoIdentificacion();
-		listnumTarjeta = pagoEjb.listaTarjetaCredito(cedula, tipoDocumento);
-		listaConsumo = pagoEjb.listaConsumo(listnumTarjeta.get(0).getNumero());
-		listCuentaAhorros = pagoEjb.listaCuentaAhorros(cedula, tipoDocumento);
-		pago = pagoEjb.consultarCuota(listnumTarjeta.get(0).getNumero());
-		nombreUs=cliente.getName()+" "+cliente.getLastName();
+			cedula = cliente.getNumeroIndentificacion();
+			tipoDocumento = cliente.getTipoIdentificacion();
+			listnumTarjeta = pagoEjb.listaTarjetaCredito(cedula, tipoDocumento);
+			listaConsumo = pagoEjb.listaConsumo(listnumTarjeta.get(0).getNumero());
+			listCuentaAhorros = pagoEjb.listaCuentaAhorros(cedula, tipoDocumento);
+			pago = pagoEjb.consultarCuota(listnumTarjeta.get(0).getNumero());
+			nombreUs = cliente.getName() + " " + cliente.getLastName();
+		} catch (Exception e) {
+			Messages.addFlashGlobalError(e.getMessage());
+		}
 	}
-
-	
 
 }

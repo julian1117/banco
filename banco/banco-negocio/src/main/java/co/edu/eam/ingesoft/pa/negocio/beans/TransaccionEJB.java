@@ -36,6 +36,9 @@ public class TransaccionEJB {
 
 	@EJB
 	private CuentaAhorrosEJB cuentaEJB;
+	
+	@EJB
+	private NotificacionesEJB notificacion;
 
 	/**
 	 * Permite crear las transaciones por el tipo de transaccion
@@ -57,14 +60,43 @@ public class TransaccionEJB {
 			if (transaccion.getTipoTransaccion() == TipoTransacion.Transaccion) {
 
 				transaccion(transaccion, cuentaB);
+				
+//				 notificacion.mensaje(cuentaAho.getHolder().getNumeroTelefono(),
+//				 "Se realizo una transaccion por: $"
+//				 + transaccion.getAmmount() + ", De Cuenta ahorros # " +
+//				 cuentaAho.getNumero());
+
+				notificacion.correoELectronico("Se realizo transaccion por: $" + transaccion.getAmmount() + ", Nuemro Cuenta ahorros "
+								+numero,
+						cuentaAho.getHolder().getCorreoELectronico(), "Transaccion de cuenta de ahorros");
 
 			} else if (transaccion.getTipoTransaccion() == TipoTransacion.Consignar) {
 				consignar(transaccion);
 				em.persist(transaccion);
+				
+//				 notificacion.mensaje(cuentaAho.getHolder().getNumeroTelefono(),
+//				 "Se realizo una Consignacion por: $"
+//				 + transaccion.getAmmount() + ", De Cuenta ahorros # " +
+//				 cuentaAho.getNumero());
+
+				notificacion.correoELectronico("Se realizo Consignacion por: $" + transaccion.getAmmount() + ", Nuemro Cuenta ahorros "
+								+numero,
+						cuentaAho.getHolder().getCorreoELectronico(), "Consignacion cuenta de ahorros");
+				
 			} else if (transaccion.getTipoTransaccion() == TipoTransacion.Retirar) {
 				retiro(transaccion);
 				
 				em.persist(transaccion);
+				
+//				 notificacion.mensaje(cuentaAho.getHolder().getNumeroTelefono(),
+//				 "Se realizo un retiro por: $"
+//				 + transaccion.getAmmount() + ", De cuenta ahorros # " +
+//				 cuentaAho.getNumero());
+
+				notificacion.correoELectronico("Se realizo un retiro por: $" + transaccion.getAmmount() + ", Nuemro Cuenta ahorros "
+								+numero,
+						cuentaAho.getHolder().getCorreoELectronico(), "Retiro cuenta de ahorros");
+				
 			}else if(transaccion.getTipoTransaccion() == TipoTransacion.Pago){
 				retiroPago(transaccion);
 				em.persist(transaccion);

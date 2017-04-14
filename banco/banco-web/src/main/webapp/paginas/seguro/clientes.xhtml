@@ -15,7 +15,7 @@
 						class="form-control" />
 					<p:message for="tfCedula" />
 
-					<h:outputLabel for="tfTipoDoc" id="lblTipoDocumento" value="#{msj['clientes.tipoDocumento']}:"/>					
+					<h:outputLabel for="tipoDocumento" id="lblTipoDocumento" value="#{msj['clientes.tipoDocumento']}:"/>					
 
 					<h:selectOneMenu id="tipoDocumento"
 						value="#{clienteController.tipoDocumento}" class="form-control">
@@ -39,14 +39,14 @@
 			</p:panel>
 			<br></br>
 
-			<h:panelGrid id="botonesPanel" columns="3">
+			<h:panelGrid id="botonesPanel" columns="2">
 				<p:commandButton id="btnBuscar" value="#{msj['clientes.buscar']}"
 					action="#{clienteController.buscarCliente}"
 					process="@this tfCedula tipoDocumento" update="datosPanel"
 					 />
 				<p:commandButton id="btnCrear" value="#{msj['clientes.guardar']}"
-					process="@this,datosPanel" update="datosPanel,tablaCliente"
-					actionl="#{clienteController.creCliente}" class="ui-button-info"
+					process="@this datosPanel" update="datosPanel,tablaCliente"
+					action="#{clienteController.creCliente}" class="ui-button-info"
 					 />
 			</h:panelGrid>
 

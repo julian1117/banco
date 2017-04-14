@@ -115,9 +115,13 @@ public class TransInterBancariaControlador implements Serializable {
 	 */
 	public void transferencia() {
 		try {
+			if(monto > 0){
 			cuentaAhEjb.confirmarTransaccion(sesionController.getUsuario(), validarCod, cuentaAhorros.getNumero(),
 					monto);
 			Messages.addGlobalInfo("Transaccion interbancaria con exito");
+			}else{
+				Messages.addGlobalError("Favor ingresar un valor mayor a ' 0 '");
+			}
 		} catch (Exception e) {
 			Messages.addGlobalError(e.getMessage());
 		}

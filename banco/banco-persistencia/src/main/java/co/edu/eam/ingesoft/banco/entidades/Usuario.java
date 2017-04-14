@@ -39,12 +39,12 @@ public class Usuario implements Serializable{
 	@JoinColumn(name="ID_ROL")
 	private Rol rol;
 
-	public Usuario(String usuario, String contrasena, Customer customer, Rol rol) {
+	public Usuario(String usuario, String contrasena, Customer customer) {
 		super();
 		this.usuario = usuario;
 		this.contrasena = contrasena;
 		this.customer = customer;
-		this.rol = rol;
+	
 	}
 
 	public Usuario() {
@@ -75,12 +75,5 @@ public class Usuario implements Serializable{
 		this.customer = customer;
 	}
 
-	public Rol getRol() {
-		return rol;
-	}
-
-	public void setRol(Rol rol) {
-		this.rol = rol;
-	}
 	
 }
