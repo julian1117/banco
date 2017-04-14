@@ -72,13 +72,15 @@ public class AsociacionEJB {
 	public void verificar(AsociacionCuentas aso){
 			em.merge(aso);
 
+	}
+	
 	/**
 	 * Lita de cuentas Asociadas de un cliente
 	 * @param cliente
 	 * @return
 	 */
 	public List<AsociacionCuentas> listaAsociada(Customer cliente) {
-		List<AsociacionCuentas> q = em.createNamedQuery(AsociacionCuentas.LISTA_ASOCIACIONES_COMFIRMADAS)
+		List<AsociacionCuentas> q = em.createNamedQuery(AsociacionCuentas.LISTRA_ASOCIACIONES)
 				.setParameter(1, cliente).getResultList();
 		return q;
 	}
