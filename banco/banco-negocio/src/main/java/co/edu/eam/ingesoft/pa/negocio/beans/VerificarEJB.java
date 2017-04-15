@@ -55,26 +55,26 @@ public class VerificarEJB {
 			TipoDocumentoEnum tipoIdd = TipoDocumentoEnum.CC;
 
 			if (asociacion.getBanco().getIdBanco().equals(000)) {
-				RespuestaServicio respuestaServicio = servicios.registrarCuentaAsociada(
-						asociacion.getBanco().getIdBanco(), tipoIdd, asociacion.getNumeroId(),
-						asociacion.getNombreTitular(), asociacion.getNumero());
-
-				respuestaServicio.getMensaje();
-
-				em.persist(respuestaServicio);
+//				RespuestaServicio respuestaServicio = servicios.registrarCuentaAsociada(
+//						asociacion.getBanco().getIdBanco(), tipoIdd, asociacion.getNumeroId(),
+//						asociacion.getNombreTitular(), asociacion.getNumero());
+//
+//				respuestaServicio.getMensaje();
+//
+//				em.persist(respuestaServicio);
 
 			} else {
 
-				RespuestaServicio respuestaServicio = servicios.registrarCuentaAsociada(
-						asociacion.getBanco().getIdBanco(), tipoIdd, asociacion.getNumeroId(),
-						asociacion.getNombreTitular(), asociacion.getNumero());
-				if (respuestaServicio.getCodigo().equals("0001")) {
-					respuestaServicio.getMensaje();
-
-					asociacion.setVerificado(respuestaServicio.getMensaje());
-					em.merge(asociacion);
-
-				}
+//				RespuestaServicio respuestaServicio = servicios.registrarCuentaAsociada(
+//						asociacion.getBanco().getIdBanco(), tipoIdd, asociacion.getNumeroId(),
+//						asociacion.getNombreTitular(), asociacion.getNumero());
+//				if (respuestaServicio.getCodigo().equals("0001")) {
+//					respuestaServicio.getMensaje();
+//
+//					asociacion.setVerificado(respuestaServicio.getMensaje());
+//					em.merge(asociacion);
+//
+//				}
 
 			}
 
@@ -123,17 +123,17 @@ public class VerificarEJB {
 				//Servicio
 				RespuestaServicio transf = servicios.transferirMonto(idbanco, numero, monto);
 
-				if (transf.equals(0000)) {
+//				if (transf.equals(0000)) {
 					SavingAccount cuentaBuscada = cuentaAHEJB.buscarCuentaAhorro(numero);
 					cuentaBuscada.setAmmount(cuentaBuscada.getAmmount() - monto);
 					em.merge(cuentaBuscada);
-				} else if (transf.equals(0002)) {
-					throw new ExcepcionNegocio("Cuenta no asociada aun");
-
-				} else if (transf.equals(0004)) {
-					throw new ExcepcionNegocio("Cuenta no existe en el banco de destino");
-
-				}
+//				} else if (transf.equals(0002)) {
+//					throw new ExcepcionNegocio("Cuenta no asociada aun");
+//
+//				} else if (transf.equals(0004)) {
+//					throw new ExcepcionNegocio("Cuenta no existe en el banco de destino");
+//
+//				}
 
 
 			} else {

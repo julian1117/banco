@@ -61,10 +61,10 @@ public class TransaccionEJB {
 
 				transaccion(transaccion, cuentaB);
 				
-//				 notificacion.mensaje(cuentaAho.getHolder().getNumeroTelefono(),
-//				 "Se realizo una transaccion por: $"
-//				 + transaccion.getAmmount() + ", De Cuenta ahorros # " +
-//				 cuentaAho.getNumero());
+				 notificacion.mensaje(cuentaAho.getHolder().getNumeroTelefono(),
+				 "Se realizo una transaccion por: $"
+				 + transaccion.getAmmount() + ", De Cuenta ahorros # " +
+				 cuentaAho.getNumero());
 
 				notificacion.correoELectronico("Se realizo transaccion por: $" + transaccion.getAmmount() + ", Nuemro Cuenta ahorros "
 								+numero,
@@ -74,10 +74,10 @@ public class TransaccionEJB {
 				consignar(transaccion);
 				em.persist(transaccion);
 				
-//				 notificacion.mensaje(cuentaAho.getHolder().getNumeroTelefono(),
-//				 "Se realizo una Consignacion por: $"
-//				 + transaccion.getAmmount() + ", De Cuenta ahorros # " +
-//				 cuentaAho.getNumero());
+				 notificacion.mensaje(cuentaAho.getHolder().getNumeroTelefono(),
+				 "Se realizo una Consignacion por: $"
+				 + transaccion.getAmmount() + ", De Cuenta ahorros # " +
+				 cuentaAho.getNumero());
 
 				notificacion.correoELectronico("Se realizo Consignacion por: $" + transaccion.getAmmount() + ", Nuemro Cuenta ahorros "
 								+numero,
@@ -88,10 +88,10 @@ public class TransaccionEJB {
 				
 				em.persist(transaccion);
 				
-//				 notificacion.mensaje(cuentaAho.getHolder().getNumeroTelefono(),
-//				 "Se realizo un retiro por: $"
-//				 + transaccion.getAmmount() + ", De cuenta ahorros # " +
-//				 cuentaAho.getNumero());
+				 notificacion.mensaje(cuentaAho.getHolder().getNumeroTelefono(),
+				 "Se realizo un retiro por: $"
+				 + transaccion.getAmmount() + ", De cuenta ahorros # " +
+				 cuentaAho.getNumero());
 
 				notificacion.correoELectronico("Se realizo un retiro por: $" + transaccion.getAmmount() + ", Nuemro Cuenta ahorros "
 								+numero,

@@ -81,7 +81,7 @@ public class AsociacionEJB {
 	 */
 	public List<AsociacionCuentas> listaAsociadaVeri(Customer cliente) {
 		List<AsociacionCuentas> q = em.createNamedQuery(AsociacionCuentas.LISTRA_ASOCIACIONES_VERIFICADA)
-				.setParameter(1, cliente).setParameter(2, "Asociada").getResultList();
+				.setParameter(1, cliente).setParameter(2, "VERIFICADA").getResultList();
 		return q;
 	}
 	

@@ -65,10 +65,10 @@ public class TarjetaCreditoConsumoEJB {
 					em.merge(tarjeta);
 					em.persist(consumoTarjeta);
 
-					// notificacion.mensaje(tarjeta.getHolder().getNumeroTelefono(),
-					// "Se realizo un consumo por: $"
-					// + consumoTarjeta.getAmmount() + ", # tarjeta " +
-					// tarjeta.getNumero());
+					 notificacion.mensaje(tarjeta.getHolder().getNumeroTelefono(),
+					 "Se realizo un consumo por: $"
+					 + consumoTarjeta.getAmmount() + ", # tarjeta " +
+					 tarjeta.getNumero());
 
 					notificacion.correoELectronico("Se realizo un consumo por: $" + consumoTarjeta.getAmmount() + ", # tarjeta "
 									+ tarjeta.getNumero(),
