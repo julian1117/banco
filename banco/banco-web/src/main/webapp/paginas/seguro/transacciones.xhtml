@@ -27,7 +27,7 @@
 					<h:selectOneMenu id="cbCuentaDes"
 						value="#{interBancariaController.asociacion}"
 						converter="asociacionConvertidor" class="form-control">
-						<f:selectItems value="#{asociacionControler.asociacionesLis}"
+						<f:selectItems value="#{interBancariaController.asociacionesLis}"
 							var="asoc" itemValue="#{asoc}" itemLabel="#{asoc.nombreAs}" />
 
 					</h:selectOneMenu>

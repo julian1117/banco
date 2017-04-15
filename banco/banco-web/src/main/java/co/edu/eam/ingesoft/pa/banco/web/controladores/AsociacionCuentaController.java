@@ -92,7 +92,7 @@ public class AsociacionCuentaController implements Serializable {
 						
 						AsociacionCuentas asociacionCuenta = new AsociacionCuentas(numeroId, id, nombreTitular,
 								idBanco, numero, nombreAs,"PENDIENTE" , busCliente);
-						Messages.addFlashGlobalInfo(idBanco+"AQUI AQUI AQUI AQUI AUQI AUQI AUAIQIUA UAIAUU ");
+						
 						asociacionEJB.crearAsociacion(asociacionCuenta);
 						asociacionesLis = asociacionEJB.listarAsociaciones(busCliente);
 

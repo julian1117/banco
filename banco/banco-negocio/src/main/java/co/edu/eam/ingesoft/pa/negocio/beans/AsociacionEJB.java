@@ -50,7 +50,7 @@ public class AsociacionEJB {
 	
 	public List<AsociacionCuentas> listarAsociaciones(Customer cliente){
 		
-		Query q = em.createNamedQuery(AsociacionCuentas.LISTRA_ASOCIACIONES);
+		Query q = em.createNamedQuery(AsociacionCuentas.LISTAR_ASOCIACIONES);
 		q.setParameter(1,cliente);
 		List<AsociacionCuentas> lista = q.getResultList();
 		return lista;
@@ -79,9 +79,9 @@ public class AsociacionEJB {
 	 * @param cliente
 	 * @return
 	 */
-	public List<AsociacionCuentas> listaAsociada(Customer cliente) {
-		List<AsociacionCuentas> q = em.createNamedQuery(AsociacionCuentas.LISTRA_ASOCIACIONES)
-				.setParameter(1, cliente).getResultList();
+	public List<AsociacionCuentas> listaAsociadaVeri(Customer cliente) {
+		List<AsociacionCuentas> q = em.createNamedQuery(AsociacionCuentas.LISTRA_ASOCIACIONES_VERIFICADA)
+				.setParameter(1, cliente).setParameter(2, "Asociada").getResultList();
 		return q;
 	}
 	

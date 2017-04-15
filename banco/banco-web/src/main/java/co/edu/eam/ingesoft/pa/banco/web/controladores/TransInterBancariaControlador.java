@@ -18,6 +18,7 @@ import co.edu.eam.ingesoft.banco.entidades.Verificacion;
 import co.edu.eam.ingesoft.pa.negocio.beans.AsociacionEJB;
 import co.edu.eam.ingesoft.pa.negocio.beans.CuentaAhorrosEJB;
 import co.edu.eam.ingesoft.pa.negocio.beans.TarjetaCreditoPagoConsumoRemote;
+import co.edu.eam.ingesoft.pa.negocio.beans.VerificarEJB;
 
 @Named("interBancariaController")
 @ViewScoped
@@ -91,6 +92,9 @@ public class TransInterBancariaControlador implements Serializable {
 
 	@EJB
 	private CuentaAhorrosEJB cuentaAhEjb;
+	
+	@EJB
+	private VerificarEJB veryEJB;
 
 	@Inject
 	private SessionController sesionController;
@@ -100,7 +104,7 @@ public class TransInterBancariaControlador implements Serializable {
 		listCuentaAhorros = pagoEjb.listaCuentaAhorros(
 				sesionController.getUse().getCustomer().getNumeroIndentificacion(),
 				sesionController.getUse().getCustomer().getTipoIdentificacion());
-		asociacionesLis = asociacionEJB.listaAsociada(sesionController.getUse().getCustomer());
+		asociacionesLis = asociacionEJB.listaAsociadaVeri(sesionController.getUse().getCustomer());
 	}
 
 	/**
@@ -116,8 +120,8 @@ public class TransInterBancariaControlador implements Serializable {
 	public void transferencia() {
 		try {
 			if(monto > 0){
-			cuentaAhEjb.confirmarTransaccion(sesionController.getUsuario(), validarCod, cuentaAhorros.getNumero(),
-					monto);
+				veryEJB.confirmarTransaccion(sesionController.getUsuario(), validarCod, cuentaAhorros.getNumero(),
+					monto, asociacion.getBanco().getIdBanco());
 			Messages.addGlobalInfo("Transaccion interbancaria con exito");
 			}else{
 				Messages.addGlobalError("Favor ingresar un valor mayor a ' 0 '");

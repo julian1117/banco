@@ -20,10 +20,15 @@ import org.hibernate.annotations.ManyToAny;
 
 @Entity
 @Table(name="Asociacion_Cuentas")
-@NamedQuery(name= AsociacionCuentas.LISTRA_ASOCIACIONES, query = "SELECT a FROM AsociacionCuentas a WHERE a.cliente=?1")
+@NamedQueries({
+	@NamedQuery(name= AsociacionCuentas.LISTAR_ASOCIACIONES, query = "SELECT a FROM AsociacionCuentas a WHERE a.cliente=?1"),
+	@NamedQuery(name= AsociacionCuentas.LISTRA_ASOCIACIONES_VERIFICADA, query = "SELECT a FROM AsociacionCuentas a WHERE a.cliente=?1 and a.verificado=?2")
+})
 public class AsociacionCuentas  implements Serializable{
 	
-	public static final String LISTRA_ASOCIACIONES = "AsociacionCuentas.listar";
+	public static final String LISTAR_ASOCIACIONES = "AsociacionCuentas.listar";
+	public static final String LISTRA_ASOCIACIONES_VERIFICADA = "AsociacionCuentas.listarVeri";
+
 	
 	@Id
 	@Column(name="numero_Id")
@@ -205,12 +210,6 @@ public class AsociacionCuentas  implements Serializable{
 	}
 
 
-
-
-
-	public static String getListraAsociaciones() {
-		return LISTRA_ASOCIACIONES;
-	}
 
 	
 	
