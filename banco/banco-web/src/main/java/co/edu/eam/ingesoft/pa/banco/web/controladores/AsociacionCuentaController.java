@@ -117,18 +117,19 @@ public class AsociacionCuentaController implements Serializable {
 	
 	public void verificarCuenta(AsociacionCuentas asociacionVerificar){
 
-		String numeroVeri = asociacionVerificar.getVerificado();
-		String idcliente = asociacionVerificar.getTipoId();
-		String numeroIdcliente = asociacionVerificar.getNumeroId();
-		String nombreAsoci = asociacionVerificar.getNombreAs();
-		String numeroCuentaAsociacion = asociacionVerificar.getNumero();
-		String banco = asociacionVerificar.getBanco().getNombre();
-		
-		if(numeroVeri.equals("PENDIENTE")){
-			if(idcliente.equals("CC")){
-				TipoDocumentoEnum tipo = TipoDocumentoEnum.CC;
-				asociacionVerificar.setVerificado("VERIFICADA");
+//		String numeroVeri = asociacionVerificar.getVerificado();
+//		String idcliente = asociacionVerificar.getTipoId();
+//		String numeroIdcliente = asociacionVerificar.getNumeroId();
+//		String nombreAsoci = asociacionVerificar.getNombreAs();
+//		String numeroCuentaAsociacion = asociacionVerificar.getNumero();
+//		String banco = asociacionVerificar.getBanco().getNombre();
+//		
+//		if(numeroVeri.equals("PENDIENTE")){
+//			if(idcliente.equals("CC")){
+//				TipoDocumentoEnum tipo = TipoDocumentoEnum.CC;
+//				asociacionVerificar.setVerificado("VERIFICADA");
 				verificarEJB.verificar(asociacionVerificar);
+				
 				asociacionEJB.verificar(asociacionVerificar);
 				Messages.addFlashGlobalInfo(asociacionVerificar.getVerificado()+"");
 				asociacionEJB.verificar(asociacionVerificar);
@@ -136,8 +137,8 @@ public class AsociacionCuentaController implements Serializable {
 				FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,
 						"Verificado!", "La asociacion fue verificada exitosamente!!"));
 
-			}
-			}
+//			}
+//			}
 	}
 
 	public String getNumeroId() {

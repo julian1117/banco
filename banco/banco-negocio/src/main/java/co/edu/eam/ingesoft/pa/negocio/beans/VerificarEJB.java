@@ -55,26 +55,28 @@ public class VerificarEJB {
 			TipoDocumentoEnum tipoIdd = TipoDocumentoEnum.CC;
 
 			if (asociacion.getBanco().getIdBanco().equals(000)) {
-				RespuestaServicio respuestaServicio = servicios.registrarCuentaAsociada(
-						asociacion.getBanco().getIdBanco(), tipoIdd, asociacion.getNumeroId(),
-						asociacion.getNombreTitular(), asociacion.getNumero());
+				
+				Customer cliente = clienteEJB.buscarCliente(asociacion.getCliente().getNumeroIndentificacion(), asociacion.getCliente().getTipoIdentificacion());
+				
+				
+				
+				
 
-				respuestaServicio.getMensaje();
-
-				em.persist(respuestaServicio);
+//				respuestaServicio.getMensaje();
+//
+//				em.persist(respuestaServicio);
 
 			} else {
 
 				RespuestaServicio respuestaServicio = servicios.registrarCuentaAsociada(
 						asociacion.getBanco().getIdBanco(), tipoIdd, asociacion.getNumeroId(),
 						asociacion.getNombreTitular(), asociacion.getNumero());
-				if (respuestaServicio.getCodigo().equals("0001")) {
-					respuestaServicio.getMensaje();
+									respuestaServicio.getMensaje();
 
 					asociacion.setVerificado(respuestaServicio.getMensaje());
 					em.merge(asociacion);
 
-				}
+				
 
 			}
 
