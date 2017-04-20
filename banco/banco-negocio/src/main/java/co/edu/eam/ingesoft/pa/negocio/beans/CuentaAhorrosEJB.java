@@ -186,5 +186,9 @@ public class CuentaAhorrosEJB {
 	}
 
 	
+	public void editarCuenta(SavingAccount cuenta){
+		em.merge(cuenta);
+	}
+	
 
 }
