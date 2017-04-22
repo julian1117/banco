@@ -13,18 +13,36 @@ import javax.ws.rs.core.MediaType;
 import co.edu.eam.ingesoft.banco.entidades.AsociacionCuentas;
 import co.edu.eam.ingesoft.banco.entidades.Customer;
 import co.edu.eam.ingesoft.banco.entidades.SavingAccount;
+import co.edu.eam.ingesoft.banco.entidades.Transaction;
+import co.edu.eam.ingesoft.banco.entidades.enumeraciones.TipoTransacion;
 import co.edu.eam.ingesoft.pa.banco.web.convertidor.CuentaAhorrosConvertidor;
 import co.edu.eam.ingesoft.pa.negocio.beans.AsociacionEJB;
+import co.edu.eam.ingesoft.pa.negocio.beans.ClienteEJB;
 import co.edu.eam.ingesoft.pa.negocio.beans.CuentaAhorrosEJB;
+import co.edu.eam.ingesoft.pa.negocio.beans.TransaccionEJB;
 
 @Path("/verificacion")
 public class VerificacionRest {
 
 	@EJB
 	private AsociacionEJB asociacionEJB;
+	
 	@EJB
 	private CuentaAhorrosEJB ahorrosEJB;
+	
+	@EJB
+	private ClienteEJB clienteEJB;
 
+	@EJB
+	private TransaccionEJB transaccionEJB;
+	/**
+	 * Verificar que una cuenta de ahorros exita en la bd y que pertenesca a ese cliente
+	 * 
+	 * @param numero
+	 * @param cedula
+	 * @param tipo
+	 * @return
+	 */
 	@Path("/buscarAsociacion")
 	@POST
 	@Produces(MediaType.APPLICATION_JSON)
@@ -32,7 +50,7 @@ public class VerificacionRest {
 	public boolean buscarAsociacion(@FormParam("numero") String numero, @FormParam("cedula") String cedula,
 			@FormParam("tipo") String tipo) {
 
-		AsociacionCuentas aso = asociacionEJB.buscarAsociacion(numero);
+		
 		String tipoDocumento = "";
 
 		if (tipo.equals("1")) {
@@ -41,24 +59,41 @@ public class VerificacionRest {
 			tipoDocumento = "Pasaporte";
 		}
 
-		if (aso != null && aso.getVerificado().equals("VERIFICADA")
-				&& aso.getCliente().getNumeroIndentificacion().equals(cedula)
-				&& aso.getCliente().getTipoIdentificacion().equals(tipoDocumento)) {
+		SavingAccount cuentaAH = ahorrosEJB.buscarCuentaAhorro(numero);
+		
+		Customer cliente = clienteEJB.buscarCliente(cedula, tipoDocumento);
+		
+		//cuentaAH.getHolder().equals(cliente)
+		
+		if (cliente != null && cuentaAH != null && cuentaAH.getHolder().equals(cliente)) {
 			return true;
 		} else {
 			return false;
 		}
 	}
 
+	
+	
+	/**
+	 * recibir dinero de otro banco
+	 * @param numeroCuenta
+	 * @param monto
+	 * @return
+	 */
 	@Path("/otroBanco")
 	@POST
 	@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
 	public String dineroOtroBanco(@FormParam("numeroCuenta") String numeroCuenta, @FormParam("monto") double monto) {
 		SavingAccount cuenta = ahorrosEJB.buscarCuentaAhorro(numeroCuenta);
 
+		Transaction trans = new Transaction();
+		trans.setAmmount(monto);
+		trans.setSavingAcountNumber(cuenta);
+		trans.setTipoTransaccion(TipoTransacion.Consignar);
+			
 		if (cuenta != null) {
 			cuenta.setAmmount(cuenta.getAmmount() + monto);
-			ahorrosEJB.editarCuenta(cuenta);
+			transaccionEJB.consignar(trans);
 			return "Ok: se puede";
 		} else {
 			return "ERROR: no se puede";

@@ -50,7 +50,8 @@ public class CuentaAhorrosEJB {
 	@EJB
 	private AsociacionEJB asociaEjb;
 
-	
+	@EJB
+	private NotificacionesEJB notificacion;
 	
 	/**
 	 * Crea cuenta de ahorros
@@ -169,8 +170,8 @@ public class CuentaAhorrosEJB {
 		Usuario usuarioBuscado = usuarioEjb.buscarUs(use.getUsuario());
 
 		int aleatorio = ThreadLocalRandom.current().nextInt((int) ((900000L) + 100000L));
-		// notificaiconEjb.mensajeValidar(use.getCustomer().getNumeroTelefono(),
-		// "Codigo de validacion: " +aleatorio);
+		 notificaiconEjb.mensajeValidar(use.getCustomer().getNumeroTelefono(),
+		 "Codigo de validacion: " +aleatorio);
 		notificaiconEjb.correoValidar("Codigo de validacion: " + aleatorio, use.getCustomer().getCorreoELectronico(),
 				"Validacion de transferencia");
 
@@ -188,6 +189,8 @@ public class CuentaAhorrosEJB {
 	
 	public void editarCuenta(SavingAccount cuenta){
 		em.merge(cuenta);
+		
+		
 	}
 	
 
