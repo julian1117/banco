@@ -53,18 +53,23 @@ public class VerificarEJB {
 			bp.getRequestContext().put(BindingProvider.ENDPOINT_ADDRESS_PROPERTY, endpointURL);
 
 			TipoDocumentoEnum tipoIdd = TipoDocumentoEnum.CC;
+			
+			Banco bancoBus = asociacionEJB.buscarBanco(asociacion.getBanco().getIdBanco());
 
-			if (asociacion.getBanco().getIdBanco().equals(000)) {
-				
+			if (bancoBus.equals(01)) {				
 				Customer cliente = clienteEJB.buscarCliente(asociacion.getCliente().getNumeroIndentificacion(), asociacion.getCliente().getTipoIdentificacion());
-				
-				
-				
-				
-
-//				respuestaServicio.getMensaje();
-//
-//				em.persist(respuestaServicio);
+				if(cliente!= null){
+					String ced = cliente.getTipoIdentificacion();
+					ced = tipoIdd.toString();
+					cliente.setTipoIdentificacion(ced);
+					
+					AsociacionCuentas buscarAso = asociacionEJB.buscarAsociacion(asociacion.getNumero());
+					
+					if(buscarAso != null){
+						em.persist(asociacion);
+					}
+					
+				}
 
 			} else {
 

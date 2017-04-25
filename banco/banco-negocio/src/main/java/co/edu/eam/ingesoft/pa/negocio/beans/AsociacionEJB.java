@@ -44,7 +44,7 @@ public class AsociacionEJB {
 	}
 	
 	public void eliminarAsociacion(AsociacionCuentas aso){
-		aso = buscarAsociacion(aso.getNumeroId());
+		aso = buscarAsociacion(aso.getNumero());
 		em.remove(aso);
 	}
 	
