@@ -40,16 +40,20 @@ public class IniciarServicios {
 		for (Banco banWS : bancos) {
 			boolean estado = true;
 			for (co.edu.eam.ingesoft.banco.entidades.Banco banBD : bancosBD) {
-				if (banWS.getCodigo().equals(banBD.getIdBanco())) {
-					estado = false;
+				if (banWS.getCodigo() != null) {
+					if (banWS.getCodigo().equals(banBD.getIdBanco())) {
+						estado = false;
+					}
+					if (estado) {
+						co.edu.eam.ingesoft.banco.entidades.Banco banAgre = new co.edu.eam.ingesoft.banco.entidades.Banco(
+								banWS.getCodigo(), banWS.getNombre());
+						em.persist(banAgre);
+					} else {
+						System.out.println("Ya Existe el Banco");
+					}
+
 				}
-			}
-			if (estado) {
-				co.edu.eam.ingesoft.banco.entidades.Banco banAgre = new co.edu.eam.ingesoft.banco.entidades.Banco(
-						banWS.getCodigo(), banWS.getNombre());
-				em.persist(banAgre);
-			} else {
-				System.out.println("Ya Existe el Banco");
+
 			}
 		}
 
