@@ -37,12 +37,10 @@ public class VerificarEJB {
 	@EJB
 	private ClienteEJB clienteEJB;
 	
-<<<<<<< HEAD
+
 	@EJB
 	private CuentaAhorrosEJB cuentaAHEJB;
-	
-=======
->>>>>>> refs/remotes/origin/master
+
 	
 
 	InterbancarioWS_Service cliente = new InterbancarioWS_Service();
