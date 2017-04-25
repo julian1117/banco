@@ -90,8 +90,10 @@ public class AsociacionCuentaController implements Serializable {
 					if (idBanco.getIdBanco() != null) {		
 											
 						if(idBanco.getIdBanco().equals("01")){
-							verificarEJB.verificar(asociacion);
-						}
+							AsociacionCuentas asociacionCuenta = new AsociacionCuentas(numeroId, id, nombreTitular,
+									idBanco, numero, nombreAs,"" , busCliente);
+							verificarEJB.verificar(asociacionCuenta);
+						}else{
 						
 						AsociacionCuentas asociacionCuenta = new AsociacionCuentas(numeroId, id, nombreTitular,
 								idBanco, numero, nombreAs,"PENDIENTE" , busCliente);
@@ -101,7 +103,7 @@ public class AsociacionCuentaController implements Serializable {
 
 						FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,
 								"Creado Con Exito!!", "La asociacion fue creada exitosamente!!"));
-					}
+						}}
 				}
 			}
 
@@ -120,23 +122,8 @@ public class AsociacionCuentaController implements Serializable {
 	
 	public void verificarCuenta(AsociacionCuentas asociacionVerificar){
 
-//		String numeroVeri = asociacionVerificar.getVerificado();
-//		String idcliente = asociacionVerificar.getTipoId();
-//		String numeroIdcliente = asociacionVerificar.getNumeroId();
-//		String nombreAsoci = asociacionVerificar.getNombreAs();
-//		String numeroCuentaAsociacion = asociacionVerificar.getNumero();
-//		String banco = asociacionVerificar.getBanco().getNombre();
-//		
-//		if(numeroVeri.equals("PENDIENTE")){
-//			if(idcliente.equals("CC")){
-//				TipoDocumentoEnum tipo = TipoDocumentoEnum.CC;
-//				asociacionVerificar.setVerificado("VERIFICADA");
 				verificarEJB.verificar(asociacionVerificar);
-				
-				asociacionEJB.verificar(asociacionVerificar);
-				Messages.addFlashGlobalInfo(asociacionVerificar.getVerificado()+"");
-				asociacionEJB.verificar(asociacionVerificar);
-				
+
 				FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,
 						"Verificado!", "La asociacion fue verificada exitosamente!!"));
 

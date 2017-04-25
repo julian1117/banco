@@ -39,6 +39,8 @@ public class VerificarEJB {
 	
 	@EJB
 	private CuentaAhorrosEJB cuentaAHEJB;
+	
+	
 
 	InterbancarioWS_Service cliente = new InterbancarioWS_Service();
 	InterbancarioWS servicios = cliente.getInterbancarioWSPort();
@@ -56,33 +58,31 @@ public class VerificarEJB {
 			
 			Banco bancoBus = asociacionEJB.buscarBanco(asociacion.getBanco().getIdBanco());
 
-			if (bancoBus.equals(01)) {				
+			if (bancoBus.getIdBanco().equals("01")) {				
 				Customer cliente = clienteEJB.buscarCliente(asociacion.getCliente().getNumeroIndentificacion(), asociacion.getCliente().getTipoIdentificacion());
-				if(cliente!= null){
-					String ced = cliente.getTipoIdentificacion();
-					ced = tipoIdd.toString();
-					cliente.setTipoIdentificacion(ced);
+				if(cliente != null){
+					SavingAccount cuentaAhorro = cuentaAHEJB.buscarCuentaAhorro(asociacion.getNumero());					
 					
-					AsociacionCuentas buscarAso = asociacionEJB.buscarAsociacion(asociacion.getNumero());
-					
-					if(buscarAso != null){
-						em.persist(asociacion);
+					if(cuentaAhorro!= null){
+						if(cuentaAhorro.getHolder().equals(cliente)){
+							asociacion.setVerificado("ASOCIADA");
+							em.persist(asociacion);
+						}
+						
 					}
-					
 				}
-
+			
 			} else {
-
+				
+					
 				RespuestaServicio respuestaServicio = servicios.registrarCuentaAsociada(
 						asociacion.getBanco().getIdBanco(), tipoIdd, asociacion.getNumeroId(),
 						asociacion.getNombreTitular(), asociacion.getNumero());
+				
 									respuestaServicio.getMensaje();
-
+									
 					asociacion.setVerificado(respuestaServicio.getMensaje());
 					em.merge(asociacion);
-
-				
-
 			}
 
 		} catch (Exception e) {

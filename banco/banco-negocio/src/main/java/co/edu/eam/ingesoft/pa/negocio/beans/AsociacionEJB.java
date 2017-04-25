@@ -29,7 +29,7 @@ public class AsociacionEJB {
 	public void crearAsociacion(AsociacionCuentas asoci){
 		
 				
-		AsociacionCuentas aso = buscarAsociacion(asoci.getNumero());
+		AsociacionCuentas aso = buscarAsociacion(asoci.getNumeroId());
 		if(aso == null){
 				em.persist(asoci);
 		}else{
@@ -44,7 +44,7 @@ public class AsociacionEJB {
 	}
 	
 	public void eliminarAsociacion(AsociacionCuentas aso){
-		aso = buscarAsociacion(aso.getNumero());
+		aso = buscarAsociacion(aso.getNumeroId());
 		em.remove(aso);
 	}
 	
