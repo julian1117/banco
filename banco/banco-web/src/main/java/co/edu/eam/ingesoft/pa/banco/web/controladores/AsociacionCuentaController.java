@@ -89,6 +89,9 @@ public class AsociacionCuentaController implements Serializable {
 					Banco idBanco = asociacionEJB.buscarBanco(bancoNom.getIdBanco());
 					if (idBanco.getIdBanco() != null) {		
 											
+						if(idBanco.getIdBanco().equals("01")){
+							verificarEJB.verificar(asociacion);
+						}
 						
 						AsociacionCuentas asociacionCuenta = new AsociacionCuentas(numeroId, id, nombreTitular,
 								idBanco, numero, nombreAs,"PENDIENTE" , busCliente);
