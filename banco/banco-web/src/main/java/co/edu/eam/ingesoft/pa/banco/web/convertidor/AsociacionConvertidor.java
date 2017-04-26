@@ -27,7 +27,7 @@ public class AsociacionConvertidor implements Converter {
 	public String getAsString(FacesContext context, UIComponent component, Object value) {
 		if(value instanceof AsociacionCuentas){
 			AsociacionCuentas aso = (AsociacionCuentas) value;
-			return aso.getNombreAs();
+			return aso.getNumero();
 		}
 		return null;
 	}

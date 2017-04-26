@@ -39,8 +39,8 @@ public class AsociacionEJB {
 
 	
 	public AsociacionCuentas buscarAsociacion(String numero){
-		AsociacionCuentas asociacion = em.find(AsociacionCuentas.class, numero);
-		return asociacion;
+		return em.find(AsociacionCuentas.class, numero);
+		
 	}
 	
 	public void eliminarAsociacion(AsociacionCuentas aso){
@@ -80,9 +80,9 @@ public class AsociacionEJB {
 	 * @return
 	 */
 	public List<AsociacionCuentas> listaAsociadaVeri(Customer cliente) {
-		List<AsociacionCuentas> q = em.createNamedQuery(AsociacionCuentas.LISTRA_ASOCIACIONES_VERIFICADA)
-				.setParameter(1, cliente).setParameter(2, "VERIFICADA").getResultList();
-		return q;
+		return em.createNamedQuery(AsociacionCuentas.LISTRA_ASOCIACIONES_VERIFICADA)
+				.setParameter(1, cliente).setParameter(2, "ASOCIADA").getResultList();
+		
 	}
 	
 	
