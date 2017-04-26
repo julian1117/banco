@@ -32,10 +32,8 @@ public class TransInterBancariaControlador implements Serializable {
 	private SavingAccount cuentaAhorros;
 
 	private List<AsociacionCuentas> asociacionesLis;
-	
+
 	private List<SavingAccount> listCuentaAhorros;
-	
-		
 
 	public double getMonto() {
 		return monto;
@@ -85,8 +83,6 @@ public class TransInterBancariaControlador implements Serializable {
 		this.listCuentaAhorros = listCuentaAhorros;
 	}
 
-	
-	
 	public String getAsoSelect() {
 		return asoSelect;
 	}
@@ -94,8 +90,6 @@ public class TransInterBancariaControlador implements Serializable {
 	public void setAsoSelect(String asoSelect) {
 		this.asoSelect = asoSelect;
 	}
-
-
 
 	@EJB
 	private AsociacionEJB asociacionEJB;
@@ -105,7 +99,7 @@ public class TransInterBancariaControlador implements Serializable {
 
 	@EJB
 	private CuentaAhorrosEJB cuentaAhEjb;
-	
+
 	@EJB
 	private TransaaccionServiEJB veryEJB;
 
@@ -117,7 +111,7 @@ public class TransInterBancariaControlador implements Serializable {
 		listCuentaAhorros = pagoEjb.listaCuentaAhorros(
 				sesionController.getUse().getCustomer().getNumeroIndentificacion(),
 				sesionController.getUse().getCustomer().getTipoIdentificacion());
-		
+
 		asociacionesLis = asociacionEJB.listaAsociadaVeri(sesionController.getUse().getCustomer());
 	}
 
@@ -133,14 +127,14 @@ public class TransInterBancariaControlador implements Serializable {
 	 */
 	public void transferencia() {
 		try {
-			String bn = "12";
-			Messages.addFlashGlobalInfo("Transaccion interbancaria con exito"  );
 			
 			AsociacionCuentas aso = asociacionEJB.buscarAsociacion(asoSelect);
-			if(monto > 0){
-				veryEJB.confirmarTransaccion(sesionController.getUsuario(), validarCod, aso.getNumero(),
-					monto, aso.getBanco().getIdBanco());		
-			}else{
+			
+			if (monto > 0) {
+				veryEJB.confirmarTransaccion(sesionController.getUsuario(), validarCod, aso.getNumero(), monto,
+						aso.getBanco().getIdBanco());
+				Messages.addFlashGlobalInfo("Transaccion interbancaria con exito");
+			} else {
 				Messages.addFlashGlobalError("Favor ingresar un valor mayor a ' 0 '");
 			}
 		} catch (ExcepcionNegocio e) {
