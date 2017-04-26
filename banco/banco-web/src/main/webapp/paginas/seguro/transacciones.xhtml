@@ -22,11 +22,11 @@
 					<h:outputLabel for="cbCuentaDes" id="lbCuentaDes">
 						<h5>Cuenta destino</h5>
 					</h:outputLabel>
+					
 					<h:selectOneMenu id="cbCuentaDes"
-						value="#{interBancariaController.asociacion}"
-						converter="asociacionConvertidor" class="form-control">
+						value="#{interBancariaController.asoSelect}">
 						<f:selectItems value="#{interBancariaController.asociacionesLis}"
-							var="asoc" itemValue="#{asoc}" itemLabel="#{asoc.nombreAs}" />
+							var="asoc" itemValue="#{asoc.numeroId}" itemLabel="#{asoc.nombreAs}" />
 					</h:selectOneMenu>
 					<br></br>
 					<h:outputLabel for="tfMonto" id="lblMonto"
@@ -48,7 +48,7 @@
 
 					<h:panelGrid id="botonesPanel" columns="2">
 						<p:commandButton id="btnTransferir" value="Transferir"
-							action="#{interBancariaController.transferencia}" process="@this cbCuentaDes paneldatos"
+							action="#{interBancariaController.transferencia}" process="@this  paneldatos"
 							/>
 
 					</h:panelGrid>

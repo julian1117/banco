@@ -22,11 +22,14 @@ import org.hibernate.annotations.ManyToAny;
 @Table(name = "Asociacion_Cuentas")
 @NamedQueries({
 		@NamedQuery(name = AsociacionCuentas.LISTAR_ASOCIACIONES, query = "SELECT a FROM AsociacionCuentas a WHERE a.cliente=?1"),
-		@NamedQuery(name = AsociacionCuentas.LISTRA_ASOCIACIONES_VERIFICADA, query = "SELECT a FROM AsociacionCuentas a WHERE a.cliente=?1 and a.verificado=?2") })
+		@NamedQuery(name = AsociacionCuentas.LISTRA_ASOCIACIONES_VERIFICADA, query = "SELECT a FROM AsociacionCuentas a WHERE a.cliente=?1 and a.verificado=?2"),
+		@NamedQuery(name = AsociacionCuentas.ASOCIACIONES,query="SELECT a FROM AsociacionCuentas a WHERE a.numeroId=?1")
+})
 public class AsociacionCuentas implements Serializable {
 
 	public static final String LISTAR_ASOCIACIONES = "AsociacionCuentas.listar";
 	public static final String LISTRA_ASOCIACIONES_VERIFICADA = "AsociacionCuentas.listarVeri";
+	public static final String ASOCIACIONES = "AsociacionCuentas.listaAso";
 
 	@Id
 	@Column(name = "numero_Id")

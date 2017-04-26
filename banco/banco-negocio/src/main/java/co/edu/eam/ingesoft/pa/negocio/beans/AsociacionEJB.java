@@ -43,6 +43,10 @@ public class AsociacionEJB {
 		
 	}
 	
+	public List<AsociacionCuentas> buscarAso (String asociacionNum){
+		return em.createNamedQuery(AsociacionCuentas.ASOCIACIONES).setParameter(1, asociacionNum).getResultList();
+	}
+	
 	public void eliminarAsociacion(AsociacionCuentas aso){
 		aso = buscarAsociacion(aso.getNumeroId());
 		em.remove(aso);
