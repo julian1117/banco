@@ -66,11 +66,10 @@ public class TransaaccionServiEJB {
 
 			if (tiempoValidado <= 60) {
 				if (verif.get(verif.size() - 1).getCodigo() == codigo) {
-					System.out.println("--------------------------------" + idbanco + numero + monto);
-
+					
 					// Servicio
 					RespuestaServicio transf = servicios.transferirMonto(idbanco, numero, monto);
-					System.out.println("--------------------------------" + transf.getMensaje());
+					
 					if (transf.getMensaje().equals(0000)) {
 						SavingAccount cuentaBuscada = cuentaAHEJB.buscarCuentaAhorro(numero);
 						cuentaBuscada.setAmmount(cuentaBuscada.getAmmount() - monto);

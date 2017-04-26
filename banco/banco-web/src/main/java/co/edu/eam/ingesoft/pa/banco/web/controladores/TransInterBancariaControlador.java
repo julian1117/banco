@@ -28,7 +28,7 @@ public class TransInterBancariaControlador implements Serializable {
 	private int validarCod;
 
 	private AsociacionCuentas asociacion;
-
+	private String asoSelect;
 	private SavingAccount cuentaAhorros;
 
 	private List<AsociacionCuentas> asociacionesLis;
@@ -85,6 +85,18 @@ public class TransInterBancariaControlador implements Serializable {
 		this.listCuentaAhorros = listCuentaAhorros;
 	}
 
+	
+	
+	public String getAsoSelect() {
+		return asoSelect;
+	}
+
+	public void setAsoSelect(String asoSelect) {
+		this.asoSelect = asoSelect;
+	}
+
+
+
 	@EJB
 	private AsociacionEJB asociacionEJB;
 
@@ -122,16 +134,17 @@ public class TransInterBancariaControlador implements Serializable {
 	public void transferencia() {
 		try {
 			String bn = "12";
-			//Messages.addGlobalInfo("Transaccion interbancaria con exito"  +asociacion.getNumeroId());
+			Messages.addFlashGlobalInfo("Transaccion interbancaria con exito"  );
+			
+			AsociacionCuentas aso = asociacionEJB.buscarAsociacion(asoSelect);
 			if(monto > 0){
-				veryEJB.confirmarTransaccion(sesionController.getUsuario(), validarCod, cuentaAhorros.getNumero(),
-					monto, bn );
-		
+				veryEJB.confirmarTransaccion(sesionController.getUsuario(), validarCod, aso.getNumero(),
+					monto, aso.getBanco().getIdBanco());		
 			}else{
-				Messages.addGlobalError("Favor ingresar un valor mayor a ' 0 '");
+				Messages.addFlashGlobalError("Favor ingresar un valor mayor a ' 0 '");
 			}
 		} catch (ExcepcionNegocio e) {
-			Messages.addGlobalError(e.getMessage());
+			Messages.addFlashGlobalError(e.getMessage());
 		}
 
 	}
