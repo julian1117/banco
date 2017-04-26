@@ -1,5 +1,7 @@
 package co.edu.eam.ingesoft.pa.banco.web.servicios;
 
+import java.util.List;
+
 import javax.ejb.EJB;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.FormParam;
@@ -11,6 +13,7 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 
 import co.edu.eam.ingesoft.banco.entidades.AsociacionCuentas;
+import co.edu.eam.ingesoft.banco.entidades.Banco;
 import co.edu.eam.ingesoft.banco.entidades.Customer;
 import co.edu.eam.ingesoft.banco.entidades.SavingAccount;
 import co.edu.eam.ingesoft.banco.entidades.Transaction;
@@ -100,5 +103,29 @@ public class VerificacionRest {
 		}
 
 	}
+	
+	@Path("/listarCuentas")
+	@GET
+	@Produces(MediaType.APPLICATION_JSON)
+	public List<AsociacionCuentas> listarCuentas(@QueryParam("numero")String numero, @QueryParam("tipo") String tipo){
+		
+		Customer cliente = clienteEJB.buscarCliente(numero, tipo);
+		if(cliente!=null){
+		return asociacionEJB.listarAsociaciones(cliente);
+		}else{
+			return null;
+		}
+	}
+	
+	@Path("/listarBancos")
+	@GET
+	@Produces(MediaType.APPLICATION_JSON)
+	public List<Banco> listarBancos(){
+		return asociacionEJB.listarBancos();
+	}
+	
+	
+	
+	
 
 }

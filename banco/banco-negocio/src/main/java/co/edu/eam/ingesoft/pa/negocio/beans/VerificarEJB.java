@@ -75,6 +75,7 @@ public class VerificarEJB {
 
 				asociacion.setVerificado(respuestaServicio.getMensaje());
 				em.merge(asociacion);
+			
 			}
 
 		} catch (Exception e) {
