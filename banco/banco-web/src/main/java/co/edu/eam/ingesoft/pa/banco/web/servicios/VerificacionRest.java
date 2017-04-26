@@ -19,10 +19,12 @@ import co.edu.eam.ingesoft.banco.entidades.SavingAccount;
 import co.edu.eam.ingesoft.banco.entidades.Transaction;
 import co.edu.eam.ingesoft.banco.entidades.enumeraciones.TipoTransacion;
 import co.edu.eam.ingesoft.pa.banco.web.convertidor.CuentaAhorrosConvertidor;
+import co.edu.eam.ingesoft.pa.banco.web.servicios.dto.AsociacionCuentaDTO;
 import co.edu.eam.ingesoft.pa.negocio.beans.AsociacionEJB;
 import co.edu.eam.ingesoft.pa.negocio.beans.ClienteEJB;
 import co.edu.eam.ingesoft.pa.negocio.beans.CuentaAhorrosEJB;
 import co.edu.eam.ingesoft.pa.negocio.beans.TransaccionEJB;
+import co.edu.eam.ingesoft.pa.negocio.beans.VerificarEJB;
 
 @Path("/verificacion")
 public class VerificacionRest {
@@ -38,6 +40,8 @@ public class VerificacionRest {
 
 	@EJB
 	private TransaccionEJB transaccionEJB;
+	@EJB
+	private VerificarEJB verificarEJB;
 	/**
 	 * Verificar que una cuenta de ahorros exita en la bd y que pertenesca a ese cliente
 	 * 
@@ -120,8 +124,34 @@ public class VerificacionRest {
 	@Path("/listarBancos")
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
-	public List<Banco> listarBancos(){
-		return asociacionEJB.listarBancos();
+	public RespuestaDTO listarBancos(){
+		List<Banco> lista = asociacionEJB.listarBancos();
+		if(lista.isEmpty()){
+			return new RespuestaDTO("No hay bancos", 1, null);
+		}else{
+			return new RespuestaDTO("Se han encontrado bancos", 0, lista);
+		}
+	}
+	
+	@POST
+	@Path("/asociarCuenta")
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
+	public RespuestaDTO asociarCuenta(AsociacionCuentaDTO asoDTO){
+		AsociacionCuentas cuentaAso = new AsociacionCuentas();
+		
+		cuentaAso.setBanco(asoDTO.getBanco());
+		cuentaAso.setCliente(asoDTO.getCliente());
+		cuentaAso.setNombreAs(asoDTO.getNombreAs());
+		cuentaAso.setNombreTitular(asoDTO.getNombreTitular());
+		cuentaAso.setNumero(asoDTO.getNumero());
+		cuentaAso.setNumeroId(asoDTO.getNumeroId());
+		cuentaAso.setTipoId(asoDTO.getTipoId());
+		cuentaAso.setVerificado("PENDIENTE");
+		
+		asociacionEJB.crearAsociacion(cuentaAso);
+		return new RespuestaDTO("se creo exitosamente", 0, true);
+
 	}
 	
 	
