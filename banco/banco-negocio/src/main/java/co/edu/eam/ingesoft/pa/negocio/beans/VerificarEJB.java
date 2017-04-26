@@ -58,7 +58,7 @@ public class VerificarEJB {
 
 					if (cuentaAhorro != null) {
 						if (cuentaAhorro.getHolder().equals(cliente)) {
-							asociacion.setVerificado("ASOCIADA");
+							asociacion.setVerificado("Asociada");
 							em.persist(asociacion);
 						}
 
@@ -75,6 +75,17 @@ public class VerificarEJB {
 
 				asociacion.setVerificado(respuestaServicio.getMensaje());
 				em.merge(asociacion);
+				
+				if(asociacion.getVerificado().equals("Asociada")){
+					respuestaServicio.setMensaje("EXITO");
+					
+					asociacion.setVerificado(respuestaServicio.getMensaje());
+					em.merge(asociacion);
+				}else{
+					respuestaServicio.setMensaje("ERROR");
+					asociacion.setVerificado(respuestaServicio.getMensaje());
+					em.merge(asociacion);
+				}
 			
 			}
 
