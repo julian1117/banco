@@ -52,9 +52,8 @@ public class VerificacionRest {
 	 */
 	@Path("/buscarAsociacion")
 	@POST
-	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
-	public boolean buscarAsociacion(@FormParam("numero") String numero, @FormParam("cedula") String cedula,
+	public String buscarAsociacion(@FormParam("numero") String numero, @FormParam("cedula") String cedula,
 			@FormParam("tipo") String tipo) {
 
 		
@@ -73,9 +72,9 @@ public class VerificacionRest {
 		//cuentaAH.getHolder().equals(cliente)
 		
 		if (cliente != null && cuentaAH != null && cuentaAH.getHolder().equals(cliente)) {
-			return true;
+			return "EXITO";
 		} else {
-			return false;
+			return "ERROR";
 		}
 	}
 
