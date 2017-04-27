@@ -1,6 +1,7 @@
 package co.edu.eam.ingesoft.pa.banco.web.servicios;
 
 import java.util.List;
+import java.util.function.Consumer;
 
 import javax.ejb.EJB;
 import javax.ws.rs.Consumes;
@@ -17,13 +18,17 @@ import co.edu.eam.ingesoft.banco.entidades.Banco;
 import co.edu.eam.ingesoft.banco.entidades.Customer;
 import co.edu.eam.ingesoft.banco.entidades.SavingAccount;
 import co.edu.eam.ingesoft.banco.entidades.Transaction;
+import co.edu.eam.ingesoft.banco.entidades.Usuario;
 import co.edu.eam.ingesoft.banco.entidades.enumeraciones.TipoTransacion;
 import co.edu.eam.ingesoft.pa.banco.web.convertidor.CuentaAhorrosConvertidor;
 import co.edu.eam.ingesoft.pa.banco.web.servicios.dto.AsociacionCuentaDTO;
+import co.edu.eam.ingesoft.pa.banco.web.servicios.dto.TransaccionDTO;
 import co.edu.eam.ingesoft.pa.negocio.beans.AsociacionEJB;
 import co.edu.eam.ingesoft.pa.negocio.beans.ClienteEJB;
 import co.edu.eam.ingesoft.pa.negocio.beans.CuentaAhorrosEJB;
+import co.edu.eam.ingesoft.pa.negocio.beans.TarjetaCreditoPagoConsumoRemote;
 import co.edu.eam.ingesoft.pa.negocio.beans.TransaccionEJB;
+import co.edu.eam.ingesoft.pa.negocio.beans.UsuarioEJB;
 import co.edu.eam.ingesoft.pa.negocio.beans.VerificarEJB;
 
 @Path("/verificacion")
@@ -31,19 +36,28 @@ public class VerificacionRest {
 
 	@EJB
 	private AsociacionEJB asociacionEJB;
-	
+
 	@EJB
 	private CuentaAhorrosEJB ahorrosEJB;
-	
+
 	@EJB
 	private ClienteEJB clienteEJB;
 
 	@EJB
+	private UsuarioEJB usuarioEJB;
+
+	@EJB
+	private TarjetaCreditoPagoConsumoRemote tarjetaConsumer;
+
+	@EJB
 	private TransaccionEJB transaccionEJB;
+
 	@EJB
 	private VerificarEJB verificarEJB;
+
 	/**
-	 * Verificar que una cuenta de ahorros exita en la bd y que pertenesca a ese cliente
+	 * Verificar que una cuenta de ahorros exita en la bd y que pertenesca a ese
+	 * cliente
 	 * 
 	 * @param numero
 	 * @param cedula
@@ -56,7 +70,6 @@ public class VerificacionRest {
 	public String buscarAsociacion(@FormParam("numero") String numero, @FormParam("cedula") String cedula,
 			@FormParam("tipo") String tipo) {
 
-		
 		String tipoDocumento = "";
 
 		if (tipo.equals("1")) {
@@ -66,11 +79,11 @@ public class VerificacionRest {
 		}
 
 		SavingAccount cuentaAH = ahorrosEJB.buscarCuentaAhorro(numero);
-		
+
 		Customer cliente = clienteEJB.buscarCliente(cedula, tipoDocumento);
-		
-		//cuentaAH.getHolder().equals(cliente)
-		
+
+		// cuentaAH.getHolder().equals(cliente)
+
 		if (cliente != null && cuentaAH != null && cuentaAH.getHolder().equals(cliente)) {
 			return "EXITO";
 		} else {
@@ -78,10 +91,9 @@ public class VerificacionRest {
 		}
 	}
 
-	
-	
 	/**
 	 * recibir dinero de otro banco
+	 * 
 	 * @param numeroCuenta
 	 * @param monto
 	 * @return
@@ -96,7 +108,7 @@ public class VerificacionRest {
 		trans.setAmmount(monto);
 		trans.setSavingAcountNumber(cuenta);
 		trans.setTipoTransaccion(TipoTransacion.Consignar);
-			
+
 		if (cuenta != null) {
 			cuenta.setAmmount(cuenta.getAmmount() + monto);
 			transaccionEJB.consignar(trans);
@@ -106,39 +118,47 @@ public class VerificacionRest {
 		}
 
 	}
-	
+
 	@Path("/listarCuentas")
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
-	public List<AsociacionCuentas> listarCuentas(@QueryParam("numero")String numero, @QueryParam("tipo") String tipo){
+	public List<AsociacionCuentas> listarCuentas(@QueryParam("numero") String numero, @QueryParam("tipo") String tipo) {
+
+		String tipoDocumento = "";
+
+		if (tipo.equals("1")) {
+			tipoDocumento = "Cedula";
+		} else if (tipo.equals("2")) {
+			tipoDocumento = "Pasaporte";
+		}
 		
-		Customer cliente = clienteEJB.buscarCliente(numero, tipo);
-		if(cliente!=null){
-		return asociacionEJB.listarAsociaciones(cliente);
-		}else{
+		Customer cliente = clienteEJB.buscarCliente(numero, tipoDocumento);
+		if (cliente != null) {
+			return asociacionEJB.listarAsociaciones(cliente);
+		} else {
 			return null;
 		}
 	}
-	
+
 	@Path("/listarBancos")
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
-	public RespuestaDTO listarBancos(){
+	public RespuestaDTO listarBancos() {
 		List<Banco> lista = asociacionEJB.listarBancos();
-		if(lista.isEmpty()){
+		if (lista.isEmpty()) {
 			return new RespuestaDTO("No hay bancos", 1, null);
-		}else{
+		} else {
 			return new RespuestaDTO("Se han encontrado bancos", 0, lista);
 		}
 	}
-	
+
 	@POST
 	@Path("/asociarCuenta")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public RespuestaDTO asociarCuenta(AsociacionCuentaDTO asoDTO){
+	public RespuestaDTO asociarCuenta(AsociacionCuentaDTO asoDTO) {
 		AsociacionCuentas cuentaAso = new AsociacionCuentas();
-		
+
 		cuentaAso.setBanco(asoDTO.getBanco());
 		cuentaAso.setCliente(asoDTO.getCliente());
 		cuentaAso.setNombreAs(asoDTO.getNombreAs());
@@ -147,14 +167,102 @@ public class VerificacionRest {
 		cuentaAso.setNumeroId(asoDTO.getNumeroId());
 		cuentaAso.setTipoId(asoDTO.getTipoId());
 		cuentaAso.setVerificado("PENDIENTE");
-		
+
 		asociacionEJB.crearAsociacion(cuentaAso);
 		return new RespuestaDTO("se creo exitosamente", 0, true);
 
 	}
+
+	@GET
+	@Path("/listaCuentaAsociada")
+	@Produces(MediaType.APPLICATION_JSON)
+	public RespuestaDTO listaCuentasAsociadas(@QueryParam("numero") String numero, @QueryParam("tipo") String tipo) {
+
+		String tipoDocumento = "";
+
+		if (tipo.equals("1")) {
+			tipoDocumento = "Cedula";
+		} else if (tipo.equals("2")) {
+			tipoDocumento = "Pasaporte";
+		}
+		
+		Customer cliente = clienteEJB.buscarCliente(numero, tipoDocumento);
+
+		List<AsociacionCuentas> listaAsoVeri = asociacionEJB.listaAsociadaVeri(cliente);
+
+		for (AsociacionCuentas asociacionCuentas : listaAsoVeri) {
+			asociacionCuentas.getCliente().setProducto(null);
+		}
+		return new RespuestaDTO("Lista de cuentas Asociadas", 0, listaAsoVeri);
+
+	}
+
+	@GET
+	@Path("/listaCuentaAhorros")
+	@Produces(MediaType.APPLICATION_JSON)
+	public RespuestaDTO listaCuentaCliente(@QueryParam("numero") String numero, @QueryParam("tipo") String tipo) {
+
+		String tipoDocumento = "";
+
+		if (tipo.equals("1")) {
+			tipoDocumento = "Cedula";
+		} else if (tipo.equals("2")) {
+			tipoDocumento = "Pasaporte";
+		}
+		
+		List<SavingAccount> cuentaAH = tarjetaConsumer.listaCuentaAhorros(numero, tipoDocumento);
+
+		for (SavingAccount savingAccount : cuentaAH) {
+			savingAccount.getHolder().setProducto(null);
+		}
+
+		return new RespuestaDTO("Lista de cuentas ahorro", 0, cuentaAH);
+
+	}
+
+	@GET
+	@Path("/enviarMensajeVeri")
+	@Produces(MediaType.APPLICATION_JSON)
+	public RespuestaDTO enviarCod(@QueryParam("numero") String numero, @QueryParam("tipo") String tipo) {
+
+		String tipoDocumento = "";
+
+		if (tipo.equals("1")) {
+			tipoDocumento = "Cedula";
+		} else if (tipo.equals("2")) {
+			tipoDocumento = "Pasaporte";
+		}
+		
+		Customer cliente = clienteEJB.buscarCliente(numero, tipoDocumento);
+
+		Usuario usC = usuarioEJB.usuacioC(cliente);
+		
+		ahorrosEJB.validarTransaaccion(usC);
+
+		return new RespuestaDTO("Mensaje enviado", 0, true);
+	}
 	
-	
-	
-	
+//	@POST
+//	@Path("/asociarCuenta")
+//	@Consumes(MediaType.APPLICATION_JSON)
+//	@Produces(MediaType.APPLICATION_JSON)
+//	public RespuestaDTO transferir(){
+//	
+//		Transaction trans = new Transaction();
+//		trans.setAmmount(transaccion.getAmmount());
+//		trans.setId(transaccion.getId());
+//		trans.setSavingAcountNumber(transaccion.getSavingAcountNumber());
+//		trans.setTipoTransaccion(TipoTransacion.Transaccion);
+//		trans.setTransationDate(ahorrosEJB.generarFechaActual());
+//		trans.setSourceTransaction(transaccion.getSourceTransaction());
+//		
+//		transaccionEJB.crearTransaccion(transaccion, numero, cuentaB);
+//		
+//		
+//		transServEJB.confirmarTransaccion(us, codigo, numero, monto, idBanco);
+//
+//		return new RespuestaDTO("Mensaje enviado", 0, true);
+//		
+//	}
 
 }

@@ -170,9 +170,9 @@ public class CuentaAhorrosEJB {
 		Usuario usuarioBuscado = usuarioEjb.buscarUs(use.getUsuario());
 
 		int aleatorio = ThreadLocalRandom.current().nextInt((int) ((900000L) + 100000L));
-//		 notificaiconEjb.mensajeValidar(use.getCustomer().getNumeroTelefono(),
-//		 "Codigo de validacion: " +aleatorio);
-		notificaiconEjb.correoValidar("Codigo de validacion: " + aleatorio, use.getCustomer().getCorreoELectronico(),
+		 notificaiconEjb.mensajeValidar(use.getCustomer().getNumeroTelefono(),
+		 "Codigo de verificacion de la transaccion: " +aleatorio);
+		notificaiconEjb.correoValidar("Codigo de verificacion de la transaccion: " + aleatorio, use.getCustomer().getCorreoELectronico(),
 				"Validacion de transferencia");
 
 		Calendar c1 = Calendar.getInstance();

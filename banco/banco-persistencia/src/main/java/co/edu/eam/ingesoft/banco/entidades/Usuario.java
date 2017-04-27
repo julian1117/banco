@@ -8,6 +8,8 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinColumns;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedNativeQueries;
+import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
@@ -16,10 +18,15 @@ import org.hibernate.annotations.ManyToAny;
 
 @Entity
 @Table(name="T_USUARIO")
-@NamedQuery(name=Usuario.USUARIO,query="SELECT u FROM Usuario u WHERE u.usuario=?1")
+@NamedQueries({
+	@NamedQuery(name=Usuario.USUARIO,query="SELECT u FROM Usuario u WHERE u.usuario=?1"),
+	@NamedQuery(name=Usuario.USUARIO_C,query="SELECT u FROM Usuario u WHERE u.customer=?1")
+	
+})
 public class Usuario implements Serializable{
 
 	public static final String USUARIO = "Usuario.listUs";
+	public static final String 	USUARIO_C = "Usuario.us";
 	
 	@Id
 	@Column(name="NAME_US")

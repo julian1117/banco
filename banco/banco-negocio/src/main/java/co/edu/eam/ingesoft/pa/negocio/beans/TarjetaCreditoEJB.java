@@ -197,15 +197,4 @@ public class TarjetaCreditoEJB {
 		return listaFranqui;
 	}
 
-	
-
-	/**
-	 * Lista de tarjetas de un cliente
-	 * 
-	 * @param cliente
-	 * @return
-	 */
-//	@TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
-
-
 }
