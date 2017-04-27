@@ -11,6 +11,7 @@ import co.edu.eam.ingesoft.banco.entidades.AsociacionCuentas;
 import co.edu.eam.ingesoft.banco.entidades.Banco;
 import co.edu.eam.ingesoft.banco.entidades.Customer;
 import co.edu.eam.ingesoft.banco.entidades.SavingAccount;
+import co.edu.eam.ingesoft.banco.entidades.Usuario;
 import co.edu.eam.ingesoft.banco.entidades.Verificacion;
 import co.edu.eam.ingesoft.pa.negocio.excepciones.ExcepcionNegocio;
 import co.edu.eam.pa.clientews.InterbancarioWS;
@@ -34,6 +35,13 @@ public class VerificarEJB {
 
 	@EJB
 	private CuentaAhorrosEJB cuentaAHEJB;
+	
+	@EJB
+	private UsuarioEJB usuarioEjb;
+	
+	@EJB
+	private NotificacionesEJB notificaiconEjb;
+
 
 	InterbancarioWS_Service cliente = new InterbancarioWS_Service();
 	InterbancarioWS servicios = cliente.getInterbancarioWSPort();
@@ -75,18 +83,28 @@ public class VerificarEJB {
 
 				asociacion.setVerificado(respuestaServicio.getMensaje());
 				em.merge(asociacion);
-				
-				if(asociacion.getVerificado().equals("Asociada")){
+
+				if (asociacion.getVerificado().equals("Asociada")) {
 					respuestaServicio.setMensaje("EXITO");
-					
+
 					asociacion.setVerificado(respuestaServicio.getMensaje());
 					em.merge(asociacion);
-				}else{
+					
+					Customer cliente = clienteEJB.buscarCliente(asociacion.getCliente().getNumeroIndentificacion()
+							, asociacion.getCliente().getTipoIdentificacion());
+					Usuario usu = usuarioEjb.usuacioC(cliente);
+					
+					
+					notificaiconEjb.mensajeValidar(usu.getCustomer().getNumeroTelefono(),
+							"Su cuenta de asociacion a sido verificada con exito!!! ");
+					notificaiconEjb.correoValidar("Su cuenta de asociacion a sido verificada con exito!!! " ,
+							usu.getCustomer().getCorreoELectronico(), "Validacion de transferencia");
+				} else {
 					respuestaServicio.setMensaje("ERROR");
 					asociacion.setVerificado(respuestaServicio.getMensaje());
 					em.merge(asociacion);
 				}
-			
+
 			}
 
 		} catch (Exception e) {
