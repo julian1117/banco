@@ -2,90 +2,72 @@ package co.edu.eam.ingesoft.pa.banco.web.servicios.dto;
 
 import java.util.Date;
 
+import co.edu.eam.ingesoft.banco.entidades.AsociacionCuentas;
+import co.edu.eam.ingesoft.banco.entidades.Customer;
 import co.edu.eam.ingesoft.banco.entidades.SavingAccount;
 import co.edu.eam.ingesoft.banco.entidades.enumeraciones.TipoTransacion;
 
 public class TransaccionDTO {
 	
+	private String cedula;
 	
-	private int id;
+	private String numeroCedula;	
+		
+	private String asociacionCuenta;
 	
-
-	private SavingAccount savingAcountNumber;
+	private double monto;
 	
+	private int codigo;
 	
-	private Double ammount;
+	private String banco;
+
 	
-	
-	private Date transationDate;
-	
-
-	private String sourceTransaction;
-	
-
-	private TipoTransacion tipoTransaccion;
-	
-
-
-	public int getId() {
-		return id;
+	public String getCedula() {
+		return cedula;
 	}
 
-
-	public void setId(int id) {
-		this.id = id;
+	public void setCedula(String cedula) {
+		this.cedula = cedula;
 	}
 
-
-	public SavingAccount getSavingAcountNumber() {
-		return savingAcountNumber;
+	public String getNumeroCedula() {
+		return numeroCedula;
 	}
 
-
-	public void setSavingAcountNumber(SavingAccount savingAcountNumber) {
-		this.savingAcountNumber = savingAcountNumber;
+	public void setNumeroCedula(String numeroCedula) {
+		this.numeroCedula = numeroCedula;
 	}
 
-
-	public Double getAmmount() {
-		return ammount;
+	public String getAsociacionCuenta() {
+		return asociacionCuenta;
 	}
 
-
-	public void setAmmount(Double ammount) {
-		this.ammount = ammount;
+	public void setAsociacionCuenta(String asociacionCuenta) {
+		this.asociacionCuenta = asociacionCuenta;
 	}
 
-
-	public Date getTransationDate() {
-		return transationDate;
+	public double getMonto() {
+		return monto;
 	}
 
-
-	public void setTransationDate(Date transationDate) {
-		this.transationDate = transationDate;
+	public void setMonto(double monto) {
+		this.monto = monto;
 	}
 
-
-	public String getSourceTransaction() {
-		return sourceTransaction;
+	public int getCodigo() {
+		return codigo;
 	}
 
-
-	public void setSourceTransaction(String sourceTransaction) {
-		this.sourceTransaction = sourceTransaction;
+	public void setCodigo(int codigo) {
+		this.codigo = codigo;
 	}
 
-
-	public TipoTransacion getTipoTransaccion() {
-		return tipoTransaccion;
+	public String getBanco() {
+		return banco;
 	}
 
-
-	public void setTipoTransaccion(TipoTransacion tipoTransaccion) {
-		this.tipoTransaccion = tipoTransaccion;
+	public void setBanco(String banco) {
+		this.banco = banco;
 	}
-
-
 
 }

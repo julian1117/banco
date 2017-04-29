@@ -27,6 +27,7 @@ import co.edu.eam.ingesoft.pa.negocio.beans.AsociacionEJB;
 import co.edu.eam.ingesoft.pa.negocio.beans.ClienteEJB;
 import co.edu.eam.ingesoft.pa.negocio.beans.CuentaAhorrosEJB;
 import co.edu.eam.ingesoft.pa.negocio.beans.TarjetaCreditoPagoConsumoRemote;
+import co.edu.eam.ingesoft.pa.negocio.beans.TransaaccionServiEJB;
 import co.edu.eam.ingesoft.pa.negocio.beans.TransaccionEJB;
 import co.edu.eam.ingesoft.pa.negocio.beans.UsuarioEJB;
 import co.edu.eam.ingesoft.pa.negocio.beans.VerificarEJB;
@@ -54,6 +55,9 @@ public class VerificacionRest {
 
 	@EJB
 	private VerificarEJB verificarEJB;
+
+	@EJB
+	private TransaaccionServiEJB transaccionSerEJB;
 
 	/**
 	 * Verificar que una cuenta de ahorros exita en la bd y que pertenesca a ese
@@ -102,6 +106,7 @@ public class VerificacionRest {
 	@POST
 	@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
 	public String dineroOtroBanco(@FormParam("numeroCuenta") String numeroCuenta, @FormParam("monto") double monto) {
+
 		SavingAccount cuenta = ahorrosEJB.buscarCuentaAhorro(numeroCuenta);
 
 		Transaction trans = new Transaction();
@@ -131,7 +136,7 @@ public class VerificacionRest {
 		} else if (tipo.equals("2")) {
 			tipoDocumento = "Pasaporte";
 		}
-		
+
 		Customer cliente = clienteEJB.buscarCliente(numero, tipoDocumento);
 		if (cliente != null) {
 			return asociacionEJB.listarAsociaciones(cliente);
@@ -185,7 +190,7 @@ public class VerificacionRest {
 		} else if (tipo.equals("2")) {
 			tipoDocumento = "Pasaporte";
 		}
-		
+
 		Customer cliente = clienteEJB.buscarCliente(numero, tipoDocumento);
 
 		List<AsociacionCuentas> listaAsoVeri = asociacionEJB.listaAsociadaVeri(cliente);
@@ -209,7 +214,7 @@ public class VerificacionRest {
 		} else if (tipo.equals("2")) {
 			tipoDocumento = "Pasaporte";
 		}
-		
+
 		List<SavingAccount> cuentaAH = tarjetaConsumer.listaCuentaAhorros(numero, tipoDocumento);
 
 		for (SavingAccount savingAccount : cuentaAH) {
@@ -232,37 +237,31 @@ public class VerificacionRest {
 		} else if (tipo.equals("2")) {
 			tipoDocumento = "Pasaporte";
 		}
-		
+
 		Customer cliente = clienteEJB.buscarCliente(numero, tipoDocumento);
 
 		Usuario usC = usuarioEJB.usuacioC(cliente);
-		
+
 		ahorrosEJB.validarTransaaccion(usC);
 
 		return new RespuestaDTO("Mensaje enviado", 0, true);
 	}
-	
-//	@POST
-//	@Path("/asociarCuenta")
-//	@Consumes(MediaType.APPLICATION_JSON)
-//	@Produces(MediaType.APPLICATION_JSON)
-//	public RespuestaDTO transferir(){
-//	
-//		Transaction trans = new Transaction();
-//		trans.setAmmount(transaccion.getAmmount());
-//		trans.setId(transaccion.getId());
-//		trans.setSavingAcountNumber(transaccion.getSavingAcountNumber());
-//		trans.setTipoTransaccion(TipoTransacion.Transaccion);
-//		trans.setTransationDate(ahorrosEJB.generarFechaActual());
-//		trans.setSourceTransaction(transaccion.getSourceTransaction());
-//		
-//		transaccionEJB.crearTransaccion(transaccion, numero, cuentaB);
-//		
-//		
-//		transServEJB.confirmarTransaccion(us, codigo, numero, monto, idBanco);
-//
-//		return new RespuestaDTO("Mensaje enviado", 0, true);
-//		
-//	}
+
+	@POST
+	@Path("/transferir")
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
+	public RespuestaDTO transferir(TransaccionDTO dto) {
+
+		Customer cliente = clienteEJB.buscarCliente(dto.getNumeroCedula(),dto.getCedula());
+
+		Usuario us = usuarioEJB.usuacioC(cliente);
+
+		transaccionSerEJB.confirmarTransaccion(us.getUsuario(), dto.getCodigo(), dto.getAsociacionCuenta(),
+				dto.getMonto(), dto.getBanco());
+
+		return new RespuestaDTO("Mensaje enviado", 0, true);
+
+	}
 
 }

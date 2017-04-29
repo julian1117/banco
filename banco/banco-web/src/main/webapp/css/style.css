@@ -19,6 +19,9 @@ font: 13px/1.5 Lato, "Century Gothic", "Trebuchet MS", Helvetica, sans-serif;
 -webkit-font-smoothing:antialiased;
 
 }
+.ui-widget-header{
+	
+}
 a
 {
 color:#89d460;

@@ -28,7 +28,9 @@ public class TransInterBancariaControlador implements Serializable {
 	private int validarCod;
 
 	private AsociacionCuentas asociacion;
+	
 	private String asoSelect;
+	
 	private SavingAccount cuentaAhorros;
 
 	private List<AsociacionCuentas> asociacionesLis;
