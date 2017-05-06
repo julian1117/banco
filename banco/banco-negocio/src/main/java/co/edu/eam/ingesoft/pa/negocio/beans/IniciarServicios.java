@@ -28,7 +28,7 @@ public class IniciarServicios {
 	InterbancarioWS_Service cliente = new InterbancarioWS_Service();
 	InterbancarioWS servicios = cliente.getInterbancarioWSPort();
 
-	String endpointURL = "http://104.155.128.249:8080/interbancario/InterbancarioWS/InterbancarioWS";
+	String endpointURL = "http://104.198.67.149:8080/interbancario/InterbancarioWS/InterbancarioWS";
 
 	@PostConstruct
 	public void inicializar() {

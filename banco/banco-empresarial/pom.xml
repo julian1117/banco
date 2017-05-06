@@ -63,8 +63,8 @@
 				<configuration>
 					<filename>banco1.ear</filename>
 					<skip>false</skip>
-					<hostname>localhost</hostname>
-					<port>9992</port>
+					<hostname>104.198.67.149</hostname>
+					<port>9991</port>
 					<username>user</username>
 					<password>password</password>
 				</configuration>
