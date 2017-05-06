@@ -129,7 +129,7 @@ public class VerificacionRest {
 	@Path("/listarCuentas")
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
-	public List<AsociacionCuentas> listarCuentas(@QueryParam("numero") String numero, @QueryParam("tipo") String tipo) {
+	public RespuestaDTO listarCuentas(@QueryParam("numero") String numero, @QueryParam("tipo") String tipo) {
 
 		String tipoDocumento = "";
 
@@ -140,11 +140,19 @@ public class VerificacionRest {
 		}
 
 		Customer cliente = clienteEJB.buscarCliente(numero, tipoDocumento);
+		
+		List<AsociacionCuentas> listaAsoVeri = asociacionEJB.listarAsociaciones(cliente);
+		
+		
+		
 		if (cliente != null) {
-			return asociacionEJB.listarAsociaciones(cliente);
+			return new RespuestaDTO("Lista de cuentas Asociadas", 0, listaAsoVeri);
 		} else {
-			return null;
+			return new RespuestaDTO("No hay Cuentas Asociadas", 1, null);
 		}
+		
+		
+		
 	}
 
 	@Path("/listarBancos")
