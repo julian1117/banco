@@ -41,4 +41,8 @@ public class UsuarioEJB {
 		return use.get(0);
 	}
 	
+	public List<Usuario> listaUs (String nombreUs, String passw){
+		return em.createNamedQuery(Usuario.USUARIO_LIST).setParameter(1, nombreUs).setParameter(2, passw).getResultList();
+	}
+	
 }

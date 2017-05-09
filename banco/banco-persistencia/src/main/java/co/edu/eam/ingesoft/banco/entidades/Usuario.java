@@ -20,11 +20,13 @@ import org.hibernate.annotations.ManyToAny;
 @Table(name="T_USUARIO")
 @NamedQueries({
 	@NamedQuery(name=Usuario.USUARIO,query="SELECT u FROM Usuario u WHERE u.usuario=?1"),
-	@NamedQuery(name=Usuario.USUARIO_C,query="SELECT u FROM Usuario u WHERE u.customer=?1")
+	@NamedQuery(name=Usuario.USUARIO_C,query="SELECT u FROM Usuario u WHERE u.customer=?1"),
+	@NamedQuery(name=Usuario.USUARIO_LIST,query="select u from Usuario u where u.customer=?1 and u.contrasena=?2")
 	
 })
 public class Usuario implements Serializable{
 
+	public static final String USUARIO_LIST = "Ususario.listaUse";
 	public static final String USUARIO = "Usuario.listUs";
 	public static final String 	USUARIO_C = "Usuario.us";
 	

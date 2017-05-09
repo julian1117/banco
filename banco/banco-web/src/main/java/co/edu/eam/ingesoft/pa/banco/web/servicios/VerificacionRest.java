@@ -13,6 +13,9 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 
+import org.omnifaces.util.Faces;
+import org.omnifaces.util.Messages;
+
 import co.edu.eam.ingesoft.banco.entidades.AsociacionCuentas;
 import co.edu.eam.ingesoft.banco.entidades.Banco;
 import co.edu.eam.ingesoft.banco.entidades.Customer;
@@ -22,6 +25,7 @@ import co.edu.eam.ingesoft.banco.entidades.Usuario;
 import co.edu.eam.ingesoft.banco.entidades.enumeraciones.TipoTransacion;
 import co.edu.eam.ingesoft.pa.banco.web.convertidor.CuentaAhorrosConvertidor;
 import co.edu.eam.ingesoft.pa.banco.web.servicios.dto.AsociacionCuentaDTO;
+import co.edu.eam.ingesoft.pa.banco.web.servicios.dto.LoginDTO;
 import co.edu.eam.ingesoft.pa.banco.web.servicios.dto.TransaccionDTO;
 import co.edu.eam.ingesoft.pa.banco.web.servicios.seguridad.Secured;
 import co.edu.eam.ingesoft.pa.negocio.beans.AsociacionEJB;
@@ -33,7 +37,7 @@ import co.edu.eam.ingesoft.pa.negocio.beans.TransaccionEJB;
 import co.edu.eam.ingesoft.pa.negocio.beans.UsuarioEJB;
 import co.edu.eam.ingesoft.pa.negocio.beans.VerificarEJB;
 
-@Secured
+
 @Path("/verificacion")
 public class VerificacionRest {
 
@@ -60,7 +64,12 @@ public class VerificacionRest {
 
 	@EJB
 	private TransaaccionServiEJB transaccionSerEJB;
+	
+	@EJB
+	private UsuarioEJB usEJB;
 
+	
+	
 	/**
 	 * Verificar que una cuenta de ahorros exita en la bd y que pertenesca a ese
 	 * cliente
