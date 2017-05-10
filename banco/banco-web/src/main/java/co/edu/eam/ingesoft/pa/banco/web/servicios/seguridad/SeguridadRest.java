@@ -37,9 +37,9 @@ public class SeguridadRest {
 			String token = UUID.randomUUID().toString();
 			usuarios.put(token, user);
 			return new RespuestaDTO("EXITO", 0,
-					new LoginRespuestaDTO(token, user.getCustomer().getNumeroIndentificacion()));
+					new LoginRespuestaDTO(token,user.getCustomer().getNumeroIndentificacion(),user.getCustomer().getTipoIdentificacion()));
 		} else {
-			return new RespuestaDTO("Credenciales erroneas", -403, null);
+			return new RespuestaDTO("Credenciales erroneas", 403, null);
 		}
 
 	}

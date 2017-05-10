@@ -11,24 +11,27 @@ public class AsociacionCuentaDTO {
 
 	private String nombreTitular;
 
-	private Banco banco;
+	private String banco;
 
 	private String numero;
 
 	private String nombreAs;
 	
-	private Customer cliente;
-
-
+	private String clienteCedula;
 	
-	
+	private String clienteTipoCedula;
 
-	public Customer getCliente() {
-		return cliente;
-	}
-
-	public void setCliente(Customer cliente) {
-		this.cliente = cliente;
+	public AsociacionCuentaDTO(String numeroId, String tipoId, String nombreTitular, String banco, String numero,
+			String nombreAs, String clienteCedula, String clienteTipoCedula) {
+		super();
+		this.numeroId = numeroId;
+		this.tipoId = tipoId;
+		this.nombreTitular = nombreTitular;
+		this.banco = banco;
+		this.numero = numero;
+		this.nombreAs = nombreAs;
+		this.clienteCedula = clienteCedula;
+		this.clienteTipoCedula = clienteTipoCedula;
 	}
 
 	public String getNumeroId() {
@@ -55,11 +58,11 @@ public class AsociacionCuentaDTO {
 		this.nombreTitular = nombreTitular;
 	}
 
-	public Banco getBanco() {
+	public String getBanco() {
 		return banco;
 	}
 
-	public void setBanco(Banco banco) {
+	public void setBanco(String banco) {
 		this.banco = banco;
 	}
 
@@ -79,7 +82,21 @@ public class AsociacionCuentaDTO {
 		this.nombreAs = nombreAs;
 	}
 
+	public String getClienteCedula() {
+		return clienteCedula;
+	}
 
+	public void setClienteCedula(String clienteCedula) {
+		this.clienteCedula = clienteCedula;
+	}
 
+	public String getClienteTipoCedula() {
+		return clienteTipoCedula;
+	}
+
+	public void setClienteTipoCedula(String clienteTipoCedula) {
+		this.clienteTipoCedula = clienteTipoCedula;
+	}
+	
 }
 

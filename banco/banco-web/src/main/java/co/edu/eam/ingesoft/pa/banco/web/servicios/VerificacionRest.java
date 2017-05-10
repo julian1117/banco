@@ -183,8 +183,11 @@ public class VerificacionRest {
 	public RespuestaDTO asociarCuenta(AsociacionCuentaDTO asoDTO) {
 		AsociacionCuentas cuentaAso = new AsociacionCuentas();
 
-		cuentaAso.setBanco(asoDTO.getBanco());
-		cuentaAso.setCliente(asoDTO.getCliente());
+		Banco buscarBanco = asociacionEJB.buscarBanco(asoDTO.getBanco());
+		Customer buscarCliente = clienteEJB.buscarCliente(asoDTO.getClienteCedula(), asoDTO.getClienteTipoCedula());
+		
+		cuentaAso.setBanco(buscarBanco);
+		cuentaAso.setCliente(buscarCliente);
 		cuentaAso.setNombreAs(asoDTO.getNombreAs());
 		cuentaAso.setNombreTitular(asoDTO.getNombreTitular());
 		cuentaAso.setNumero(asoDTO.getNumero());
