@@ -1,5 +1,6 @@
 package co.edu.eam.ingesoft.pa.banco.web.servicios;
 
+import java.util.LinkedList;
 import java.util.List;
 import java.util.function.Consumer;
 
@@ -25,6 +26,7 @@ import co.edu.eam.ingesoft.banco.entidades.Usuario;
 import co.edu.eam.ingesoft.banco.entidades.enumeraciones.TipoTransacion;
 import co.edu.eam.ingesoft.pa.banco.web.convertidor.CuentaAhorrosConvertidor;
 import co.edu.eam.ingesoft.pa.banco.web.servicios.dto.AsociacionCuentaDTO;
+import co.edu.eam.ingesoft.pa.banco.web.servicios.dto.CuentaAsociadaDTO;
 import co.edu.eam.ingesoft.pa.banco.web.servicios.dto.LoginDTO;
 import co.edu.eam.ingesoft.pa.banco.web.servicios.dto.TransaccionDTO;
 import co.edu.eam.ingesoft.pa.banco.web.servicios.seguridad.Secured;
@@ -36,7 +38,6 @@ import co.edu.eam.ingesoft.pa.negocio.beans.TransaaccionServiEJB;
 import co.edu.eam.ingesoft.pa.negocio.beans.TransaccionEJB;
 import co.edu.eam.ingesoft.pa.negocio.beans.UsuarioEJB;
 import co.edu.eam.ingesoft.pa.negocio.beans.VerificarEJB;
-
 
 @Path("/verificacion")
 public class VerificacionRest {
@@ -135,6 +136,7 @@ public class VerificacionRest {
 
 	}
 
+	@Secured
 	@Path("/listarCuentas")
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
@@ -152,16 +154,16 @@ public class VerificacionRest {
 		
 		List<AsociacionCuentas> listaAsoVeri = asociacionEJB.listarAsociaciones(cliente);
 		
-		
+		List<String> numCuneta = new LinkedList();
 		
 		if (cliente != null) {
+			for(int i =0;i<listaAsoVeri.size();i++){
+			//numCuneta=listaAsoVeri.get(i).getNumero();
 			return new RespuestaDTO("Lista de cuentas Asociadas", 0, listaAsoVeri);
-		} else {
+			}
+		} 
 			return new RespuestaDTO("No hay Cuentas Asociadas", 1, null);
-		}
-		
-		
-		
+				
 	}
 
 	@Path("/listarBancos")
@@ -176,11 +178,13 @@ public class VerificacionRest {
 		}
 	}
 
+	@Secured
 	@POST
 	@Path("/asociarCuenta")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
 	public RespuestaDTO asociarCuenta(AsociacionCuentaDTO asoDTO) {
+		
 		AsociacionCuentas cuentaAso = new AsociacionCuentas();
 
 		Banco buscarBanco = asociacionEJB.buscarBanco(asoDTO.getBanco());
@@ -200,10 +204,12 @@ public class VerificacionRest {
 
 	}
 
+	//@Secured
 	@GET
 	@Path("/listaCuentaAsociada")
 	@Produces(MediaType.APPLICATION_JSON)
-	public RespuestaDTO listaCuentasAsociadas(@QueryParam("numero") String numero, @QueryParam("tipo") String tipo) {
+	public RespuestaDTO listaCuentasAsociadas(@QueryParam("numero") String numero,
+			@QueryParam("tipo") String tipo) {
 
 		String tipoDocumento = "";
 
@@ -215,19 +221,30 @@ public class VerificacionRest {
 
 		Customer cliente = clienteEJB.buscarCliente(numero, tipoDocumento);
 
-		List<AsociacionCuentas> listaAsoVeri = asociacionEJB.listaAsociadaVeri(cliente);
+		List<AsociacionCuentas> listaAsoVeri = asociacionEJB.listaAsociadaVeri(cliente);		
+		
+		List<CuentaAsociadaDTO> list = new LinkedList<CuentaAsociadaDTO>();
 
 		for (AsociacionCuentas asociacionCuentas : listaAsoVeri) {
 			asociacionCuentas.getCliente().setProducto(null);
+			
+			CuentaAsociadaDTO cuentaAsoci = new CuentaAsociadaDTO();
+			
+			cuentaAsoci.setIdBanco(asociacionCuentas.getBanco().getIdBanco());;
+			cuentaAsoci.setNombreAso(asociacionCuentas.getNombreAs());
+			cuentaAsoci.setNumero(asociacionCuentas.getNumero());
+			
+			list.add(cuentaAsoci);
 		}
-		return new RespuestaDTO("Lista de cuentas Asociadas", 0, listaAsoVeri);
+		return new RespuestaDTO("Lista de cuentas Asociadas", 0, list);
 
 	}
 
 	@GET
 	@Path("/listaCuentaAhorros")
 	@Produces(MediaType.APPLICATION_JSON)
-	public RespuestaDTO listaCuentaCliente(@QueryParam("numero") String numero, @QueryParam("tipo") String tipo) {
+	public RespuestaDTO listaCuentaCliente(@QueryParam("numero") String numero,
+			@QueryParam("tipo") String tipo) {
 
 		String tipoDocumento = "";
 
@@ -239,11 +256,14 @@ public class VerificacionRest {
 
 		List<SavingAccount> cuentaAH = tarjetaConsumer.listaCuentaAhorros(numero, tipoDocumento);
 
+		List<String> list = new LinkedList<String>();
+		
 		for (SavingAccount savingAccount : cuentaAH) {
 			savingAccount.getHolder().setProducto(null);
+			list.add(savingAccount.getNumero());
 		}
 
-		return new RespuestaDTO("Lista de cuentas ahorro", 0, cuentaAH);
+		return new RespuestaDTO("Lista de cuentas ahorro", 0, list);
 
 	}
 

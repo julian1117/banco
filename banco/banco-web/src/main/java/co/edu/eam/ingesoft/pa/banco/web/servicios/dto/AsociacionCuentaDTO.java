@@ -21,18 +21,13 @@ public class AsociacionCuentaDTO {
 	
 	private String clienteTipoCedula;
 
-	public AsociacionCuentaDTO(String numeroId, String tipoId, String nombreTitular, String banco, String numero,
-			String nombreAs, String clienteCedula, String clienteTipoCedula) {
+	
+	
+	public AsociacionCuentaDTO() {
 		super();
-		this.numeroId = numeroId;
-		this.tipoId = tipoId;
-		this.nombreTitular = nombreTitular;
-		this.banco = banco;
-		this.numero = numero;
-		this.nombreAs = nombreAs;
-		this.clienteCedula = clienteCedula;
-		this.clienteTipoCedula = clienteTipoCedula;
 	}
+
+	
 
 	public String getNumeroId() {
 		return numeroId;
